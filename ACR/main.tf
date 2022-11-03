@@ -6,12 +6,7 @@ resource "azurerm_container_registry" "acr" {
   admin_enabled                 = var.admin_enabled
   public_network_access_enabled = var.public_network_access_enabled
   data_endpoint_enabled         = var.data_endpoint_enabled
-
-  lifecycle {
-    ignore_changes = [
-      tags,
-    ]
-  }
+  tags                          = var.tags
 }
 
 module "logger_module" {
