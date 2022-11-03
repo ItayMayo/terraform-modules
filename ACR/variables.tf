@@ -4,12 +4,12 @@ variable "location" {
 }
 
 variable "resource_group_name" {
-  type = string
+  type        = string
   description = "Name of the parent Resource Group."
 }
 
 variable "log_workspace_id" {
-  default = null
-  type    = string
+  default     = null
+  type        = string
   description = "ID of the log analytics workspace where logs should be sent to."
 }
