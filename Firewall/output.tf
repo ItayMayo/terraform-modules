@@ -1,23 +1,14 @@
 output "firewall_id" {
-  value = azurerm_firewall.firewall.id
+  value       = azurerm_firewall.firewall.id
+  description = "ID of the Firewall resource."
 }
 
 output "firewall_name" {
-  value = azurerm_firewall.firewall.name
+  value       = azurerm_firewall.firewall.name
+  description = "Name of the Firewall resource."
 }
 
 output "firewall_object" {
-  value = azurerm_firewall.firewall
-}
-
-output "firewall_policy_id" {
-  value = azurerm_firewall_policy.firewall_policy.id
-}
-
-output "firewall_policy_name" {
-  value = azurerm_firewall_policy.firewall_policy.name
-}
-
-output "firewall_policy_object" {
-  value = azurerm_firewall_policy.firewall_policy
+  value       = azurerm_firewall.firewall
+  description = "Object of the Firewall resource."
 }
