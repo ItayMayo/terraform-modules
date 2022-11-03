@@ -48,10 +48,15 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   }
 }
 
-module "logger_module" {
+locals {
+  diagnostics_name = "AKS Diagnostics"
+  cluster_id       = azurerm_kubernetes_cluster.cluster.id
+}
+
+module "diagnostics_module" {
   source = "github.com/ItayMayo/terraform-azure-logger"
 
-  name                       = "Diagnostics"
-  target_resource_id         = azurerm_kubernetes_cluster.cluster.id
+  name                       = local.diagnostics_name
+  target_resource_id         = local.cluster_id
   log_analytics_workspace_id = var.log_workspace_id
 }
