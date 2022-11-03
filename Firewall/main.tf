@@ -27,24 +27,12 @@ resource "azurerm_firewall" "firewall" {
       public_ip_address_id = management_ip_configuration.value["public_ip_address_id"]
     }
   }
-
-  lifecycle {
-    ignore_changes = [
-      tags,
-    ]
-  }
 }
 
 resource "azurerm_firewall_policy" "firewall_policy" {
   name                = var.firewall_policy_name
   resource_group_name = var.resource_group_name
   location            = var.resource_location
-
-  lifecycle {
-    ignore_changes = [
-      tags,
-    ]
-  }
 }
 
 module "logger_module" {
