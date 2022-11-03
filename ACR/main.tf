@@ -11,13 +11,13 @@ resource "azurerm_container_registry" "acr" {
 
 locals {
   diagnostics_name = "ACR Diagnostics"
-  cluster_id       = azurerm_kubernetes_cluster.cluster.id
+  resource_id      = azurerm_container_registry.acr.id
 }
 
 module "diagnostics_module" {
   source = "github.com/ItayMayo/terraform-azure-logger"
 
   name                       = local.diagnostics_name
-  target_resource_id         = local.cluster_id
+  target_resource_id         = local.resource_id
   log_analytics_workspace_id = var.log_workspace_id
 }
