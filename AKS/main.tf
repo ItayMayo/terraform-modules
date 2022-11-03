@@ -32,7 +32,6 @@ resource "azurerm_kubernetes_cluster" "cluster" {
     content {
       type         = identity.value["type"]
       identity_ids = identity.value["identity_ids"]
-
     }
   }
 
