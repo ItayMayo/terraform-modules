@@ -1,12 +1,14 @@
 resource "azurerm_kubernetes_cluster" "cluster" {
   name                = var.cluster_name
-  location            = var.resource_location
+  location            = var.location
   resource_group_name = var.resource_group_name
+  tags                = var.tags
 
   dns_prefix                    = var.dns_prefix
   private_cluster_enabled       = var.private_cluster_enabled
   public_network_access_enabled = var.public_network_access_enabled
   private_dns_zone_id           = var.private_dns_zone_id
+
 
   dynamic "default_node_pool" {
     for_each = [var.default_node_pool]
@@ -43,13 +45,6 @@ resource "azurerm_kubernetes_cluster" "cluster" {
       network_mode   = network_profile.value["network_mode"]
       network_policy = network_profile.value["network_policy"]
     }
-  }
-
-  lifecycle {
-    ignore_changes = [
-      tags,
-      oms_agent,
-    ]
   }
 }
 
