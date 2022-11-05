@@ -27,7 +27,7 @@ resource "azurerm_private_endpoint" "endpoint" {
 
   private_service_connection {
     name                           = local.endpoint_name
-    private_connection_resource_id = azurerm_storage_account.storage_account.id
+    private_connection_resource_id = azurerm_container_registry.acr.id
     is_manual_connection           = local.is_manual_connection
     subresource_names              = local.subresource_names
   }
