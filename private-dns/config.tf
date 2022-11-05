@@ -1,5 +1,6 @@
 variable "zone_name" {
-  type = string
+  type        = string
+  description = "Name of the DNS zone."
 }
 
 variable "zone_a_records" {
@@ -8,8 +9,11 @@ variable "zone_a_records" {
     ttl     = number
     records = list(string)
   }))
+
+  description = "DNS Zone A records."
 }
 
 variable "vnet_ids" {
-  type = map(string)
+  type        = map(string)
+  description = "DNS Zone associated vnet ids."
 }
