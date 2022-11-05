@@ -62,3 +62,21 @@ variable "network_profile" {
   default     = null
   description = "Optional. AKS Network Profile."
 }
+
+variable "private_endpoint_subnet_id" {
+  default     = null
+  type        = string
+  description = "Optional. ID of the subnet in which to create a private endpoint for this AKS."
+}
+
+variable "create_private_dns" {
+  default     = false
+  type        = bool
+  description = "Optional. Create Private DNS associated with the AKS. Requires Private Endpoint. Default: false."
+}
+
+variable "private_dns_vnets" {
+  default     = null
+  type        = list(string)
+  description = "List of Virtual Networks to associate with the AKS. Required when create_private_dns is enabled."
+}
