@@ -19,7 +19,7 @@ output "endpoint_object" {
 }
 
 output "private_dns_object" {
-    value       = try(module.storage_account_private_dns["storage_dns"], null)
+    value       = try(module.storage_account_private_dns["storage_dns"].dns_object, null)
   description = "Storage Account Private DNS resource object."
 
 }
