@@ -1,7 +1,16 @@
+locals {
+  gateway_ip_name               = "primary"
+  gateway_active_active_ip_name = "seconday"
+  gateway_p2s_ip_name           = "third"
+  private_ip_allocation         = "Dynamic"
+  aad_audience                  = "41b23e61-6c1e-4545-b367-cd054e0ed4b4"
+}
+
 resource "azurerm_virtual_network_gateway" "vng" {
   name                = var.gateway_name
-  location            = var.resource_location
+  location            = var.location
   resource_group_name = var.resource_group_name
+  tags                = var.tags
 
   type     = var.gateway_type
   vpn_type = var.gateway_vpn_type
@@ -12,35 +21,35 @@ resource "azurerm_virtual_network_gateway" "vng" {
   generation    = var.gateway_sku_generation
 
   dynamic "ip_configuration" {
-    for_each = [var.ip_configuration[0]]
+    for_each = [try(azurerm_public_ip.public_ip[0], [])]
 
     content {
-      name                          = ip_configuration.value["name"]
-      public_ip_address_id          = ip_configuration.value["public_ip_address_id"]
-      private_ip_address_allocation = ip_configuration.value["private_ip_address_allocation"]
-      subnet_id                     = ip_configuration.value["subnet_id"]
+      name                          = local.gateway_ip_name
+      public_ip_address_id          = ip_configuration.value["id"]
+      private_ip_address_allocation = local.private_ip_allocation
+      subnet_id                     = var.gateway_subnet_id
     }
   }
 
   dynamic "ip_configuration" {
-    for_each = var.enable_active_active ? [var.ip_configuration[1]] : []
+    for_each = [try(azurerm_public_ip.public_ip[1], [])]
 
     content {
-      name                          = ip_configuration.value["name"]
-      public_ip_address_id          = ip_configuration.value["public_ip_address_id"]
-      private_ip_address_allocation = ip_configuration.value["private_ip_address_allocation"]
-      subnet_id                     = ip_configuration.value["subnet_id"]
+      name                          = local.gateway_active_active_ip_name
+      public_ip_address_id          = ip_configuration.value["id"]
+      private_ip_address_allocation = local.private_ip_allocation
+      subnet_id                     = var.gateway_subnet_id
     }
   }
 
   dynamic "ip_configuration" {
-    for_each = var.enable_point_to_site ? [var.ip_configuration[2]] : []
+    for_each = [try(azurerm_public_ip.public_ip[2], [])]
 
     content {
-      name                          = ip_configuration.value["name"]
-      public_ip_address_id          = ip_configuration.value["public_ip_address_id"]
-      private_ip_address_allocation = ip_configuration.value["private_ip_address_allocation"]
-      subnet_id                     = ip_configuration.value["subnet_id"]
+      name                          = local.gateway_p2s_ip_name
+      public_ip_address_id          = ip_configuration.value["id"]
+      private_ip_address_allocation = local.private_ip_allocation
+      subnet_id                     = var.gateway_subnet_id
     }
   }
 
@@ -92,12 +101,29 @@ resource "azurerm_virtual_network_gateway" "vng" {
       }
     }
   }
+}
 
-  lifecycle {
-    ignore_changes = [
-      tags,
-    ]
-  }
+locals {
+  should_create_three_pips = var.enable_active_active && var.enable_point_to_site
+  should_create_two_pips   = var.enable_active_active || var.enable_point_to_site
+  nubmer_of_pips           = local.should_create_three_pips ? 3 : (local.should_create_two_pips ? 2 : 1)
+
+  pip_allocation_method = "Static"
+  pip_sku               = "Standard"
+  pip_zones             = [1, 2, 3]
+}
+
+resource "azurerm_public_ip" "public_ip" {
+  for_each = range(local.nubmer_of_pips)
+
+  name                = "vng_pip_${each.value}"
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  tags                = var.tags
+
+  allocation_method = local.pip_allocation_method
+  sku               = local.pip_sku
+  zones             = local.pip_zones
 }
 
 module "logger_module" {
