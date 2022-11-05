@@ -1,71 +1,81 @@
 variable "gateway_name" {
-  type = string
+  type        = string
+  description = "Name of the Gateway resource."
 }
 
 variable "gateway_type" {
-  type = string
+  default     = "Vpn"
+  type        = string
+  description = "Type of the Gateway Resource. Default: Vpn."
 }
 
 variable "gateway_vpn_type" {
-  type = string
+  default     = "RouteBased"
+  type        = string
+  description = "Type of the Gateway VPN. Default: RouteBased."
 }
 
 variable "enable_active_active" {
-  default = false
-  type    = bool
+  default     = true
+  type        = bool
+  description = "Enable Gateway Active-Active. Default: true."
 }
 
 variable "enable_bgp" {
-  default = false
-  type    = bool
+  default     = false
+  type        = bool
+  description = "Enable Gateway BGP. Default: false."
 }
 
 variable "gateway_sku" {
-  type = string
+  default     = "VpnGw2AZ"
+  type        = string
+  description = "SKU of the Gateway. Default: VpnGw2AZ."
 }
 
 variable "gateway_sku_generation" {
-  type = string
+  default     = "Generation2"
+  type        = string
+  description = "Generation of the Gateway SKU. Default: Generation2."
 }
 
-variable "ip_configuration" {
-  type = list(object({
-    name                          = string
-    public_ip_address_id          = string
-    private_ip_address_allocation = string
-    subnet_id                     = string
-  }))
+variable "gateway_subnet_id" {
+  type        = string
+  description = "ID of the Gateway Subnet."
 }
 
 variable "enable_point_to_site" {
-  default = false
-  type    = bool
+  default     = false
+  type        = bool
+  description = "Optional. Enable Point-To-Site connections. Default: false."
 }
 
 variable "vpn_client_configuration" {
-  default = null
+  default     = null
+  description = "Optional. P2S configuration block. Required when enable_point_to_site is true."
 
   type = object({
     address_space         = list(string)
     auth_types            = list(string)
     client_protocols      = list(string)
-    radius_server_address = string
-    radius_server_secret  = string
+    radius_server_address = optional(string)
+    radius_server_secret  = optional(string)
 
-    root_certificate = object({
+    root_certificate = optional(object({
       name             = string
       public_cert_data = string
-    })
+    }))
 
-    revoked_certificate = object({
+    revoked_certificate = optional(object({
       name       = string
       thumbprint = string
-    })
+    }))
   })
 }
 
 variable "bgp_settings" {
-  default = null
+  default     = null
+  description = "Optional. BGP configuration block. Required when enable_bgp is true."
 
   type = object({
     asn         = string
