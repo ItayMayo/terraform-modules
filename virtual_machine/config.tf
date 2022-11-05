@@ -1,24 +1,30 @@
 variable "vm_name" {
-  type = string
+  type        = string
+  description = "Name of the Virtual Machine."
 }
 
 variable "vm_size" {
-  type = string
+  default     = "Standard_D2s_v3"
+  type        = string
+  description = "Size of the Virtual Machine. Default: Standard_D2s_v3."
 }
 
 variable "vm_admin_username" {
-  type = string
+  type        = string
+  description = "Username of the Virtual Machine's admin account."
 }
 
 variable "vm_admin_password" {
-  default   = null
-  type      = string
-  sensitive = true
+  default     = null
+  type        = string
+  sensitive   = true
+  description = "Optional. Password of the Virtual Machine's admin account. Required when vm_disable_password_authentication is set to false."
 }
 
 variable "vm_disable_password_authentication" {
-  default = true
-  type    = bool
+  default     = true
+  type        = bool
+  description = "Optional. Disable VM password authentication and use SSH publickey. Default: true."
 }
 
 variable "vm_admin_ssh_key" {
@@ -27,35 +33,52 @@ variable "vm_admin_ssh_key" {
     public_key = string
   })
 
-  sensitive = true
+  sensitive   = true
+  description = "SSH publickey to use when logging in. Required when vm_disable_password_authentication is set to true."
 }
 
 variable "vm_source_image_reference" {
+  default = {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "16.04-LTS"
+    version   = "latest"
+  }
+
   type = object({
     publisher = string
     offer     = string
     sku       = string
     version   = string
   })
+
+  description = "Virtual Machine OS image reference. Default: UbuntuServer 16.04-LTS."
 }
 
-variable "vm_nic_ids" {
-  type = list(string)
+variable "nic_subnet_id" {
+  type        = string
+  description = "Subnet ID in which the Virtual Machine's NIC should be created."
 }
 
 variable "os_disk_caching" {
-  type = string
+  default     = "ReadWrite"
+  type        = string
+  description = "OS Disk caching. Default: ReadWrite."
 }
 
 variable "storage_account_type" {
-  type = string
+  default     = "Standard_LRS"
+  type        = string
+  description = "Type of the Virtual Machine's Storage Account. Default: Standard_LRS."
 }
 
 variable "identity" {
+  default = null
+
   type = object({
     type         = string
-    identity_ids = list(string)
+    identity_ids = optional(list(string))
   })
 
-  default = null
+  description = "Optional. Identity block assigned to the Virtual Machine. identity_ids field should only be set when using UserAssigned identities."
 }
