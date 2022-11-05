@@ -1,42 +1,46 @@
 variable "name" {
-  type = string
+  type        = string
+  description = "Settings link name."
 }
 
 variable "subscription_id" {
-  type    = string
-  default = null
+  type        = string
+  default     = null
+  description = "Subscription ID. Provide only when enabling Activity Logs."
 }
 
 variable "target_resource_id" {
-  type    = string
-  default = null
+  type        = string
+  default     = null
+  description = "ID of the resource to monitor. Provide only when Subscription ID is not specified."
 }
 
 variable "storage_account_id" {
-  default = null
-  type    = string
+  default     = null
+  type        = string
+  description = "ID of the Storage Account to store the logs in."
 }
 
 variable "log_analytics_workspace_id" {
-  default = null
-  type    = string
-
+  default     = null
+  type        = string
+  description = "ID of the Log Analytics Workspace to store the logs in."
 }
 
 variable "eventhub_name" {
-  default = null
-  type    = string
+  default     = null
+  type        = string
+  description = "Name of an Eventhub."
 }
 
 variable "eventhub_authorization_rule_id" {
-  default = null
-  type    = string
+  default     = null
+  type        = string
+  description = "ID of an Eventhub authorization rule."
 }
 
-variable "retention_policy" {
-  default = null
-  type = object({
-    days    = number
-    enabled = bool
-  })
+variable "retention_policy_days" {
+  default     = null
+  type        = number
+  description = "Optional. Number of days to retain logs. Default: Unlimited."
 }
