@@ -1,3 +1,8 @@
+locals {
+  primary_ip_config_name    = "firewall-ip-configuration"
+  management_ip_config_name = "management-ip-configuration"
+}
+
 resource "azurerm_firewall" "firewall" {
   name                = var.firewall_name
   location            = var.location
@@ -12,7 +17,7 @@ resource "azurerm_firewall" "firewall" {
   sku_tier = var.firewall_sku_tier
 
   ip_configuration {
-    name                 = "firewall-ip-configuration"
+    name                 = local.primary_ip_config_name
     subnet_id            = var.subnet_id
     public_ip_address_id = azurerm_public_ip.public_ip[local.firewall_pip_name].id
   }
@@ -21,7 +26,7 @@ resource "azurerm_firewall" "firewall" {
     for_each = var.enable_tunneling ? [azurerm_public_ip.public_ip[local.management_pip_name]] : []
 
     content {
-      name                 = "management-ip-configuration"
+      name                 = local.management_ip_config_name
       subnet_id            = var.management_subnet_id
       public_ip_address_id = each.value["id"]
     }
