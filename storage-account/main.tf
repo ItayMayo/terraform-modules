@@ -1,7 +1,12 @@
+locals {
+  network_rules_provided = var.network_rules != null
+}
+
 resource "azurerm_storage_account" "storage_account" {
   name                = var.name
   resource_group_name = var.resource_group_name
-  location            = var.resource_location
+  location            = var.location
+  tags                = var.tags
 
   account_tier             = var.account_tier
   account_kind             = var.account_kind
@@ -29,12 +34,56 @@ resource "azurerm_storage_account" "storage_account" {
       }
     }
   }
+}
 
-  lifecycle {
-    ignore_changes = [
-      tags,
-    ]
+locals {
+  create_private_endpoint = var.private_endpoint_subnet_id != null
+  endpoint_name           = "${azurerm_storage_account.storage_account.name}-private-endpoint"
+  is_manual_connection    = false
+  subresource_names       = ["blob"]
+}
+
+resource "azurerm_private_endpoint" "endpoint" {
+  for_each = local.create_private_endpoint ? [var.private_endpoint_subnet_id] : []
+
+  name                = local.endpoint_name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  subnet_id           = each.value["private_endpoint_subnet_id"]
+  tags                = var.tags
+
+  private_service_connection {
+    name                           = local.endpoint_name
+    private_connection_resource_id = azurerm_storage_account.storage_account.id
+    is_manual_connection           = local.is_manual_connection
+    subresource_names              = local.subresource_names
   }
+}
+
+locals {
+  dns_record_ttl = 300
+}
+
+module "storage_account_private_dns" {
+  source = "github.com/ItayMayo/terraform-modules/tree/master/private-dns"
+
+  for_each = var.create_private_dns ? { storage_dns = "storage_dns" } : {}
+
+  zone_name = var.private_dns_zone_name
+  vnet_ids  = var.private_dns_vnets
+  tags      = var.tags
+
+  zone_a_records = {
+    storage_account = {
+      name    = azurerm_storage_account.storage_account.name
+      ttl     = local.dns_record_ttl
+      records = azurerm_private_endpoint.endpoint.private_service_connection["private_ip_address"]
+    }
+  }
+
+  depends_on = [
+    azurerm_private_endpoint.endpoint
+  ]
 }
 
 module "logger_module" {
