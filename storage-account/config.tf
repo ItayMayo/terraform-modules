@@ -64,9 +64,9 @@ variable "create_private_dns" {
 }
 
 variable "private_dns_zone_name" {
-  default     = "azurestorage.io"
+  default     = "privatelink.azurestorage.io"
   type        = string
-  description = "Optional. Name of a Private DNS zone to be associated with the storage account. Default: azurestorage.io."
+  description = "Optional. Name of a Private DNS zone to be associated with the storage account. Default: privatelink.azurestorage.io."
 }
 
 variable "private_dns_vnets" {
