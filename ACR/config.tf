@@ -25,3 +25,27 @@ variable "data_endpoint_enabled" {
   type        = bool
   description = "Enable ACR Data Endpoint."
 }
+
+variable "private_endpoint_subnet_id" {
+  default     = null
+  type        = string
+  description = "Optional. ID of the subnet in which to create a private endpoint for this ACR."
+}
+
+variable "create_private_dns" {
+  default     = false
+  type        = bool
+  description = "Optional. Create Private DNS associated with the ACR. Requires Private Endpoint. Default: false."
+}
+
+variable "private_dns_zone_name" {
+  default     = "privatelink.azurecr.io"
+  type        = string
+  description = "Optional. Name of a Private DNS zone to be associated with the ACR. Default: privatelink.azurecr.io."
+}
+
+variable "private_dns_vnets" {
+  default     = null
+  type        = list(string)
+  description = "List of Virtual Networks to associate with the private dns. Required when create_private_dns is enabled."
+}
