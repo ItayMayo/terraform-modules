@@ -1,12 +1,14 @@
 resource "azurerm_kubernetes_cluster" "cluster" {
   name                = var.cluster_name
-  location            = var.resource_location
+  location            = var.location
   resource_group_name = var.resource_group_name
+  tags                = var.tags
 
   dns_prefix                    = var.dns_prefix
   private_cluster_enabled       = var.private_cluster_enabled
   public_network_access_enabled = var.public_network_access_enabled
   private_dns_zone_id           = var.private_dns_zone_id
+
 
   dynamic "default_node_pool" {
     for_each = [var.default_node_pool]
@@ -32,7 +34,6 @@ resource "azurerm_kubernetes_cluster" "cluster" {
     content {
       type         = identity.value["type"]
       identity_ids = identity.value["identity_ids"]
-
     }
   }
 
@@ -45,19 +46,69 @@ resource "azurerm_kubernetes_cluster" "cluster" {
       network_policy = network_profile.value["network_policy"]
     }
   }
+}
 
-  lifecycle {
-    ignore_changes = [
-      tags,
-      oms_agent,
-    ]
+locals {
+  create_private_endpoint = var.private_endpoint_subnet_id != null
+  endpoint_name           = "${azurerm_storage_account.storage_account.name}-private-endpoint"
+  is_manual_connection    = false
+  subresource_names       = ["management"]
+}
+
+resource "azurerm_private_endpoint" "endpoint" {
+  for_each = local.create_private_endpoint ? [var.private_endpoint_subnet_id] : []
+
+  name                = local.endpoint_name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  subnet_id           = each.value["private_endpoint_subnet_id"]
+  tags                = var.tags
+
+  private_service_connection {
+    name                           = local.endpoint_name
+    private_connection_resource_id = azurerm_kubernetes_cluster.cluster.id
+    is_manual_connection           = local.is_manual_connection
+    subresource_names              = local.subresource_names
   }
 }
 
-module "logger_module" {
-  source = "github.com/ItayMayo/terraform-azure-logger"
+locals {
+  dns_record_ttl      = 300
+  aks_dns_zone_name   = join(".", slice(split(".", azurerm_kubernetes_cluster.cluster.private_fqdn), 1, length(split(".", azurerm_kubernetes_cluster.cluster.private_fqdn))))
+  aks_dns_record_name = split(".", azurerm_kubernetes_cluster.cluster.private_fqdn)[0]
+}
 
-  name                       = "Diagnostics"
-  target_resource_id         = azurerm_kubernetes_cluster.cluster.id
+module "storage_account_private_dns" {
+  source = "github.com/ItayMayo/terraform-modules/tree/master/private-dns"
+
+  for_each = var.create_private_dns ? { aks_dns = "aks_dns" } : {}
+
+  zone_name = local.aks_dns_zone_name
+  vnet_ids  = var.private_dns_vnets
+  tags      = var.tags
+
+  zone_a_records = {
+    storage_account = {
+      name    = local.aks_dns_record_name
+      ttl     = local.dns_record_ttl
+      records = [azurerm_private_endpoint.endpoint.private_service_connection["private_ip_address"]]
+    }
+  }
+
+  depends_on = [
+    azurerm_private_endpoint.endpoint
+  ]
+}
+
+locals {
+  diagnostics_name = "AKS Diagnostics"
+  cluster_id       = azurerm_kubernetes_cluster.cluster.id
+}
+
+module "diagnostics_module" {
+  source = "github.com/ItayMayo/terraform-modules/tree/master/diagnostic-settings"
+
+  name                       = local.diagnostics_name
+  target_resource_id         = local.cluster_id
   log_analytics_workspace_id = var.log_workspace_id
 }

@@ -8,12 +8,6 @@ variable "resource_group_name" {
   description = "Name of the parent Resource Group."
 }
 
-variable "log_workspace_id" {
-  default     = null
-  type        = string
-  description = "ID of the log analytics workspace where logs should be sent to."
-}
-
 variable "tags" {
   type        = map(string)
   default     = null

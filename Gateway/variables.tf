@@ -1,17 +1,21 @@
-locals {
-  aad_audience = "41b23e61-6c1e-4545-b367-cd054e0ed4b4"
-}
-
-variable "resource_location" {
+variable "location" {
   type        = string
   description = "Location of the resource."
 }
 
 variable "resource_group_name" {
-  type = string
+  type        = string
+  description = "Name of the parent Resource Group."
 }
 
 variable "log_workspace_id" {
-  default = null
-  type    = string
+  default     = null
+  type        = string
+  description = "ID of the log analytics workspace where logs should be sent to."
+}
+
+variable "tags" {
+  type        = map(string)
+  default     = null
+  description = "Tags assigned to the resource."
 }
