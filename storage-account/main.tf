@@ -77,7 +77,7 @@ module "storage_account_private_dns" {
     storage_account = {
       name    = azurerm_storage_account.storage_account.name
       ttl     = local.dns_record_ttl
-      records = azurerm_private_endpoint.endpoint.private_service_connection["private_ip_address"]
+      records = [azurerm_private_endpoint.endpoint.private_service_connection["private_ip_address"]]
     }
   }
 
@@ -86,10 +86,15 @@ module "storage_account_private_dns" {
   ]
 }
 
-module "logger_module" {
+locals {
+  diagnostics_name   = "Storage Account Diagnostics"
+  target_resource_id = azurerm_storage_account.storage_account.id
+}
+
+module "diagnostics_module" {
   source = "github.com/ItayMayo/terraform-azure-logger"
 
-  name                       = "Diagnostics"
-  target_resource_id         = azurerm_storage_account.storage_account.id
+  name                       = local.diagnostics_name
+  target_resource_id         = local.resource_id
   log_analytics_workspace_id = var.log_workspace_id
 }
