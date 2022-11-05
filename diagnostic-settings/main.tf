@@ -3,7 +3,7 @@ locals {
 }
 
 module "log_categories_module" {
-  source = "./modules/LogCategories"
+  source = "./modules/log-categories"
 
   for_each = local.subscription_id_provided ? {} : {
     resource = var.target_resource_id
