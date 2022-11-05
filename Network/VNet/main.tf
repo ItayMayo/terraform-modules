@@ -19,10 +19,10 @@ resource "azurerm_subnet" "subnets" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsg_association" {
-  for_each = [for subnet_name, value in var.subnets : value.associate_nsg ? subnet_name : null]
+  for_each = [for subnet_name, value in var.subnets : value.nsg_id != null ? value : null]
 
-  subnet_id                 = azurerm_subnet.subnets[each.value].id
-  network_security_group_id = var.nsg_id
+  subnet_id                 = azurerm_subnet.subnets[each.value["subnet_name"]].id
+  network_security_group_id = each.value["nsg_id"]
 }
 
 module "logger_module" {
