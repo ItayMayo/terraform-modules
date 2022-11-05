@@ -1,17 +1,23 @@
 resource "azurerm_virtual_network" "vnet" {
-  name                = var.name
+  name                = var.vnet_name
   resource_group_name = var.resource_group_name
-  location            = var.resource_location
+  location            = var.location
+  tags                = var.tags
 
   address_space = var.address_space
   dns_servers   = var.dns_servers
-
-  lifecycle {
-    ignore_changes = [
-      tags,
-    ]
-  }
 }
+
+resource "azurerm_subnet" "subnets" {
+  for_each = var.subnets
+
+  name                = each.value["subnet_name"]
+  resource_group_name = var.resource_group_name
+
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = each.value["address_prefixes"]
+}
+
 
 module "logger_module" {
   source = "github.com/ItayMayo/terraform-azure-logger"
