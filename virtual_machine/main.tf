@@ -1,13 +1,33 @@
+locals {
+  nic_name              = "work_grafana_nic"
+  ip_configuration_name = "internal"
+}
+
+module "vm_network_interface" {
+  source = "github.com/ItayMayo/terraform-modules/tree/master/Network/network-interface"
+
+  name                  = local.nic_name
+  ip_configuration_name = local.ip_configuration_name
+  subnet_id             = var.nic_subnet_id
+  tags                  = var.tags
+}
+
+locals {
+  identity_provided = var.identity != null
+}
+
 resource "azurerm_linux_virtual_machine" "vm" {
-  name                            = var.vm_name
-  resource_group_name             = var.resource_group_name
-  location                        = var.resource_location
+  name                = var.vm_name
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  tags                = var.tags
+
   size                            = var.vm_size
   admin_username                  = var.vm_admin_username
   admin_password                  = var.vm_admin_password
   disable_password_authentication = var.vm_disable_password_authentication
 
-  network_interface_ids = var.vm_nic_ids
+  network_interface_ids = [modulevm_network_interface.nic_id]
 
   os_disk {
     caching              = var.os_disk_caching
@@ -37,12 +57,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
       type         = identity.value["type"]
       identity_ids = identity.value["identity_ids"]
     }
-  }
-
-  lifecycle {
-    ignore_changes = [
-      tags,
-    ]
   }
 }
 
