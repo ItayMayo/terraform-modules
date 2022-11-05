@@ -1,27 +1,52 @@
 variable "name" {
-  type = string
+  type        = string
+  description = "Name of the peering connection."
 }
 
-variable "rg_name" {
-  type = string
+variable "origin_resource_group_name" {
+  type        = string
+  description = "Name of the origin vnet's resource group."
 }
 
-variable "vnet_name" {
-  type = string
+variable "target_resource_group_name" {
+  type        = string
+  description = "Name of the target vnet's resource group."
 }
 
-variable "remote_vnet_id" {
-  type = string
+variable "origin_vnet_name" {
+  type        = string
+  description = "Name of the origin Virtual Network."
+}
+
+variable "target_vnet_name" {
+  type        = string
+  description = "Name of the target Virtual Network."
+}
+
+variable "origin_vnet_id" {
+  type        = string
+  description = "ID of the target vnet."
+}
+
+variable "target_vnet_id" {
+  type        = string
+  description = "ID of the target vnet."
 }
 
 variable "allow_forwarded_traffic" {
-  type = bool
+  default     = true
+  type        = bool
+  description = "Allow forwarded traffic from peered network. Default: true."
 }
 
 variable "allow_gateway_transit" {
-  type = bool
+  default     = true
+  type        = bool
+  description = "Allow gateway transit of peered network's traffic. Default: true."
 }
 
 variable "use_remote_gateways" {
-  type = bool
+  default     = true
+  type        = bool
+  description = "Use peered network's remote gateway. Default: true."
 }
