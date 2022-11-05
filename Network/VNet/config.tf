@@ -18,14 +18,8 @@ variable "subnets" {
   type = map(object({
     subnet_name      = string
     address_prefixes = list(string)
-    associate_nsg    = bool
+    nsg_id           = optional(string)
   }))
 
   description = "Map of subnets to be associated with this Virtual Network."
-}
-
-variable "nsg_id" {
-  default     = null
-  type        = string
-  description = "Optional. ID of the Network Security Group to associate with the subnets. Required when associate_nsg is set to true for at least one subnet."
 }
