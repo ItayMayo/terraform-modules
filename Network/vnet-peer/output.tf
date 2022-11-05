@@ -14,16 +14,16 @@ output "origin_peering_object" {
 }
 
 output "target_peering_id" {
-  value       = azurerm_virtual_network_peering.peering_1_2.id
+  value       = azurerm_virtual_network_peering.peering_2_1.id
   description = "ID of the target's peering resource."
 }
 
 output "target_peering_name" {
-  value       = azurerm_virtual_network_peering.peering_1_2.name
+  value       = azurerm_virtual_network_peering.peering_2_1.name
   description = "Name of the target's peering resource."
 }
 
 output "target_peering_object" {
-  value       = azurerm_virtual_network_peering.peering_1_2
+  value       = azurerm_virtual_network_peering.peering_2_1
   description = "Object of the target's peering resource."
 }
