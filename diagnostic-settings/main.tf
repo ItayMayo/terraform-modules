@@ -1,3 +1,7 @@
+locals {
+  subscription_id_provided = var.subscription_id != null
+}
+
 module "log_categories_module" {
   source = "./modules/LogCategories"
 
@@ -7,6 +11,23 @@ module "log_categories_module" {
 
   resource_id = each.value
 }
+
+locals {
+  does_resource_contain_category_groups = try(module.log_categories_module["resource"].diagnostic_category_groups, []) != []
+  logs_enabled                          = true
+  enable_retention_policy               = var.retention_policy_days != null
+
+  subscription_log_category_groups = [
+    "Administrative",
+    "Security",
+    "ServiceHealth",
+    "Alert",
+    "Recommendation",
+    "Policy",
+    "Autoscale",
+  ]
+}
+
 
 resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
   name               = var.name
@@ -22,14 +43,14 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
 
     content {
       category = log.value
-      enabled  = true
+      enabled  = local.logs_enabled
 
       dynamic "retention_policy" {
-        for_each = var.retention_policy != null ? [var.retention_policy] : []
+        for_each = local.enable_retention_policy
 
         content {
-          days    = retention_policy.value["days"]
-          enabled = retention_policy.value["enabled"]
+          days    = var.retention_policy_days
+          enabled = local.logs_enabled
         }
       }
     }
@@ -40,14 +61,14 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
 
     content {
       category_group = log.value
-      enabled        = true
+      enabled        = local.logs_enabled
 
       dynamic "retention_policy" {
-        for_each = var.retention_policy != null ? [var.retention_policy] : []
+        for_each = local.enable_retention_policy
 
         content {
-          days    = retention_policy.value["days"]
-          enabled = retention_policy.value["enabled"]
+          days    = var.retention_policy_days
+          enabled = local.logs_enabled
         }
       }
     }
@@ -58,14 +79,14 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
 
     content {
       category = log.value
-      enabled  = true
+      enabled  = local.logs_enabled
 
       dynamic "retention_policy" {
-        for_each = var.retention_policy != null ? [var.retention_policy] : []
+        for_each = local.enable_retention_policy
 
         content {
-          days    = retention_policy.value["days"]
-          enabled = retention_policy.value["enabled"]
+          days    = var.retention_policy_days
+          enabled = local.logs_enabled
         }
       }
     }
@@ -78,11 +99,11 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
       category = metric.value
 
       dynamic "retention_policy" {
-        for_each = var.retention_policy != null ? [var.retention_policy] : []
+        for_each = local.enable_retention_policy
 
         content {
-          days    = retention_policy.value["days"]
-          enabled = retention_policy.value["enabled"]
+          days    = var.retention_policy_days
+          enabled = local.logs_enabled
         }
       }
     }
