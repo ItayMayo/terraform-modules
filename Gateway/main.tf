@@ -126,10 +126,15 @@ resource "azurerm_public_ip" "public_ip" {
   zones             = local.pip_zones
 }
 
-module "logger_module" {
+locals {
+  diagnostics_name   = "Virtual Network Gateway Diagnostics"
+  target_resource_id = azurerm_virtual_network_gateway.vng.id
+}
+
+module "diagnostics_module" {
   source = "github.com/ItayMayo/terraform-azure-logger"
 
-  name                       = "Diagnostics"
-  target_resource_id         = azurerm_virtual_network_gateway.vng.id
+  name                       = local.diagnostics_name
+  target_resource_id         = local.resource_id
   log_analytics_workspace_id = var.log_workspace_id
 }

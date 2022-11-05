@@ -60,10 +60,15 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 }
 
-module "logger_module" {
+locals {
+  diagnostics_name   = "Virtual Machine Diagnostics"
+  target_resource_id = azurerm_linux_virtual_machine.vm.id
+}
+
+module "diagnostics_module" {
   source = "github.com/ItayMayo/terraform-azure-logger"
 
-  name                       = "Diagnostics"
-  target_resource_id         = azurerm_linux_virtual_machine.vm.id
+  name                       = local.diagnostics_name
+  target_resource_id         = local.resource_id
   log_analytics_workspace_id = var.log_workspace_id
 }

@@ -32,10 +32,15 @@ resource "azurerm_subnet_route_table_association" "route_table_association" {
   route_table_id = each.value["route_table_id"]
 }
 
-module "logger_module" {
+locals {
+  diagnostics_name   = "Virtual Network Diagnostics"
+  target_resource_id = azurerm_virtual_network.vnet.id
+}
+
+module "diagnostics_module" {
   source = "github.com/ItayMayo/terraform-azure-logger"
 
-  name                       = "Diagnostics"
-  target_resource_id         = azurerm_virtual_network.vnet.id
+  name                       = local.diagnostics_name
+  target_resource_id         = local.resource_id
   log_analytics_workspace_id = var.log_workspace_id
 }

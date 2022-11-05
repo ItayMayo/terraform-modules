@@ -11,10 +11,15 @@ resource "azurerm_network_interface" "nic" {
   }
 }
 
-module "logger_module" {
+locals {
+  diagnostics_name   = "Network Interface Diagnostics"
+  target_resource_id = azurerm_network_interface.nic.id
+}
+
+module "diagnostics_module" {
   source = "github.com/ItayMayo/terraform-azure-logger"
 
-  name                       = "Diagnostics"
-  target_resource_id         = azurerm_network_interface.nic.id
+  name                       = local.diagnostics_name
+  target_resource_id         = local.resource_id
   log_analytics_workspace_id = var.log_workspace_id
 }
