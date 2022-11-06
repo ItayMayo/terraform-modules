@@ -2,8 +2,8 @@ locals {
   subscription_id_provided = var.subscription_id != null
 }
 
-module "log_categories_module" {
-  source = "./modules/log-categories"
+module "log_categories" {
+  source = "./log-categories"
 
   for_each = local.subscription_id_provided ? {} : {
     resource = var.target_resource_id
