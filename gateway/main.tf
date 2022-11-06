@@ -106,7 +106,7 @@ resource "azurerm_virtual_network_gateway" "vng" {
 locals {
   should_create_three_pips = var.enable_active_active && var.enable_point_to_site
   should_create_two_pips   = var.enable_active_active || var.enable_point_to_site
-  nubmer_of_pips           = local.should_create_three_pips ? 3 : (local.should_create_two_pips ? 2 : 1)
+  number_of_pips           = local.should_create_three_pips ? 3 : (local.should_create_two_pips ? 2 : 1)
 
   pip_allocation_method = "Static"
   pip_sku               = "Standard"
