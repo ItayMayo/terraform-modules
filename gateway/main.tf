@@ -21,7 +21,7 @@ resource "azurerm_virtual_network_gateway" "vng" {
   generation    = var.gateway_sku_generation
 
   dynamic "ip_configuration" {
-    for_each = [try(azurerm_public_ip.public_ip[0], [])]
+    for_each = [try(azurerm_public_ip.public_ip["0"], [])]
 
     content {
       name                          = local.gateway_ip_name
@@ -32,7 +32,7 @@ resource "azurerm_virtual_network_gateway" "vng" {
   }
 
   dynamic "ip_configuration" {
-    for_each = [try(azurerm_public_ip.public_ip[1], [])]
+    for_each = [try(azurerm_public_ip.public_ip["1"], [])]
 
     content {
       name                          = local.gateway_active_active_ip_name
@@ -43,7 +43,7 @@ resource "azurerm_virtual_network_gateway" "vng" {
   }
 
   dynamic "ip_configuration" {
-    for_each = [try(azurerm_public_ip.public_ip[2], [])]
+    for_each = [try(azurerm_public_ip.public_ip["2"], [])]
 
     content {
       name                          = local.gateway_p2s_ip_name
@@ -114,7 +114,7 @@ locals {
 }
 
 resource "azurerm_public_ip" "public_ip" {
-  for_each = range(local.nubmer_of_pips)
+  for_each = toset(range(local.nubmer_of_pips))
 
   name                = "vng_pip_${each.value}"
   resource_group_name = var.resource_group_name
