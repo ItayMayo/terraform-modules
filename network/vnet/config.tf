@@ -18,8 +18,8 @@ variable "subnets" {
   type = map(object({
     subnet_name      = string
     address_prefixes = list(string)
-    nsg_id           = optional(string)
-    route_table_id   = optional(string)
+    nsg_id           = string
+    route_table_id   = string
   }))
 
   description = "Map of subnets to be associated with this Virtual Network."
