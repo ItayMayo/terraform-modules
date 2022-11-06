@@ -131,7 +131,7 @@ locals {
   target_resource_id = azurerm_virtual_network_gateway.vng.id
 }
 
-module "diagnostics_module" {
+module "diagnostics" {
   source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
 
   name                       = local.diagnostics_name

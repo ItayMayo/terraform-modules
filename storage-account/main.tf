@@ -64,10 +64,12 @@ locals {
   dns_record_ttl = 300
 }
 
-module "storage_account_private_dns" {
+module "storage-account-private-dns" {
   source = "github.com/ItayMayo/terraform-modules//private-dns"
 
   for_each = var.create_private_dns ? { storage_dns = "storage_dns" } : {}
+
+  resource_group_name = var.resource_group_name
 
   zone_name = var.private_dns_zone_name
   vnet_ids  = var.private_dns_vnets
@@ -91,7 +93,7 @@ locals {
   target_resource_id = azurerm_storage_account.storage_account.id
 }
 
-module "diagnostics_module" {
+module "diagnostics" {
   source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
 
   name                       = local.diagnostics_name

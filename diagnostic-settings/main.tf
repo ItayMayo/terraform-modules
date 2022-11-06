@@ -2,7 +2,7 @@ locals {
   subscription_id_provided = var.subscription_id != null
 }
 
-module "log_categories" {
+module "log-categories" {
   source = "./log-categories"
 
   for_each = local.subscription_id_provided ? {} : {
@@ -13,7 +13,7 @@ module "log_categories" {
 }
 
 locals {
-  does_resource_contain_category_groups = try(module.log_categories_module["resource"].diagnostic_category_groups, []) != []
+  does_resource_contain_category_groups = try(module.log-categories["resource"].diagnostic_category_groups, []) != []
   logs_enabled                          = true
   enable_retention_policy               = var.retention_policy_days != null
 
@@ -39,7 +39,7 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
   eventhub_authorization_rule_id = var.eventhub_authorization_rule_id
 
   dynamic "log" {
-    for_each = local.subscription_id_provided || local.does_resource_contain_category_groups ? [] : module.log_categories_module["resource"].diagnostic_category_types
+    for_each = local.subscription_id_provided || local.does_resource_contain_category_groups ? [] : module.log-categories["resource"].diagnostic_category_types
 
     content {
       category = log.value
@@ -57,7 +57,7 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
   }
 
   dynamic "log" {
-    for_each = local.subscription_id_provided ? [] : module.log_categories_module["resource"].diagnostic_category_groups
+    for_each = local.subscription_id_provided ? [] : module.log-categories["resource"].diagnostic_category_groups
 
     content {
       category_group = log.value
@@ -93,7 +93,7 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
   }
 
   dynamic "metric" {
-    for_each = local.subscription_id_provided ? [] : module.log_categories_module["resource"].diagnostic_metrics_categories
+    for_each = local.subscription_id_provided ? [] : module.log-categories["resource"].diagnostic_metrics_categories
 
     content {
       category = metric.value

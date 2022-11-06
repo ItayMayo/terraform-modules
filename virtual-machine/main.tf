@@ -3,7 +3,7 @@ locals {
   ip_configuration_name = "internal"
 }
 
-module "vm_network_interface" {
+module "vm-network-interface" {
   source = "github.com/ItayMayo/terraform-modules//Network/network-interface"
 
   name                  = local.nic_name
@@ -65,7 +65,7 @@ locals {
   target_resource_id = azurerm_linux_virtual_machine.vm.id
 }
 
-module "diagnostics_module" {
+module "diagnostics" {
   source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
 
   name                       = local.diagnostics_name

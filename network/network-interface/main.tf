@@ -16,7 +16,7 @@ locals {
   target_resource_id = azurerm_network_interface.nic.id
 }
 
-module "diagnostics_module" {
+module "diagnostics" {
   source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
 
   name                       = local.diagnostics_name

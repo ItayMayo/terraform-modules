@@ -39,7 +39,7 @@ locals {
   dns_record_ttl     = 3600
 }
 
-module "storage_account_private_dns" {
+module "acr-private-dns" {
   source = "github.com/ItayMayo/terraform-modules//private-dns"
 
   for_each = var.create_private_dns ? { acr_dns = "acr_dns" } : {}
@@ -72,7 +72,7 @@ locals {
   resource_id      = azurerm_container_registry.acr.id
 }
 
-module "diagnostics_module" {
+module "diagnostics" {
   source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
 
   name                       = local.diagnostics_name
