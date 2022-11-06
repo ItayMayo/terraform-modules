@@ -93,7 +93,7 @@ module "aks-private-dns" {
     storage_account = {
       name    = local.aks_dns_record_name
       ttl     = local.dns_record_ttl
-      records = [azurerm_private_endpoint.endpoint.private_service_connection["private_ip_address"]]
+      records = [azurerm_private_endpoint.endpoint[0].private_service_connection["private_ip_address"]]
     }
   }
 
