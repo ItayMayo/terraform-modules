@@ -77,6 +77,6 @@ variable "create_private_dns" {
 
 variable "private_dns_vnets" {
   default     = null
-  type        = list(string)
-  description = "List of Virtual Networks to associate with the AKS. Required when create_private_dns is enabled."
+  type        = map(string)
+  description = "Map of Virtual Networks to associate with the AKS. Required when create_private_dns is enabled."
 }
