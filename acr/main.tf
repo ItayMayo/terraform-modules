@@ -70,14 +70,14 @@ module "acr-private-dns" {
 }
 
 locals {
-  diagnostics_name = "ACR Diagnostics"
-  resource_id      = azurerm_container_registry.acr.id
+  diagnostics_name   = "ACR Diagnostics"
+  target_resource_id = azurerm_container_registry.acr.id
 }
 
 module "diagnostics" {
   source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
 
   name                       = local.diagnostics_name
-  target_resource_id         = local.resource_id
+  target_resource_id         = local.target_resource_id
   log_analytics_workspace_id = var.log_workspace_id
 }
