@@ -28,6 +28,8 @@ variable "vm_disable_password_authentication" {
 }
 
 variable "vm_admin_ssh_key" {
+  default = null
+
   type = object({
     username   = string
     public_key = string
