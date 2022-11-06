@@ -48,7 +48,7 @@ locals {
 }
 
 resource "azurerm_public_ip" "public_ip" {
-  for_each = var.enable_tunneling ? [local.firewall_pip_name, local.management_pip_name] : [local.firewall_pip_name]
+  for_each = var.enable_tunneling ? toset([local.firewall_pip_name, local.management_pip_name]) : [local.firewall_pip_name]
 
   name                = each.value
   resource_group_name = var.resource_group_name

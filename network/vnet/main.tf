@@ -19,14 +19,14 @@ resource "azurerm_subnet" "subnets" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsg_association" {
-  for_each = [for subnet_name, value in var.subnets : value.nsg_id != null ? value : null]
+  for_each = { for subnet_name, value in var.subnets : subnet_name => value.nsg_id != null ? value : null }
 
   subnet_id                 = azurerm_subnet.subnets[each.value["subnet_name"]].id
   network_security_group_id = each.value["nsg_id"]
 }
 
 resource "azurerm_subnet_route_table_association" "route_table_association" {
-  for_each = [for subnet_name, value in var.subnets : value.route_table_id != null ? value : null]
+  for_each = { for subnet_name, value in var.subnets : subnet_name => value.route_table_id != null ? value : null }
 
   subnet_id      = azurerm_subnet.subnets[each.value["subnet_name"]].id
   route_table_id = each.value["route_table_id"]
