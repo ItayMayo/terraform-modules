@@ -83,6 +83,8 @@ module "aks-private-dns" {
 
   for_each = var.create_private_dns ? { aks_dns = "aks_dns" } : {}
 
+  resource_group_name = var.resource_group_name
+
   zone_name = local.aks_dns_zone_name
   vnet_ids  = var.private_dns_vnets
   tags      = var.tags

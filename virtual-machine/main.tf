@@ -6,6 +6,8 @@ locals {
 module "vm-network-interface" {
   source = "github.com/ItayMayo/terraform-modules//Network/network-interface"
 
+  location = var.location
+
   name                  = local.nic_name
   ip_configuration_name = local.ip_configuration_name
   subnet_id             = var.nic_subnet_id
