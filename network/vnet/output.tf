@@ -14,7 +14,7 @@ output "vnet_object" {
 }
 
 output "subnet_ids" {
-  value       = azurerm_subnet.subnets[*].id
+  value       = { for subnet in azurerm_subnet.subnets : subnet.name => subnet.id }
   description = "List of subnet resource ids associated with the Virtual Network resource."
 }
 
