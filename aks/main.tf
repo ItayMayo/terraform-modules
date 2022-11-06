@@ -78,7 +78,7 @@ locals {
   aks_dns_record_name = split(".", azurerm_kubernetes_cluster.cluster.private_fqdn)[0]
 }
 
-module "storage_account_private_dns" {
+module "aks-private-dns" {
   source = "github.com/ItayMayo/terraform-modules//private-dns"
 
   for_each = var.create_private_dns ? { aks_dns = "aks_dns" } : {}
@@ -105,7 +105,7 @@ locals {
   cluster_id       = azurerm_kubernetes_cluster.cluster.id
 }
 
-module "diagnostics_module" {
+module "diagnostics" {
   source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
 
   name                       = local.diagnostics_name

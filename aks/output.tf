@@ -31,6 +31,6 @@ output "endpoint_object" {
 }
 
 output "private_dns_object" {
-  value       = try(module.storage_account_private_dns["aks_dns"].dns_object, null)
+  value       = try(module.aks-private-dns["aks_dns"].dns_object, null)
   description = "AKS Private DNS resource object."
 }

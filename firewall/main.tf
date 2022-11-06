@@ -152,7 +152,7 @@ locals {
   resource_id      = azurerm_firewall.firewall.id
 }
 
-module "diagnostics_module" {
+module "diagnostics" {
   source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
 
   name                       = local.diagnostics_name
