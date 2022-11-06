@@ -4,7 +4,7 @@ locals {
 }
 
 module "vm_network_interface" {
-  source = "github.com/ItayMayo/terraform-modules/tree/master/Network/network-interface"
+  source = "github.com/ItayMayo/terraform-modules//Network/network-interface"
 
   name                  = local.nic_name
   ip_configuration_name = local.ip_configuration_name
@@ -66,7 +66,7 @@ locals {
 }
 
 module "diagnostics_module" {
-  source = "github.com/ItayMayo/terraform-modules/tree/master/diagnostic-settings"
+  source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
 
   name                       = local.diagnostics_name
   target_resource_id         = local.resource_id

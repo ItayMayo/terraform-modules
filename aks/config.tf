@@ -29,11 +29,11 @@ variable "public_network_access_enabled" {
 variable "default_node_pool" {
   type = object({
     name                  = string
-    node_count            = optional(number)
     vm_size               = string
     enable_node_public_ip = bool
-    os_sku                = string
     enable_auto_scaling   = bool
+    node_count            = optional(number)
+    os_sku                = optional(string)
     max_count             = optional(number)
     min_count             = optional(number)
     vnet_subnet_id        = optional(string)
@@ -55,8 +55,8 @@ variable "identity" {
 variable "network_profile" {
   type = object({
     network_plugin = string
-    network_mode   = string
-    network_policy = string
+    network_mode   = optional(string)
+    network_policy = optional(string)
   })
 
   default     = null

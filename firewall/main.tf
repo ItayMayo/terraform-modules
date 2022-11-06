@@ -153,7 +153,7 @@ locals {
 }
 
 module "diagnostics_module" {
-  source = "github.com/ItayMayo/terraform-modules/tree/master/diagnostic-settings"
+  source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
 
   name                       = local.diagnostics_name
   target_resource_id         = local.resource_id

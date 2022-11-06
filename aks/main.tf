@@ -79,7 +79,7 @@ locals {
 }
 
 module "storage_account_private_dns" {
-  source = "github.com/ItayMayo/terraform-modules/tree/master/private-dns"
+  source = "github.com/ItayMayo/terraform-modules//private-dns"
 
   for_each = var.create_private_dns ? { aks_dns = "aks_dns" } : {}
 
@@ -106,7 +106,7 @@ locals {
 }
 
 module "diagnostics_module" {
-  source = "github.com/ItayMayo/terraform-modules/tree/master/diagnostic-settings"
+  source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
 
   name                       = local.diagnostics_name
   target_resource_id         = local.cluster_id
