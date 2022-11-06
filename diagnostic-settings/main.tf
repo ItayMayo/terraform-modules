@@ -46,7 +46,7 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
       enabled  = local.logs_enabled
 
       dynamic "retention_policy" {
-        for_each = local.enable_retention_policy
+        for_each = local.enable_retention_policy ? [1] : []
 
         content {
           days    = var.retention_policy_days
@@ -64,7 +64,7 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
       enabled        = local.logs_enabled
 
       dynamic "retention_policy" {
-        for_each = local.enable_retention_policy
+        for_each = local.enable_retention_policy ? [1] : []
 
         content {
           days    = var.retention_policy_days
@@ -82,7 +82,7 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
       enabled  = local.logs_enabled
 
       dynamic "retention_policy" {
-        for_each = local.enable_retention_policy
+        for_each = local.enable_retention_policy ? [1] : []
 
         content {
           days    = var.retention_policy_days
@@ -99,7 +99,7 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
       category = metric.value
 
       dynamic "retention_policy" {
-        for_each = local.enable_retention_policy
+        for_each = local.enable_retention_policy ? [1] : []
 
         content {
           days    = var.retention_policy_days
