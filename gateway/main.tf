@@ -114,7 +114,7 @@ locals {
 }
 
 resource "azurerm_public_ip" "public_ip" {
-  for_each = toset(range(local.nubmer_of_pips))
+  for_each = { for i in range(number_of_pips) : tostring(i) => tostring(i) }
 
   name                = "vng_pip_${each.value}"
   resource_group_name = var.resource_group_name
