@@ -50,7 +50,7 @@ resource "azurerm_kubernetes_cluster" "cluster" {
 
 locals {
   create_private_endpoint = var.private_endpoint_subnet_id != null
-  endpoint_name           = "${azurerm_storage_account.storage_account.name}-private-endpoint"
+  endpoint_name           = "${azurerm_kubernetes_cluster.cluster.name}-private-endpoint"
   is_manual_connection    = false
   subresource_names       = ["management"]
 }
