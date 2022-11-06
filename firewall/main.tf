@@ -36,7 +36,7 @@ resource "azurerm_firewall" "firewall" {
 resource "azurerm_firewall_policy" "firewall_policy" {
   name                = var.firewall_policy_name
   resource_group_name = var.resource_group_name
-  location            = var.resource_location
+  location            = var.location
 }
 
 locals {
@@ -48,7 +48,7 @@ locals {
 }
 
 resource "azurerm_public_ip" "public_ip" {
-  for_each = var.enable_tunneling ? [local.firewall_pip_name, local.management_pip_name] : [local.firewall_pip]
+  for_each = var.enable_tunneling ? [local.firewall_pip_name, local.management_pip_name] : [local.firewall_pip_name]
 
   name                = each.value
   resource_group_name = var.resource_group_name

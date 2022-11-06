@@ -31,7 +31,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   admin_password                  = var.vm_admin_password
   disable_password_authentication = var.vm_disable_password_authentication
 
-  network_interface_ids = [modulevm_network_interface.nic_id]
+  network_interface_ids = [module.vm-network-interface.nic_id]
 
   os_disk {
     caching              = var.os_disk_caching
