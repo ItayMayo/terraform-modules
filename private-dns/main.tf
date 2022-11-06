@@ -15,7 +15,7 @@ resource "azurerm_private_dns_a_record" "a_record" {
 }
 
 locals {
-  vnet_link_prefix = "dns_link_"
+  dns_link_prefix = "dns_link_"
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "dns_vnet_link" {
