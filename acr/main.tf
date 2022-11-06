@@ -44,6 +44,8 @@ module "acr-private-dns" {
 
   for_each = var.create_private_dns ? { acr_dns = "acr_dns" } : {}
 
+  resource_group_name = var.resource_group_name
+
   zone_name = var.private_dns_zone_name
   vnet_ids  = var.private_dns_vnets
   tags      = var.tags
