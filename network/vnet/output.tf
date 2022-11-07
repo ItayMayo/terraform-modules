@@ -15,6 +15,7 @@ output "vnet_object" {
 
 output "subnet_ids" {
   value       = { for subnet in module.subnets : subnet.subnet_name => subnet.subnet_id }
+  description = "List of subnet resource ids associated with the Virtual Network resource."
 }
 
 output "subnet_objects" {
