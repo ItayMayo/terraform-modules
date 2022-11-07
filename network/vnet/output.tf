@@ -12,3 +12,13 @@ output "vnet_object" {
   value       = azurerm_virtual_network.vnet
   description = "Object of the Virtual Network resource."
 }
+
+output "subnet_ids" {
+  value       = { for subnet in module.subnets : subnet.subnet_name => subnet.subnet_id }
+  description = "List of subnet resource ids associated with the Virtual Network resource."
+}
+
+output "subnet_objects" {
+  value       = module.subnets
+  description = "Objects of the Subnet resources associated with the Virtual Network resource."
+}
