@@ -56,7 +56,7 @@ locals {
 }
 
 resource "azurerm_private_endpoint" "endpoint" {
-  for_each = local.create_private_endpoint ? [var.private_endpoint_subnet_id] : []
+  for_each = local.create_private_endpoint ? { aks_endpoint = var.private_endpoint_subnet_id } : {}
 
   name                = local.endpoint_name
   location            = var.location
@@ -93,7 +93,7 @@ module "aks-private-dns" {
     storage_account = {
       name    = local.aks_dns_record_name
       ttl     = local.dns_record_ttl
-      records = [azurerm_private_endpoint.endpoint[0].private_service_connection["private_ip_address"]]
+      records = [azurerm_private_endpoint.endpoint["aks_endpoint"].private_service_connection["private_ip_address"]]
     }
   }
 

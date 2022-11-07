@@ -17,7 +17,7 @@ locals {
 }
 
 resource "azurerm_private_endpoint" "endpoint" {
-  for_each = local.create_private_endpoint ? [var.private_endpoint_subnet_id] : []
+  for_each = local.create_private_endpoint ? { acr_endpoint = var.private_endpoint_subnet_id } : {}
 
   name                = local.endpoint_name
   location            = var.location

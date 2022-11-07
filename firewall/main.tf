@@ -28,7 +28,7 @@ resource "azurerm_firewall" "firewall" {
     content {
       name                 = local.management_ip_config_name
       subnet_id            = var.management_subnet_id
-      public_ip_address_id = each.value["id"]
+      public_ip_address_id = management_ip_configuration.value["id"]
     }
   }
 }
