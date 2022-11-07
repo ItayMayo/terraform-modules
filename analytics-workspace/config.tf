@@ -1,3 +1,19 @@
+variable "location" {
+  type        = string
+  description = "Location of the resource."
+}
+
+variable "resource_group_name" {
+  type        = string
+  description = "Name of the parent Resource Group."
+}
+
+variable "tags" {
+  type        = map(string)
+  default     = null
+  description = "Tags assigned to the resource."
+}
+
 variable "name" {
   type        = string
   description = "Workspace name."

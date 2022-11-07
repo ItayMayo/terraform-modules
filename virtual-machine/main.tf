@@ -65,7 +65,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 }
 
 locals {
-  diagnostics_name   = "Virtual Machine Diagnostics"
+  diagnostics_name   = "Diagnostics"
   target_resource_id = azurerm_linux_virtual_machine.vm.id
 }
 

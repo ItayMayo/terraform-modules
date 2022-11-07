@@ -1,3 +1,19 @@
+variable "location" {
+  type        = string
+  description = "Location of the resource."
+}
+
+variable "resource_group_name" {
+  type        = string
+  description = "Name of the parent Resource Group."
+}
+
+variable "tags" {
+  type        = map(string)
+  default     = null
+  description = "Tags assigned to the resource."
+}
+
 variable "table_name" {
   type        = string
   description = "Route table name."
@@ -16,6 +32,6 @@ variable "table_routes" {
     next_hop_type          = string
     next_hop_in_ip_address = string
   }))
-  
+
   description = "Route table routes."
 }
