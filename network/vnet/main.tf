@@ -8,28 +8,17 @@ resource "azurerm_virtual_network" "vnet" {
   dns_servers   = var.dns_servers
 }
 
-resource "azurerm_subnet" "subnets" {
+module "subnets" {
+  source = "github.com/ItayMayo/terraform-modules//network/subnet"
+
   for_each = var.subnets
 
-  name                = each.value["subnet_name"]
-  resource_group_name = var.resource_group_name
-
+  resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.vnet.name
+  subnet_name          = each.value["name"]
   address_prefixes     = each.value["address_prefixes"]
-}
-
-resource "azurerm_subnet_network_security_group_association" "nsg_association" {
-  for_each = { for subnet_name, value in var.subnets : subnet_name => value.nsg_id != null ? value : null }
-
-  subnet_id                 = azurerm_subnet.subnets[each.value["subnet_name"]].id
-  network_security_group_id = each.value["nsg_id"]
-}
-
-resource "azurerm_subnet_route_table_association" "route_table_association" {
-  for_each = { for subnet_name, value in var.subnets : subnet_name => value.route_table_id != null ? value : null }
-
-  subnet_id      = azurerm_subnet.subnets[each.value["subnet_name"]].id
-  route_table_id = each.value["route_table_id"]
+  nsg_id               = each.value["nsg_id"]
+  route_table_id       = each.value["route_table_id"]
 }
 
 locals {
