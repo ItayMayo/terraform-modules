@@ -1,3 +1,7 @@
+locals {
+  network_profile_provided = var.network_profile != null
+}
+
 resource "azurerm_kubernetes_cluster" "cluster" {
   name                = var.cluster_name
   location            = var.location
