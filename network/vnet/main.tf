@@ -19,7 +19,7 @@ module "subnets" {
   address_prefixes     = each.value["address_prefixes"]
   nsg_id               = each.value["nsg_id"]
   route_table_id       = each.value["route_table_id"]
-}
+
 
 locals {
   diagnostics_name   = "Virtual Network Diagnostics"
