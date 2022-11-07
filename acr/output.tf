@@ -14,7 +14,7 @@ output "acr_object" {
 }
 
 output "endpoint_object" {
-  value       = try(azurerm_private_endpoint.endpoint, null)
+  value       = try(azurerm_private_endpoint.endpoint["acr_endpoint"], null)
   description = "Storage Account Private Endpoint resource object."
 }
 

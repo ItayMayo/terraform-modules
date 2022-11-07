@@ -26,7 +26,7 @@ output "kube_config" {
 }
 
 output "endpoint_object" {
-  value       = try(azurerm_private_endpoint.endpoint, null)
+  value       = try(azurerm_private_endpoint.endpoint["aks_endpoint"], null)
   description = "AKS Private Endpoint resource object."
 }
 
