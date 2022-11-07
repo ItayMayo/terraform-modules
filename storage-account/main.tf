@@ -79,7 +79,7 @@ module "storage-account-private-dns" {
     storage_account = {
       name    = azurerm_storage_account.storage_account.name
       ttl     = local.dns_record_ttl
-      records = [azurerm_private_endpoint.endpoint["storage_endpoint"].private_service_connection["private_ip_address"]]
+      records = [azurerm_private_endpoint.endpoint["storage_endpoint"].private_service_connection[0]["private_ip_address"]]
     }
   }
 
