@@ -61,7 +61,7 @@ resource "azurerm_private_endpoint" "endpoint" {
   name                = local.endpoint_name
   location            = var.location
   resource_group_name = var.resource_group_name
-  subnet_id           = each.value["private_endpoint_subnet_id"]
+  subnet_id           = each.value
   tags                = var.tags
 
   private_service_connection {
