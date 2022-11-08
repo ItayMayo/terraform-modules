@@ -10,8 +10,8 @@ resource "azurerm_virtual_network_peering" "peering_1_2" {
   remote_virtual_network_id = var.target_vnet_id
 
   allow_forwarded_traffic = var.allow_forwarded_traffic
-  allow_gateway_transit   = var.allow_gateway_transit
-  use_remote_gateways     = var.use_remote_gateways
+  allow_gateway_transit   = var.allow_origin_gateway_transit
+  use_remote_gateways     = var.allow_target_gateway_transit
 }
 
 resource "azurerm_virtual_network_peering" "peering_2_1" {
@@ -21,6 +21,6 @@ resource "azurerm_virtual_network_peering" "peering_2_1" {
   remote_virtual_network_id = var.origin_vnet_id
 
   allow_forwarded_traffic = var.allow_forwarded_traffic
-  allow_gateway_transit   = var.allow_gateway_transit
-  use_remote_gateways     = var.use_remote_gateways
+  allow_gateway_transit   = var.allow_target_gateway_transit
+  use_remote_gateways     = var.allow_origin_gateway_transit
 }
