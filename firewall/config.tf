@@ -72,7 +72,7 @@ variable "firewall_policy_name" {
 }
 
 variable "rule_collection_groups" {
-  type = list(object({
+  type = map(object({
     name     = string
     priority = number
 

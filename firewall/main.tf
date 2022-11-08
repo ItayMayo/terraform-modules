@@ -61,7 +61,7 @@ resource "azurerm_public_ip" "public_ip" {
 }
 
 resource "azurerm_firewall_policy_rule_collection_group" "firewall_policy_collection_group" {
-  for_each = { for index, value in var.rule_collection_groups : index => value }
+  for_each = var.rule_collection_groups
 
   name               = each.value["name"]
   firewall_policy_id = azurerm_firewall_policy.firewall_policy.id
