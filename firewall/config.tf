@@ -71,12 +71,12 @@ variable "firewall_policy_name" {
   description = "Name of the Firewall's policy."
 }
 
-variable "rule_collection_group" {
-  type = map(object({
+variable "rule_collection_groups" {
+  type = list(object({
     name     = string
     priority = number
 
-    rules = object({
+    rule_collections = object({
       application_rule_collections = optional(list(object({
         name     = string
         priority = number
