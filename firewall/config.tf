@@ -71,52 +71,47 @@ variable "firewall_policy_name" {
   description = "Name of the Firewall's policy."
 }
 
-variable "policy_collection_group_name" {
-  type        = string
-  description = "Name of the Policy Rule Collection Group."
-}
+variable "rule_collection_group" {
+  type = map(object({
+    name     = string
+    priority = number
 
-variable "collection_priority" {
-  type        = number
-  description = "Priority of the collection group."
-}
+    rules = {
+      application_rule_collections = optional(list(object({
+        name     = string
+        priority = number
+        action   = string
 
-variable "rule_collections" {
-  type = object({
-    application_rule_collections = optional(list(object({
-      name     = string
-      priority = number
-      action   = string
+        rule = list(object({
+          name = string
 
-      rule = list(object({
-        name = string
+          protocols = list(object({
+            type = string
+            port = number
+          }))
 
-        protocols = list(object({
-          type = string
-          port = number
+          source_addresses  = list(string)
+          destination_fqdns = list(string)
         }))
+      })))
 
-        source_addresses  = list(string)
-        destination_fqdns = list(string)
-      }))
-    })))
+      network_rule_collections = optional(list(object({
+        name     = string
+        priority = number
+        action   = string
 
-    network_rule_collections = optional(list(object({
-      name     = string
-      priority = number
-      action   = string
+        rule = list(object({
+          name                  = string
+          protocols             = list(string)
+          source_addresses      = list(string)
+          destination_addresses = list(string)
+          destination_ports     = list(string)
+        }))
+      })))
 
-      rule = list(object({
-        name                  = string
-        protocols             = list(string)
-        source_addresses      = list(string)
-        destination_addresses = list(string)
-        destination_ports     = list(string)
-      }))
-    })))
+      nat_rule_collections = optional(list(any))
+    }
+  }))
 
-    nat_rule_collections = optional(list(any))
-  })
-
-  description = "Collection rules."
+  description = "Firewall Rule Collection Group containing the Firewall Rules."
 }

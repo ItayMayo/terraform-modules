@@ -39,14 +39,14 @@ variable "allow_forwarded_traffic" {
   description = "Allow forwarded traffic from peered network. Default: true."
 }
 
-variable "allow_gateway_transit" {
+variable "allow_origin_gateway_transit" {
   default     = true
   type        = bool
-  description = "Allow gateway transit of peered network's traffic. Default: true."
+  description = "Allow gateway transit of peered network's traffic. If true, allow_target_gateway_transit must be set to false and vice versa. Default: true."
 }
 
-variable "use_remote_gateways" {
-  default     = true
+variable "allow_target_gateway_transit" {
+  default     = false
   type        = bool
-  description = "Use peered network's remote gateway. Default: true."
+  description = "Allow gateway transit of origin network's traffic. If true, allow_origin_gateway_transit must be set to false and vice versa. Default: false."
 }
