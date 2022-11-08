@@ -76,7 +76,7 @@ variable "rule_collection_group" {
     name     = string
     priority = number
 
-    rules = {
+    rules = object({
       application_rule_collections = optional(list(object({
         name     = string
         priority = number
@@ -110,7 +110,7 @@ variable "rule_collection_group" {
       })))
 
       nat_rule_collections = optional(list(any))
-    }
+    })
   }))
 
   description = "Firewall Rule Collection Group containing the Firewall Rules."
