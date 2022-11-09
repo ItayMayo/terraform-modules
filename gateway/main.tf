@@ -4,7 +4,12 @@ locals {
   gateway_p2s_ip_name           = "third"
   private_ip_allocation         = "Dynamic"
   aad_audience                  = "41b23e61-6c1e-4545-b367-cd054e0ed4b4"
+  aad_tenant_base_address       = "https://login.microsoftonline.com"
+  aad_issuer_base_address       = "https://sts.windows.net"
 }
+
+data "azurerm_client_config" "current" {}
+
 
 resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
   name                = var.gateway_name
@@ -61,9 +66,9 @@ resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
       vpn_auth_types       = vpn_client_configuration.value["auth_types"]
       vpn_client_protocols = vpn_client_configuration.value["client_protocols"]
 
-      aad_tenant   = contains(vpn_client_configuration.value["auth_types"], "AAD") ? "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/" : null
+      aad_tenant   = contains(vpn_client_configuration.value["auth_types"], "AAD") ? "${local.aad_tenant_base_address}/${data.azurerm_client_config.current.tenant_id}/" : null
       aad_audience = contains(vpn_client_configuration.value["auth_types"], "AAD") ? local.aad_audience : null
-      aad_issuer   = contains(vpn_client_configuration.value["auth_types"], "AAD") ? "https://sts.windows.net/${data.azurerm_client_config.current.tenant_id}/" : null
+      aad_issuer   = contains(vpn_client_configuration.value["auth_types"], "AAD") ? "${local.aad_issuer_base_address}/${data.azurerm_client_config.current.tenant_id}/" : null
 
       radius_server_address = vpn_client_configuration.value["radius_server_address"]
       radius_server_secret  = vpn_client_configuration.value["radius_server_secret"]
