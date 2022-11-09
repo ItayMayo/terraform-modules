@@ -8,7 +8,7 @@ variable "route_table_name" {
   description = "Required. Name of the Route Table to assign the Routes to."
 }
 
-variable "routes" {
+variable "route_table_routes" {
   type = list(object({
     name                   = string
     address_prefix         = string

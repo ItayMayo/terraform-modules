@@ -1,5 +1,5 @@
 resource "azurerm_route" "route-table-route" {
-  for_each = { for index, value in var.routes : index => value }
+  for_each = { for index, value in var.route_table_routes : index => value }
 
   resource_group_name = var.resource_group_name
   route_table_name    = var.route_table_name
