@@ -6,7 +6,7 @@ locals {
   aad_audience                  = "41b23e61-6c1e-4545-b367-cd054e0ed4b4"
 }
 
-resource "azurerm_virtual_network_gateway" "vng" {
+resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
   name                = var.gateway_name
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -127,8 +127,8 @@ resource "azurerm_public_ip" "public_ip" {
 }
 
 locals {
-  diagnostics_name   = "Diagnostics"
-  target_resource_id = azurerm_virtual_network_gateway.vng.id
+  diagnostics_name   = "Gateway Diagnostics"
+  target_resource_id = azurerm_virtual_network_gateway.virtual_network_gateway.id
 }
 
 module "diagnostics" {
@@ -137,4 +137,8 @@ module "diagnostics" {
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id
   log_analytics_workspace_id = var.log_workspace_id
+
+  depends_on = [
+    azurerm_virtual_network_gateway.virtual_network_gateway
+  ]
 }

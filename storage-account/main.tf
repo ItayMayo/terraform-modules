@@ -89,7 +89,7 @@ module "storage-account-private-dns" {
 }
 
 locals {
-  diagnostics_name   = "Diagnostics"
+  diagnostics_name   = "Storage Account Diagnostics"
   target_resource_id = azurerm_storage_account.storage_account.id
 }
 
@@ -99,4 +99,8 @@ module "diagnostics" {
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id
   log_analytics_workspace_id = var.log_workspace_id
+
+  depends_on = [
+    azurerm_storage_account.storage_account
+  ]
 }

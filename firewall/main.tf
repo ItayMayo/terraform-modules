@@ -144,7 +144,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "firewall_policy_collec
 }
 
 locals {
-  diagnostics_name   = "Diagnostics"
+  diagnostics_name   = "Firewall Diagnostics"
   target_resource_id = azurerm_firewall.firewall.id
 }
 
@@ -154,4 +154,8 @@ module "diagnostics" {
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id
   log_analytics_workspace_id = var.log_workspace_id
+
+  depends_on = [
+    azurerm_firewall.firewall
+  ]
 }

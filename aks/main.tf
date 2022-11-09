@@ -107,7 +107,7 @@ module "aks-private-dns" {
 }
 
 locals {
-  diagnostics_name = "Diagnostics"
+  diagnostics_name = "AKS Diagnostics"
   cluster_id       = azurerm_kubernetes_cluster.cluster.id
 }
 
@@ -117,4 +117,8 @@ module "diagnostics" {
   name                       = local.diagnostics_name
   target_resource_id         = local.cluster_id
   log_analytics_workspace_id = var.log_workspace_id
+
+  depends_on = [
+    azurerm_kubernetes_cluster.cluster
+  ]
 }

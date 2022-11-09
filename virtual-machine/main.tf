@@ -1,5 +1,5 @@
 locals {
-  nic_name              = "work_grafana_nic"
+  nic_name              = "${var.vm_name}-nic"
   ip_configuration_name = "internal"
 }
 
@@ -65,7 +65,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 }
 
 locals {
-  diagnostics_name   = "Diagnostics"
+  diagnostics_name   = "Virtual Machine Diagnostics"
   target_resource_id = azurerm_linux_virtual_machine.vm.id
 }
 
@@ -75,4 +75,8 @@ module "diagnostics" {
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id
   log_analytics_workspace_id = var.log_workspace_id
+
+  depends_on = [
+    azurerm_linux_virtual_machine.vm
+  ]
 }
