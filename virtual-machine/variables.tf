@@ -106,3 +106,10 @@ variable "identity" {
 
   description = "Optional. Identity block assigned to the Virtual Machine. identity_ids field should only be set when using UserAssigned identities."
 }
+
+variable "disk_sizes_in_gb" {
+  default = null
+
+  type = list(number)
+  description = "Optional. List of sizes for additional disks to attach to this Virtual Machine."
+}
