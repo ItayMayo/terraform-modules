@@ -71,47 +71,80 @@ variable "firewall_policy_name" {
   description = "Name of the Firewall's policy."
 }
 
-variable "rule_collection_groups" {
+variable "network_collection_groups" {
   type = map(object({
     name     = string
     priority = number
 
-    rule_collections = object({
-      application_rule_collections = optional(list(object({
-        name     = string
-        priority = number
-        action   = string
+    network_rule_collections = list(object({
+      name     = string
+      priority = number
+      action   = string
 
-        rule = list(object({
-          name = string
-
-          protocols = list(object({
-            type = string
-            port = number
-          }))
-
-          source_addresses  = list(string)
-          destination_fqdns = list(string)
-        }))
-      })))
-
-      network_rule_collections = optional(list(object({
-        name     = string
-        priority = number
-        action   = string
-
-        rule = list(object({
-          name                  = string
-          protocols             = list(string)
-          source_addresses      = list(string)
-          destination_addresses = list(string)
-          destination_ports     = list(string)
-        }))
-      })))
-
-      nat_rule_collections = optional(list(any))
-    })
+      rule = list(object({
+        name                  = string
+        protocols             = list(string)
+        source_addresses      = list(string)
+        destination_addresses = list(string)
+        destination_ports     = list(string)
+      }))
+    }))
   }))
 
-  description = "Firewall Rule Collection Group containing the Firewall Rules."
+  default     = null
+  description = "Optional. A map of Policy Rule Collection Groups containing Network Rule Collections."
+}
+
+variable "application_collection_groups" {
+  type = map(object({
+    name     = string
+    priority = number
+
+    application_rule_collections = list(object({
+      name     = string
+      priority = number
+      action   = string
+
+      rule = list(object({
+        name = string
+
+        protocols = list(object({
+          type = string
+          port = number
+        }))
+
+        source_addresses  = list(string)
+        destination_fqdns = list(string)
+      }))
+    }))
+  }))
+
+  default     = null
+  description = "Optional. A map of Policy Rule Collection Groups containing Application Rule Collections."
+}
+
+variable "nat_collection_groups" {
+  type = map(object({
+    name     = string
+    priority = number
+
+    nat_rule_collections = list(object({
+      name     = string
+      priority = number
+      action   = string
+
+      rule = list(object({
+        name                = string
+        protocols           = list(string)
+        source_addresses    = list(string)
+        destination_address = string
+        destination_ports   = list(string)
+        translated_address  = string
+        translated_port     = string
+      }))
+    }))
+  }))
+
+  default     = null
+  description = "Optional. A map of Policy Rule Collection Groups containing NAT Rule Collections."
 }
