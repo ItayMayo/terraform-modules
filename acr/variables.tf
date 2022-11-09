@@ -1,51 +1,51 @@
 variable "location" {
   type        = string
-  description = "Location of the resource."
+  description = "Required. Location of the resource."
 }
 
 variable "resource_group_name" {
   type        = string
-  description = "Name of the parent Resource Group."
+  description = "Required. Name of the parent Resource Group."
 }
 
 variable "log_workspace_id" {
   default     = null
   type        = string
-  description = "ID of the log analytics workspace where logs should be sent to."
+  description = "Optional. ID of the log analytics workspace where logs should be sent to."
 }
 
 variable "tags" {
-  type        = map(string)
   default     = null
-  description = "Tags assigned to the resource."
+  type        = map(string)
+  description = "Optional. Tags assigned to the resource."
 }
 
 variable "acr_name" {
   type        = string
-  description = "Name of the Container Registry."
+  description = "Required. Name of the Container Registry."
 }
 
 variable "acr_sku" {
   type        = string
-  description = "Container Registry SKU name."
+  description = "Required. Container Registry SKU name."
 }
 
 variable "admin_enabled" {
   default     = false
   type        = bool
-  description = "Enable admin account."
+  description = "Optional. Enable admin account. Default: false."
 }
 
 variable "public_network_access_enabled" {
   default     = true
   type        = bool
-  description = "Enable ACR public network access."
+  description = "Optional. Enable ACR public network access. Default: true."
 }
 
 variable "data_endpoint_enabled" {
   default     = false
   type        = bool
-  description = "Enable ACR Data Endpoint."
+  description = "Required. Enable ACR Data Endpoint. Default: false."
 }
 
 variable "private_endpoint_subnet_id" {
@@ -69,5 +69,5 @@ variable "private_dns_zone_name" {
 variable "private_dns_vnets" {
   default     = null
   type        = map(string)
-  description = "Map of Virtual Networks to associate with the private dns. Required when create_private_dns is enabled."
+  description = "Optional. Map of Virtual Networks to associate with the private dns. Required when create_private_dns is enabled."
 }

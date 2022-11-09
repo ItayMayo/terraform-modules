@@ -1,40 +1,40 @@
 variable "location" {
   type        = string
-  description = "Location of the resource."
+  description = "Required. Location of the resource."
 }
 
 variable "resource_group_name" {
   type        = string
-  description = "Name of the parent Resource Group."
+  description = "Required. Name of the parent Resource Group."
 }
 
 variable "log_workspace_id" {
   default     = null
   type        = string
-  description = "ID of the log analytics workspace where logs should be sent to."
+  description = "Optional. ID of the log analytics workspace where logs should be sent to."
 }
 
 variable "tags" {
-  type        = map(string)
   default     = null
-  description = "Tags assigned to the resource."
+  type        = map(string)
+  description = "Optional. Tags assigned to the resource."
 }
 
 variable "firewall_name" {
   type        = string
-  description = "Name of the Firewall resource."
+  description = "Required. Name of the Firewall resource."
 }
 
 variable "firewall_sku_name" {
   default     = "AZFW_VNet"
   type        = string
-  description = "Name of the Firewall's SKU. Default: AZFW_VNet."
+  description = "Optional. Name of the Firewall's SKU. Default: AZFW_VNet."
 }
 
 variable "firewall_sku_tier" {
   default     = "Standard"
   type        = string
-  description = "Tier of the Firewall's SKU. Default: Standard"
+  description = "Optional. Tier of the Firewall's SKU. Default: Standard"
 }
 
 variable "firewall_dns_servers" {
@@ -51,24 +51,24 @@ variable "firewall_zones" {
 
 variable "subnet_id" {
   type        = string
-  description = "Firewall Subnet ID."
+  description = "Required. Firewall Subnet ID."
 }
 
 variable "management_subnet_id" {
   default     = null
   type        = string
-  description = "Firewall Management Subnet ID. Should only be set if enable_tunneling is true."
+  description = "Optional. Firewall Management Subnet ID. Should only be set if enable_tunneling is true."
 }
 
 variable "enable_tunneling" {
   default     = false
   type        = bool
-  description = "Enable Firewall tunneling. Default: false."
+  description = "Optional. Enable Firewall tunneling. Default: false."
 }
 
 variable "firewall_policy_name" {
   type        = string
-  description = "Name of the Firewall's policy."
+  description = "Required. Name of the Firewall's policy."
 }
 
 variable "network_collection_groups" {

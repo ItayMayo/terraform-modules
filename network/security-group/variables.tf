@@ -1,22 +1,22 @@
 variable "location" {
   type        = string
-  description = "Location of the resource."
+  description = "Required. Location of the resource."
 }
 
 variable "resource_group_name" {
   type        = string
-  description = "Name of the parent Resource Group."
+  description = "Required. Name of the parent Resource Group."
 }
 
 variable "tags" {
-  type        = map(string)
   default     = null
-  description = "Tags assigned to the resource."
+  type        = map(string)
+  description = "Optional. Tags assigned to the resource."
 }
 
 variable "nsg_name" {
   type        = string
-  description = "Security Group name."
+  description = "Required. Security Group name."
 }
 
 variable "nsg_security_rules" {
@@ -34,5 +34,5 @@ variable "nsg_security_rules" {
     destination_address_prefixes = optional(list(string))
   }))
 
-  description = "List of security rules to associate with this security group."
+  description = "Required. List of security rules to associate with this security group."
 }
