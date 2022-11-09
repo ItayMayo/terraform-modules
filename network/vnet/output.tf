@@ -1,14 +1,14 @@
-output "vnet_id" {
+output "id" {
   value       = azurerm_virtual_network.vnet.id
   description = "ID of the Virtual Network resource."
 }
 
-output "vnet_name" {
+output "name" {
   value       = azurerm_virtual_network.vnet.name
   description = "Name of the Virtual Network resource."
 }
 
-output "vnet_object" {
+output "object" {
   value       = azurerm_virtual_network.vnet
   description = "Object of the Virtual Network resource."
 }

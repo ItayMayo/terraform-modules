@@ -1,14 +1,14 @@
-output "acr_id" {
+output "id" {
   value       = azurerm_container_registry.acr.id
   description = "ACR resource id."
 }
 
-output "acr_name" {
+output "name" {
   value       = azurerm_container_registry.acr.name
   description = "ACR resource name."
 }
 
-output "acr_object" {
+output "object" {
   value       = azurerm_container_registry.acr
   description = "ACR resource object."
 }

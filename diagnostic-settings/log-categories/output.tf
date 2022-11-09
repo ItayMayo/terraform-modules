@@ -1,4 +1,4 @@
-output "diagnostic_categories_object" {
+output "object" {
   value = data.azurerm_monitor_diagnostic_categories.diagnostic_categories
 }
 
