@@ -1,12 +1,12 @@
-resource "azurerm_route_table" "udrt" {
-  name                          = var.table_name
+resource "azurerm_route_table" "route-table" {
+  name                          = var.route_table_name
   location                      = var.location
   resource_group_name           = var.resource_group_name
   disable_bgp_route_propagation = var.disable_bgp_route_propagation
   tags                          = var.tags
 
   dynamic "route" {
-    for_each = var.table_routes
+    for_each = var.route_table_routes
 
     content {
       name                   = route.value["name"]

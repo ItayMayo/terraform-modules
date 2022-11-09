@@ -14,7 +14,7 @@ variable "tags" {
   description = "Optional. Tags assigned to the resource."
 }
 
-variable "table_name" {
+variable "route_table_name" {
   type        = string
   description = "Required. Route table name."
 }
@@ -25,7 +25,7 @@ variable "disable_bgp_route_propagation" {
   description = "Optional. Disable route table bgp route propagation. Default: false."
 }
 
-variable "table_routes" {
+variable "route_table_routes" {
   type = list(object({
     name                   = string
     address_prefix         = string
