@@ -21,7 +21,8 @@ variable "zone_a_records" {
     records = list(string)
   }))
 
-  description = "Required. DNS Zone A records."
+  default     = null
+  description = "Optional. DNS Zone A records."
 }
 
 variable "vnet_ids" {

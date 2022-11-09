@@ -4,8 +4,12 @@ resource "azurerm_private_dns_zone" "private_dns" {
   tags                = var.tags
 }
 
+locals {
+  zone_a_records_provided = var.zone_a_records != null
+}
+
 resource "azurerm_private_dns_a_record" "a_record" {
-  for_each = var.zone_a_records
+  for_each = local.zone_a_records_provided ? var.zone_a_records : {}
 
   name                = each.value["name"]
   zone_name           = azurerm_private_dns_zone.private_dns.name
