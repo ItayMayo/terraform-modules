@@ -24,7 +24,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                = var.vm_name
   resource_group_name = var.resource_group_name
   location            = var.location
-  tags                = var.tags
 
   size                            = var.vm_size
   admin_username                  = var.vm_admin_username
@@ -62,6 +61,8 @@ resource "azurerm_linux_virtual_machine" "vm" {
       identity_ids = identity.value["identity_ids"]
     }
   }
+
+  tags = var.tags
 }
 
 locals {

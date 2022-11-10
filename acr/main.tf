@@ -23,7 +23,6 @@ resource "azurerm_private_endpoint" "endpoint" {
   location            = var.location
   resource_group_name = var.resource_group_name
   subnet_id           = each.value
-  tags                = var.tags
 
   private_service_connection {
     name                           = local.endpoint_name
@@ -31,6 +30,8 @@ resource "azurerm_private_endpoint" "endpoint" {
     is_manual_connection           = local.is_manual_connection
     subresource_names              = local.subresource_names
   }
+
+  tags = var.tags
 }
 
 data "azurerm_network_interface" "acr_nic" {
