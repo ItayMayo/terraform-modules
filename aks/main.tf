@@ -107,6 +107,24 @@ module "aks-private-dns" {
 }
 
 locals {
+  acr_ids_provided = var.aks_acr_ids != null
+}
+
+resource "azurerm_role_assignment" "aks-role-assignment" {
+  for_each = local.acr_ids_provided ? var.aks_acr_ids : {}
+
+  role_definition_name             = "AcrPull"
+  principal_id                     = azurerm_kubernetes_cluster.cluster.kubelet_identity[0].object_id
+  scope                            = each.value
+  skip_service_principal_aad_check = true
+
+  depends_on = [
+    azurerm_kubernetes_cluster.cluster
+  ]
+}
+
+
+locals {
   diagnostics_name = "aks-diagnostics"
   cluster_id       = azurerm_kubernetes_cluster.cluster.id
 }
