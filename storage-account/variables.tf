@@ -79,20 +79,8 @@ variable "private_endpoint_subnet_id" {
   description = "Optional. ID of the subnet in which to create a private endpoint for this Storage Account."
 }
 
-variable "create_private_dns" {
-  default     = false
-  type        = bool
-  description = "Optional. Create Private DNS associated with the Storage Account. Requires Private Endpoint. Default: false."
-}
-
 variable "private_dns_zone_name" {
-  default     = "privatelink.azurestorage.io"
-  type        = string
-  description = "Optional. Name of a Private DNS zone to be associated with the storage account. Default: privatelink.azurestorage.io."
-}
-
-variable "private_dns_vnets" {
   default     = null
-  type        = map(string)
-  description = "Optional. Map of Virtual Networks to associate with the private dns. Required when create_private_dns is enabled."
+  type        = string
+  description = "Optional. Name of a Private DNS zone to be associated with the storage account."
 }
