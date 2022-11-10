@@ -102,3 +102,9 @@ variable "private_dns_vnets" {
   type        = map(string)
   description = "Optional. Map of Virtual Networks to associate with the AKS. Required when create_private_dns is enabled."
 }
+
+variable "aks_acr_ids" {
+  default     = null
+  type        = map(string)
+  description = "Optional. Ids of Azure Container Registries to assign to this cluster."
+}
