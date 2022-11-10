@@ -12,7 +12,7 @@ resource "azurerm_network_interface" "network_interface" {
 }
 
 locals {
-  diagnostics_name   = "Network Interface Diagnostics"
+  diagnostics_name   = "nic-diagnostics"
   target_resource_id = azurerm_network_interface.network_interface.id
 }
 

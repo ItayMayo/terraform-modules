@@ -132,7 +132,7 @@ resource "azurerm_public_ip" "public_ip" {
 }
 
 locals {
-  diagnostics_name   = "Gateway Diagnostics"
+  diagnostics_name   = "gateway-diagnostics"
   target_resource_id = azurerm_virtual_network_gateway.virtual_network_gateway.id
 }
 

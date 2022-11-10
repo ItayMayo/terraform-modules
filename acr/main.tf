@@ -77,7 +77,7 @@ module "acr-private-dns" {
 }
 
 locals {
-  diagnostics_name   = "Azure Container Registry Diagnostics"
+  diagnostics_name   = "acr-diagnostics"
   target_resource_id = azurerm_container_registry.acr.id
 }
 
