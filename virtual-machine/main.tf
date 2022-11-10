@@ -1,5 +1,5 @@
 locals {
-  nic_name              = "work_grafana_nic"
+  nic_name              = "${var.vm_name}-nic"
   ip_configuration_name = "internal"
 }
 
@@ -65,7 +65,38 @@ resource "azurerm_linux_virtual_machine" "vm" {
 }
 
 locals {
-  diagnostics_name   = "Diagnostics"
+  create_additional_disks           = var.disk_sizes_in_gb != null
+  managed_disk_name_prefix          = "${var.vm_name}-managed-disk"
+  managed_disk_storage_account_type = "Standard_LRS"
+  managed_disk_create_option        = "Empty"
+}
+
+resource "azurerm_managed_disk" "managed_disk" {
+  for_each = local.create_additional_disks ? { for index, value in range(length(var.disk_sizes_in_gb)) : index => value } : null
+
+  name                 = "${local.managed_disk_name_prefix}-${each.key}"
+  resource_group_name  = var.resource_group_name
+  location             = var.location
+  storage_account_type = local.managed_disk_storage_account_type
+  create_option        = local.managed_disk_create_option
+  disk_size_gb         = each.value
+}
+
+locals {
+  vm_disk_caching = "ReadWrite"
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "vm_disk_attachment" {
+  for_each = local.create_additional_disks ? { for index in range(length(var.disk_sizes_in_gb)) : index => index } : null
+
+  managed_disk_id    = azurerm_managed_disk.managed_disk[each.value].id
+  virtual_machine_id = azurerm_linux_virtual_machine.vm.id
+  lun                = (each.value + 1) * 10
+  caching            = local.vm_disk_caching
+}
+
+locals {
+  diagnostics_name   = "virtual-machine-diagnostics"
   target_resource_id = azurerm_linux_virtual_machine.vm.id
 }
 
@@ -75,4 +106,8 @@ module "diagnostics" {
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id
   log_analytics_workspace_id = var.log_workspace_id
+
+  depends_on = [
+    azurerm_linux_virtual_machine.vm
+  ]
 }

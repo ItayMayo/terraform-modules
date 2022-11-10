@@ -1,14 +1,14 @@
-output "table_id" {
-  value       = azurerm_route_table.udrt.id
+output "id" {
+  value       = azurerm_route_table.route-table.id
   description = "Route table resource id."
 }
 
-output "table_name" {
-  value       = azurerm_route_table.udrt.name
+output "name" {
+  value       = azurerm_route_table.route-table.name
   description = "Route table resource name."
 }
 
-output "table_object" {
-  value       = azurerm_route_table.udrt
+output "object" {
+  value       = azurerm_route_table.route-table
   description = "Route table resource object."
 }

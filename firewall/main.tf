@@ -60,15 +60,53 @@ resource "azurerm_public_ip" "public_ip" {
   zones             = local.pip_zones
 }
 
-resource "azurerm_firewall_policy_rule_collection_group" "firewall_policy_collection_group" {
-  for_each = var.rule_collection_groups
+locals {
+  network_collection_groups_provided = var.network_collection_groups != null
+}
+
+resource "azurerm_firewall_policy_rule_collection_group" "firewall_policy_network_collection_group" {
+  for_each = local.network_collection_groups_provided ? var.network_collection_groups : {}
+
+  name               = each.value["name"]
+  firewall_policy_id = azurerm_firewall_policy.firewall_policy.id
+  priority           = each.value["priority"]
+
+  dynamic "network_rule_collection" {
+    for_each = each.value["network_rule_collections"] != null ? each.value["network_rule_collections"] : []
+
+    content {
+      name     = network_rule_collection.value["name"]
+      priority = network_rule_collection.value["priority"]
+      action   = network_rule_collection.value["action"]
+
+      dynamic "rule" {
+        for_each = network_rule_collection.value["rule"]
+
+        content {
+          name                  = rule.value["name"]
+          protocols             = rule.value["protocols"]
+          source_addresses      = rule.value["source_addresses"]
+          destination_addresses = rule.value["destination_addresses"]
+          destination_ports     = rule.value["destination_ports"]
+        }
+      }
+    }
+  }
+}
+
+locals {
+  application_collection_groups_provided = var.application_collection_groups != null
+}
+
+resource "azurerm_firewall_policy_rule_collection_group" "firewall_policy_application_collection_group" {
+  for_each = local.application_collection_groups_provided ? var.application_collection_groups : {}
 
   name               = each.value["name"]
   firewall_policy_id = azurerm_firewall_policy.firewall_policy.id
   priority           = each.value["priority"]
 
   dynamic "application_rule_collection" {
-    for_each = each.value.rule_collections["application_rule_collections"] != null ? each.value.rule_collections["application_rule_collections"] : []
+    for_each = each.value["application_rule_collections"] != null ? each.value["application_rule_collections"] : []
 
     content {
       name     = application_rule_collection.value["name"]
@@ -95,31 +133,21 @@ resource "azurerm_firewall_policy_rule_collection_group" "firewall_policy_collec
       }
     }
   }
+}
 
-  dynamic "network_rule_collection" {
-    for_each = each.value.rule_collections["network_rule_collections"] != null ? each.value.rule_collections["network_rule_collections"] : []
+locals {
+  nat_collection_groups_provided = var.nat_collection_groups != null
+}
 
-    content {
-      name     = network_rule_collection.value["name"]
-      priority = network_rule_collection.value["priority"]
-      action   = network_rule_collection.value["action"]
+resource "azurerm_firewall_policy_rule_collection_group" "firewall_policy_nat_collection_group" {
+  for_each = local.nat_collection_groups_provided ? var.nat_collection_groups : {}
 
-      dynamic "rule" {
-        for_each = network_rule_collection.value["rule"]
-
-        content {
-          name                  = rule.value["name"]
-          protocols             = rule.value["protocols"]
-          source_addresses      = rule.value["source_addresses"]
-          destination_addresses = rule.value["destination_addresses"]
-          destination_ports     = rule.value["destination_ports"]
-        }
-      }
-    }
-  }
+  name               = each.value["name"]
+  firewall_policy_id = azurerm_firewall_policy.firewall_policy.id
+  priority           = each.value["priority"]
 
   dynamic "nat_rule_collection" {
-    for_each = each.value.rule_collections["nat_rule_collections"] != null ? each.value.rule_collections["nat_rule_collections"] : []
+    for_each = each.value["nat_rule_collections"] != null ? each.value["nat_rule_collections"] : []
 
     content {
       name     = nat_rule_collection.value["name"]
@@ -143,8 +171,9 @@ resource "azurerm_firewall_policy_rule_collection_group" "firewall_policy_collec
   }
 }
 
+
 locals {
-  diagnostics_name   = "Diagnostics"
+  diagnostics_name   = "firewall-diagnostics"
   target_resource_id = azurerm_firewall.firewall.id
 }
 
@@ -154,4 +183,8 @@ module "diagnostics" {
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id
   log_analytics_workspace_id = var.log_workspace_id
+
+  depends_on = [
+    azurerm_firewall.firewall
+  ]
 }

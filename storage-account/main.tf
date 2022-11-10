@@ -61,27 +61,19 @@ resource "azurerm_private_endpoint" "endpoint" {
 }
 
 locals {
-  dns_record_ttl = 300
+  dns_record_ttl         = 300
+  create_dns_zone_record = var.private_dns_zone_name != null
+  endpoint_private_ip    = azurerm_private_endpoint.endpoint["storage_endpoint"].private_service_connection[0].private_ip_address
 }
 
-module "storage-account-private-dns" {
-  source = "github.com/ItayMayo/terraform-modules//private-dns"
+resource "azurerm_private_dns_a_record" "a_record" {
+  for_each = local.create_dns_zone_record ? var.private_dns_zone_name : {}
 
-  for_each = var.create_private_dns ? { storage_dns = "storage_dns" } : {}
-
+  name                = azurerm_storage_account.storage_account.name
+  zone_name           = var.private_dns_zone_name
   resource_group_name = var.resource_group_name
-
-  zone_name = var.private_dns_zone_name
-  vnet_ids  = var.private_dns_vnets
-  tags      = var.tags
-
-  zone_a_records = {
-    storage_account = {
-      name    = azurerm_storage_account.storage_account.name
-      ttl     = local.dns_record_ttl
-      records = [azurerm_private_endpoint.endpoint["storage_endpoint"].private_service_connection[0].private_ip_address]
-    }
-  }
+  ttl                 = local.dns_record_ttl
+  records             = [local.endpoint_private_ip]
 
   depends_on = [
     azurerm_private_endpoint.endpoint
@@ -89,7 +81,7 @@ module "storage-account-private-dns" {
 }
 
 locals {
-  diagnostics_name   = "Diagnostics"
+  diagnostics_name   = "storage-account-diagnostics"
   target_resource_id = azurerm_storage_account.storage_account.id
 }
 
@@ -99,4 +91,8 @@ module "diagnostics" {
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id
   log_analytics_workspace_id = var.log_workspace_id
+
+  depends_on = [
+    azurerm_storage_account.storage_account
+  ]
 }

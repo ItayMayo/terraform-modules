@@ -1,14 +1,14 @@
-output "workspace_id" {
+output "id" {
   value       = azurerm_log_analytics_workspace.analytics_workspace.id
   description = "Analytics Workspace resource id."
 }
 
-output "workspace_name" {
+output "name" {
   value       = azurerm_log_analytics_workspace.analytics_workspace.name
   description = "Analytics Workspace resource name."
 }
 
-output "workspace_object" {
+output "object" {
   value       = azurerm_log_analytics_workspace.analytics_workspace
   description = "Analytics Workspace resource object."
 }

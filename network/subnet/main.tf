@@ -22,7 +22,7 @@ locals {
 }
 
 resource "azurerm_subnet_route_table_association" "route_table_association" {
-  for_each = local.route_table_provided ? { udrt = var.route_table_id } : {}
+  for_each = local.route_table_provided ? { route_table = var.route_table_id } : {}
 
   subnet_id      = azurerm_subnet.subnet.id
   route_table_id = each.value

@@ -1,33 +1,33 @@
 variable "location" {
   type        = string
-  description = "Location of the resource."
+  description = "Required. Location of the resource."
 }
 
 variable "resource_group_name" {
   type        = string
-  description = "Name of the parent Resource Group."
+  description = "Required. Name of the parent Resource Group."
 }
 
 variable "log_workspace_id" {
   default     = null
   type        = string
-  description = "ID of the log analytics workspace where logs should be sent to."
+  description = "Optional. ID of the log analytics workspace where logs should be sent to."
 }
 
 variable "tags" {
-  type        = map(string)
   default     = null
-  description = "Tags assigned to the resource."
+  type        = map(string)
+  description = "Optional. Tags assigned to the resource."
 }
 
 variable "cluster_name" {
   type        = string
-  description = "Name of the AKS cluster."
+  description = "Required. Name of the AKS cluster."
 }
 
 variable "dns_prefix" {
   type        = string
-  description = "DNS prefix of the AKS cluster."
+  description = "Required. DNS prefix of the AKS cluster."
 }
 
 variable "private_cluster_enabled" {
@@ -61,7 +61,7 @@ variable "default_node_pool" {
     vnet_subnet_id        = optional(string)
   })
 
-  description = "Default node pool block. If auto scaling is enabled, min_count and max_count must be set. Otherwise, node_count must be set."
+  description = "Required. Default node pool block. If auto scaling is enabled, min_count and max_count must be set. Otherwise, node_count must be set."
 }
 
 variable "identity" {
@@ -100,5 +100,11 @@ variable "create_private_dns" {
 variable "private_dns_vnets" {
   default     = null
   type        = map(string)
-  description = "Map of Virtual Networks to associate with the AKS. Required when create_private_dns is enabled."
+  description = "Optional. Map of Virtual Networks to associate with the AKS. Required when create_private_dns is enabled."
+}
+
+variable "aks_acr_ids" {
+  default     = null
+  type        = map(string)
+  description = "Optional. Ids of Azure Container Registries to assign to this cluster."
 }

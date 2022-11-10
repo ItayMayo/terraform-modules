@@ -1,14 +1,14 @@
-output "cluster_id" {
+output "id" {
   value       = azurerm_kubernetes_cluster.cluster.id
   description = "AKS cluster resource id."
 }
 
-output "cluster_name" {
+output "name" {
   value       = azurerm_kubernetes_cluster.cluster.name
   description = "AKS cluster resource name."
 }
 
-output "cluster_object" {
+output "object" {
   value       = azurerm_kubernetes_cluster.cluster
   description = "AKS cluster resource object."
 }

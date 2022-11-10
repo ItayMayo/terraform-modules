@@ -33,22 +33,18 @@ resource "azurerm_private_endpoint" "endpoint" {
   }
 }
 
+data "azurerm_network_interface" "acr_nic" {
+  for_each = local.create_private_endpoint ? { acr = "acr" } : {}
+
+  name                = azurerm_private_endpoint.endpoint["acr_endpoint"].network_interface[0]["name"]
+  resource_group_name = var.resource_group_name
+}
+
 locals {
   data_record_name   = "${lower(azurerm_container_registry.acr.name)}.${var.location}.data"
   normal_record_name = lower(azurerm_container_registry.acr.name)
   dns_record_ttl     = 3600
-}
-
-module "acr-private-dns" {
-  source = "github.com/ItayMayo/terraform-modules//private-dns"
-
-  for_each = var.create_private_dns ? { acr_dns = "acr_dns" } : {}
-
-  resource_group_name = var.resource_group_name
-
-  zone_name = var.private_dns_zone_name
-  vnet_ids  = var.private_dns_vnets
-  tags      = var.tags
+  create_dns_zone    = var.private_dns_zone_name != null
 
   zone_a_records = {
     acr_data_record = {
@@ -61,8 +57,17 @@ module "acr-private-dns" {
       ttl     = local.dns_record_ttl
       records = [data.azurerm_network_interface.acr_nic["acr"].private_ip_addresses[1]]
     }
-
   }
+}
+
+resource "azurerm_private_dns_a_record" "a_record" {
+  for_each = local.create_dns_zone ? var.zone_a_records : {}
+
+  name                = each.value["name"]
+  zone_name           = var.private_dns_zone_name
+  resource_group_name = var.resource_group_name
+  ttl                 = each.value["ttl"]
+  records             = each.value["records"]
 
   depends_on = [
     azurerm_private_endpoint.endpoint
@@ -70,7 +75,7 @@ module "acr-private-dns" {
 }
 
 locals {
-  diagnostics_name   = "Diagnostics"
+  diagnostics_name   = "acr-diagnostics"
   target_resource_id = azurerm_container_registry.acr.id
 }
 
@@ -80,4 +85,8 @@ module "diagnostics" {
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id
   log_analytics_workspace_id = var.log_workspace_id
+
+  depends_on = [
+    azurerm_container_registry.acr
+  ]
 }

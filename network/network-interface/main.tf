@@ -1,4 +1,4 @@
-resource "azurerm_network_interface" "nic" {
+resource "azurerm_network_interface" "network_interface" {
   name                = var.name
   resource_group_name = var.resource_group_name
   location            = var.location
@@ -12,8 +12,8 @@ resource "azurerm_network_interface" "nic" {
 }
 
 locals {
-  diagnostics_name   = "Diagnostics"
-  target_resource_id = azurerm_network_interface.nic.id
+  diagnostics_name   = "nic-diagnostics"
+  target_resource_id = azurerm_network_interface.network_interface.id
 }
 
 module "diagnostics" {
@@ -22,4 +22,8 @@ module "diagnostics" {
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id
   log_analytics_workspace_id = var.log_workspace_id
+
+  depends_on = [
+    azurerm_network_interface.network_interface
+  ]
 }
