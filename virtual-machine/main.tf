@@ -66,7 +66,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 }
 
 locals {
-  create_additional_disks           = var.disk_sizes_in_gb != null
+  create_additional_disks           = contains(var.disk_sizes_in_gb, -1)
   managed_disk_name_prefix          = "${var.vm_name}-managed-disk"
   managed_disk_storage_account_type = "Standard_LRS"
   managed_disk_create_option        = "Empty"

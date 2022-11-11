@@ -108,7 +108,7 @@ variable "identity" {
 }
 
 variable "disk_sizes_in_gb" {
-  default = null
+  default = [-1]
 
   type = list(number)
   description = "Optional. List of sizes for additional disks to attach to this Virtual Machine."
