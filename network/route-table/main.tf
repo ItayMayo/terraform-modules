@@ -3,7 +3,6 @@ resource "azurerm_route_table" "route-table" {
   location                      = var.location
   resource_group_name           = var.resource_group_name
   disable_bgp_route_propagation = var.disable_bgp_route_propagation
-  tags                          = var.tags
 
   dynamic "route" {
     for_each = var.route_table_routes
@@ -15,4 +14,6 @@ resource "azurerm_route_table" "route-table" {
       next_hop_in_ip_address = route.value["next_hop_in_ip_address"]
     }
   }
+
+  tags = var.tags
 }

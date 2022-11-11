@@ -14,6 +14,6 @@ output "object" {
 }
 
 output "nic_object" {
-  value       = module.vm-network-interface.nic_object
+  value       = module.vm-network-interface.object
   description = "Network Interface resource object associated with the Virtual Machine."
 }

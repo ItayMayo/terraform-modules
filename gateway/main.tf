@@ -15,7 +15,6 @@ resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
   name                = var.gateway_name
   location            = var.location
   resource_group_name = var.resource_group_name
-  tags                = var.tags
 
   type     = var.gateway_type
   vpn_type = var.gateway_vpn_type
@@ -91,6 +90,8 @@ resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
         }
       }
     }
+
+    tags = var.tags
   }
 
   dynamic "bgp_settings" {
@@ -124,11 +125,11 @@ resource "azurerm_public_ip" "public_ip" {
   name                = "vng_pip_${each.value}"
   resource_group_name = var.resource_group_name
   location            = var.location
-  tags                = var.tags
 
   allocation_method = local.pip_allocation_method
   sku               = local.pip_sku
   zones             = local.pip_zones
+  tags              = var.tags
 }
 
 locals {

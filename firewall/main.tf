@@ -7,7 +7,6 @@ resource "azurerm_firewall" "firewall" {
   name                = var.firewall_name
   location            = var.location
   resource_group_name = var.resource_group_name
-  tags                = var.tags
 
   firewall_policy_id = azurerm_firewall_policy.firewall_policy.id
   dns_servers        = var.firewall_dns_servers
@@ -31,6 +30,8 @@ resource "azurerm_firewall" "firewall" {
       public_ip_address_id = management_ip_configuration.value["id"]
     }
   }
+
+  tags = var.tags
 }
 
 resource "azurerm_firewall_policy" "firewall_policy" {
@@ -53,11 +54,12 @@ resource "azurerm_public_ip" "public_ip" {
   name                = each.value
   resource_group_name = var.resource_group_name
   location            = var.location
-  tags                = var.tags
 
   allocation_method = local.pip_allocation_method
   sku               = local.pip_sku
   zones             = local.pip_zones
+
+  tags = var.tags
 }
 
 locals {

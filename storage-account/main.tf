@@ -6,7 +6,6 @@ resource "azurerm_storage_account" "storage_account" {
   name                = var.name
   resource_group_name = var.resource_group_name
   location            = var.location
-  tags                = var.tags
 
   account_tier             = var.account_tier
   account_kind             = var.account_kind
@@ -34,6 +33,8 @@ resource "azurerm_storage_account" "storage_account" {
       }
     }
   }
+
+  tags = var.tags
 }
 
 locals {
@@ -50,7 +51,6 @@ resource "azurerm_private_endpoint" "endpoint" {
   location            = var.location
   resource_group_name = var.resource_group_name
   subnet_id           = each.value
-  tags                = var.tags
 
   private_service_connection {
     name                           = local.endpoint_name
@@ -58,6 +58,8 @@ resource "azurerm_private_endpoint" "endpoint" {
     is_manual_connection           = local.is_manual_connection
     subresource_names              = local.subresource_names
   }
+
+  tags = var.tags
 }
 
 locals {
@@ -67,7 +69,7 @@ locals {
 }
 
 resource "azurerm_private_dns_a_record" "a_record" {
-  for_each = local.create_dns_zone_record ? var.private_dns_zone_name : {}
+  for_each = local.create_dns_zone_record ? { record = var.private_dns_zone_name } : {}
 
   name                = azurerm_storage_account.storage_account.name
   zone_name           = var.private_dns_zone_name

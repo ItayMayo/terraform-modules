@@ -24,14 +24,13 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                = var.vm_name
   resource_group_name = var.resource_group_name
   location            = var.location
-  tags                = var.tags
 
   size                            = var.vm_size
   admin_username                  = var.vm_admin_username
   admin_password                  = var.vm_admin_password
   disable_password_authentication = var.vm_disable_password_authentication
 
-  network_interface_ids = [module.vm-network-interface.nic_id]
+  network_interface_ids = [module.vm-network-interface.id]
 
   os_disk {
     caching              = var.os_disk_caching
@@ -62,6 +61,8 @@ resource "azurerm_linux_virtual_machine" "vm" {
       identity_ids = identity.value["identity_ids"]
     }
   }
+
+  tags = var.tags
 }
 
 locals {

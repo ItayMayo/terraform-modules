@@ -23,7 +23,6 @@ resource "azurerm_private_endpoint" "endpoint" {
   location            = var.location
   resource_group_name = var.resource_group_name
   subnet_id           = each.value
-  tags                = var.tags
 
   private_service_connection {
     name                           = local.endpoint_name
@@ -31,6 +30,8 @@ resource "azurerm_private_endpoint" "endpoint" {
     is_manual_connection           = local.is_manual_connection
     subresource_names              = local.subresource_names
   }
+
+  tags = var.tags
 }
 
 data "azurerm_network_interface" "acr_nic" {
@@ -61,7 +62,7 @@ locals {
 }
 
 resource "azurerm_private_dns_a_record" "a_record" {
-  for_each = local.create_dns_zone ? var.zone_a_records : {}
+  for_each = local.create_dns_zone ? { record = local.zone_a_records } : {}
 
   name                = each.value["name"]
   zone_name           = var.private_dns_zone_name

@@ -2,7 +2,6 @@ resource "azurerm_virtual_network" "vnet" {
   name                = var.vnet_name
   resource_group_name = var.resource_group_name
   location            = var.location
-  tags                = var.tags
 
   address_space = var.address_space
   dns_servers   = var.dns_servers
@@ -19,6 +18,8 @@ module "subnets" {
   address_prefixes     = each.value["address_prefixes"]
   nsg_id               = each.value["nsg_id"]
   route_table_id       = each.value["route_table_id"]
+
+  tags = var.tags
 }
 
 locals {

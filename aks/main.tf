@@ -6,7 +6,6 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   name                = var.cluster_name
   location            = var.location
   resource_group_name = var.resource_group_name
-  tags                = var.tags
 
   dns_prefix                    = var.dns_prefix
   private_cluster_enabled       = var.private_cluster_enabled
@@ -50,6 +49,8 @@ resource "azurerm_kubernetes_cluster" "cluster" {
       network_policy = network_profile.value["network_policy"]
     }
   }
+
+  tags = var.tags
 }
 
 locals {
@@ -66,7 +67,6 @@ resource "azurerm_private_endpoint" "endpoint" {
   location            = var.location
   resource_group_name = var.resource_group_name
   subnet_id           = each.value
-  tags                = var.tags
 
   private_service_connection {
     name                           = local.endpoint_name
@@ -74,6 +74,8 @@ resource "azurerm_private_endpoint" "endpoint" {
     is_manual_connection           = local.is_manual_connection
     subresource_names              = local.subresource_names
   }
+
+  tags = var.tags
 }
 
 locals {
@@ -91,7 +93,6 @@ module "aks-private-dns" {
 
   zone_name = local.aks_dns_zone_name
   vnet_ids  = var.private_dns_vnets
-  tags      = var.tags
 
   zone_a_records = {
     storage_account = {
@@ -100,6 +101,8 @@ module "aks-private-dns" {
       records = [azurerm_private_endpoint.endpoint["aks_endpoint"].private_service_connection[0].private_ip_address]
     }
   }
+
+  tags = var.tags
 
   depends_on = [
     azurerm_private_endpoint.endpoint
