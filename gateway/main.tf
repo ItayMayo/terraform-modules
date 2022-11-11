@@ -90,8 +90,6 @@ resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
         }
       }
     }
-
-    tags = var.tags
   }
 
   dynamic "bgp_settings" {
@@ -107,6 +105,8 @@ resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
       }
     }
   }
+
+  tags = var.tags
 }
 
 locals {
