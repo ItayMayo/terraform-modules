@@ -69,7 +69,7 @@ locals {
 }
 
 resource "azurerm_private_dns_a_record" "a_record" {
-  for_each = local.create_dns_zone_record ? var.private_dns_zone_name : {}
+  for_each = local.create_dns_zone_record ? { record = var.private_dns_zone_name } : {}
 
   name                = azurerm_storage_account.storage_account.name
   zone_name           = var.private_dns_zone_name

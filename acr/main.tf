@@ -62,7 +62,7 @@ locals {
 }
 
 resource "azurerm_private_dns_a_record" "a_record" {
-  for_each = local.create_dns_zone ? var.zone_a_records : {}
+  for_each = local.create_dns_zone ? { record = local.zone_a_records } : {}
 
   name                = each.value["name"]
   zone_name           = var.private_dns_zone_name
