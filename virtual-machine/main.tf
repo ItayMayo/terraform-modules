@@ -66,14 +66,14 @@ resource "azurerm_linux_virtual_machine" "vm" {
 }
 
 locals {
-  create_additional_disks           = contains(var.disk_sizes_in_gb, -1)
+  create_additional_disks           = !contains(var.disk_sizes_in_gb, -1)
   managed_disk_name_prefix          = "${var.vm_name}-managed-disk"
   managed_disk_storage_account_type = "Standard_LRS"
   managed_disk_create_option        = "Empty"
 }
 
 resource "azurerm_managed_disk" "managed_disk" {
-  for_each = local.create_additional_disks ? { for index, value in range(length(var.disk_sizes_in_gb)) : index => value } : null
+  for_each = local.create_additional_disks ? { for index, value in range(length(var.disk_sizes_in_gb)) : index => value } : {}
 
   name                 = "${local.managed_disk_name_prefix}-${each.key}"
   resource_group_name  = var.resource_group_name
@@ -88,7 +88,7 @@ locals {
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "vm_disk_attachment" {
-  for_each = local.create_additional_disks ? { for index in range(length(var.disk_sizes_in_gb)) : index => index } : null
+  for_each = local.create_additional_disks ? { for index in range(length(var.disk_sizes_in_gb)) : index => index } : {}
 
   managed_disk_id    = azurerm_managed_disk.managed_disk[each.value].id
   virtual_machine_id = azurerm_linux_virtual_machine.vm.id
