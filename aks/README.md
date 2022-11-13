@@ -1,8 +1,5 @@
-# AKS
-
-## Requirements
-
-No requirements.
+<!-- BEGIN_TF_DOCS -->
+# AKS Module
 
 ## Providers
 
@@ -16,14 +13,6 @@ No requirements.
 |------|--------|---------|
 | <a name="module_aks-private-dns"></a> [aks-private-dns](#module\_aks-private-dns) | github.com/ItayMayo/terraform-modules//private-dns | n/a |
 | <a name="module_diagnostics"></a> [diagnostics](#module\_diagnostics) | github.com/ItayMayo/terraform-modules//diagnostic-settings | n/a |
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_kubernetes_cluster.cluster](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster) | resource |
-| [azurerm_private_endpoint.endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_role_assignment.aks-role-assignment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 
 ## Inputs
 
@@ -58,3 +47,44 @@ No requirements.
 | <a name="output_object"></a> [object](#output\_object) | AKS cluster resource object. |
 | <a name="output_private_dns_object"></a> [private\_dns\_object](#output\_private\_dns\_object) | AKS Private DNS resource object. |
 | <a name="output_private_dns_record_name"></a> [private\_dns\_record\_name](#output\_private\_dns\_record\_name) | Private DNS A record name. |
+
+# Usage
+
+```
+module "aks" {
+  source = "github.com/ItayMayo/terraform-modules//aks"
+
+  # Generic Resource Initiation
+  resource_group_name = "my-rg"
+  location            = "westeurope"
+
+  #Optional. Log Workspace Analytics ID
+  log_workspace_id    = "workspace-id"
+
+  #Cluster Initiation
+  cluster_name = "my-cluster"
+  dns_prefix   = "my-cluster"
+
+  # Default node pool config.
+  default_node_pool = {
+    name    = "default-pool"
+
+    enable_node_public_ip = false
+    enable_auto_scaling   = false
+
+    node_count = 2
+  }
+
+  # Cluster Network Plugin
+  network_profile = {
+    network_plugin = local.aks_network_plugin
+  }
+
+  private_endpoint_subnet_id = "private_endpoint_subnet_id"
+  aks_acr_ids                = ["my", "acr", "id"]
+
+  tags = ["my", "tags"]
+}
+
+```
+<!-- END_TF_DOCS -->

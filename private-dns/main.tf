@@ -1,3 +1,7 @@
+/**
+* # Private DNS Module
+*/
+
 resource "azurerm_private_dns_zone" "private_dns" {
   name                = var.zone_name
   resource_group_name = var.resource_group_name

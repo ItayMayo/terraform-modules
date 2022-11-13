@@ -1,9 +1,5 @@
-# Virtual Network
-
 <!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
+# Virtual Network Module
 
 ## Providers
 
@@ -17,12 +13,6 @@ No requirements.
 |------|--------|---------|
 | <a name="module_diagnostics"></a> [diagnostics](#module\_diagnostics) | github.com/ItayMayo/terraform-modules//diagnostic-settings | n/a |
 | <a name="module_subnets"></a> [subnets](#module\_subnets) | github.com/ItayMayo/terraform-modules//network/subnet | n/a |
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network) | resource |
 
 ## Inputs
 
@@ -46,4 +36,21 @@ No requirements.
 | <a name="output_object"></a> [object](#output\_object) | Object of the Virtual Network resource. |
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | List of subnet resource ids associated with the Virtual Network resource. |
 | <a name="output_subnet_objects"></a> [subnet\_objects](#output\_subnet\_objects) | Objects of the Subnet resources associated with the Virtual Network resource. |
+
+# Usage
+
+```
+module "hub-vnet" {
+  source = "github.com/ItayMayo/terraform-modules//network/vnet"
+
+  # Generic Resource Configuration
+  resource_group_name = "my-rg"
+  location            = "westeurope"
+
+  # Virtual Network Configuration
+  vnet_name     = "my-vnet"
+  address_space = ["10.0.0.0/16"]
+  subnets       = subnets
+}
+```
 <!-- END_TF_DOCS -->

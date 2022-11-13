@@ -1,3 +1,7 @@
+/**
+* # Virtual Network Peering
+*/
+
 locals {
   origin_target_suffix = "origin_target"
   target_origin_suffix = "target_origin"

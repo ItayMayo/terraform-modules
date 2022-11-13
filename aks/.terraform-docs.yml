@@ -1,0 +1,15 @@
+formatter: ""
+header-from: main.tf
+footer-from: ./usages/example.md
+content: |-
+  {{ .Header }}
+
+  {{ .Providers }}
+
+  {{ .Modules }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Footer }}

@@ -1,9 +1,5 @@
-# Storage Account
-
 <!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
+# Storage Account Module
 
 ## Providers
 
@@ -16,14 +12,6 @@ No requirements.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_diagnostics"></a> [diagnostics](#module\_diagnostics) | github.com/ItayMayo/terraform-modules//diagnostic-settings | n/a |
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_private_dns_a_record.a_record](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
-| [azurerm_private_endpoint.endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_storage_account.storage_account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account) | resource |
 
 ## Inputs
 
@@ -51,4 +39,19 @@ No requirements.
 | <a name="output_id"></a> [id](#output\_id) | Storage Account resource id. |
 | <a name="output_name"></a> [name](#output\_name) | Storage Accuont resource name. |
 | <a name="output_object"></a> [object](#output\_object) | Storage Accuont resource object. |
+
+# Usage
+
+```
+module "storage-account" {
+  source = "github.com/ItayMayo/terraform-modules//storage-account"
+
+  # Generic Resource Configuration
+  resource_group_name = "my-rg"
+  location            = "westeurope"
+
+  name                       = "mystorageaccount"
+  private_endpoint_subnet_id = "id"
+}
+```
 <!-- END_TF_DOCS -->

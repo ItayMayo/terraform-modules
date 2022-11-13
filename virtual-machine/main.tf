@@ -1,3 +1,7 @@
+/**
+* # Virtual Machine Module
+*/
+
 locals {
   nic_name              = "${var.vm_name}-nic"
   ip_configuration_name = "internal"

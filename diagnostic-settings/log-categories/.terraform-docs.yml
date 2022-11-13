@@ -1,0 +1,15 @@
+formatter: ""
+header-from: log_categories_data.tf
+footer-from: ./usages/example.md
+content: |-
+  {{ .Header }}
+
+  {{ .Providers }}
+
+  {{ .Modules }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Footer }}

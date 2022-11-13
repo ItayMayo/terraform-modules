@@ -1,9 +1,5 @@
-# Private DNS
-
 <!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
+# Private DNS Module
 
 ## Providers
 
@@ -14,14 +10,6 @@ No requirements.
 ## Modules
 
 No modules.
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_private_dns_a_record.a_record](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
-| [azurerm_private_dns_zone.private_dns](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
-| [azurerm_private_dns_zone_virtual_network_link.dns_vnet_link](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
 
 ## Inputs
 
@@ -40,4 +28,18 @@ No modules.
 | <a name="output_id"></a> [id](#output\_id) | Private DNS resource id. |
 | <a name="output_name"></a> [name](#output\_name) | Private DNS resource name. |
 | <a name="output_object"></a> [object](#output\_object) | Private DNS resource object. |
+
+# Usage
+
+```
+module "private-dns" {
+  source = "github.com/ItayMayo/terraform-modules//private-dns"
+
+  resource_group_name = "my-rg"
+
+  zone_name = "zone.name"
+  vnet_ids  = ["ids"]
+}
+
+```
 <!-- END_TF_DOCS -->

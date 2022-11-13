@@ -1,8 +1,5 @@
-# AKS
-
-## Requirements
-
-No requirements.
+<!-- BEGIN_TF_DOCS -->
+# Log Analytics Workspace Module
 
 ## Providers
 
@@ -13,12 +10,6 @@ No requirements.
 ## Modules
 
 No modules.
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_log_analytics_workspace.analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
 
 ## Inputs
 
@@ -41,3 +32,19 @@ No modules.
 | <a name="output_id"></a> [id](#output\_id) | Analytics Workspace resource id. |
 | <a name="output_name"></a> [name](#output\_name) | Analytics Workspace resource name. |
 | <a name="output_object"></a> [object](#output\_object) | Analytics Workspace resource object. |
+
+# Usage
+
+```
+module "log-analytics-workspace" {
+  source = "github.com/ItayMayo/terraform-modules//analytics-workspace"
+
+  # Generic Resource Initiation
+  resource_group_name = "my-rg"
+  location            = "westeurope"
+
+  # Resource Configuration
+  name = "My Workspace"
+}
+```
+<!-- END_TF_DOCS -->

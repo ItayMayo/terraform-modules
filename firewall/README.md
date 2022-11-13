@@ -1,9 +1,5 @@
-# Firewall
-
 <!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
+# Firewall Module
 
 ## Providers
 
@@ -16,17 +12,6 @@ No requirements.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_diagnostics"></a> [diagnostics](#module\_diagnostics) | github.com/ItayMayo/terraform-modules//diagnostic-settings | n/a |
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_firewall.firewall](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/firewall) | resource |
-| [azurerm_firewall_policy.firewall_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/firewall_policy) | resource |
-| [azurerm_firewall_policy_rule_collection_group.firewall_policy_application_collection_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/firewall_policy_rule_collection_group) | resource |
-| [azurerm_firewall_policy_rule_collection_group.firewall_policy_nat_collection_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/firewall_policy_rule_collection_group) | resource |
-| [azurerm_firewall_policy_rule_collection_group.firewall_policy_network_collection_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/firewall_policy_rule_collection_group) | resource |
-| [azurerm_public_ip.public_ip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 
 ## Inputs
 
@@ -56,4 +41,29 @@ No requirements.
 | <a name="output_id"></a> [id](#output\_id) | ID of the Firewall resource. |
 | <a name="output_name"></a> [name](#output\_name) | Name of the Firewall resource. |
 | <a name="output_object"></a> [object](#output\_object) | Object of the Firewall resource. |
+
+# Usage
+
+```
+module "firewall" {
+  source = "github.com/ItayMayo/terraform-modules//firewall"
+
+  # Generic Resource Configuration
+  resource_group_name = "my-rg"
+  location            = "westeurope"
+  log_workspace_id    = "workspace.id"
+
+  # Firewall Configuration
+  firewall_name        = "my-firewall"
+  enable_tunneling     = true
+  subnet_id            = AzureFirewallSubnet
+  management_subnet_id = AzureFirewallManagementSubnet
+
+  firewall_policy_name          = "my-policy"
+  network_collection_groups     = groups
+
+  tags = ["my", "tags"]
+}
+
+```
 <!-- END_TF_DOCS -->

@@ -1,9 +1,5 @@
-# Security Group
-
 <!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
+# Network Security Group Module
 
 ## Providers
 
@@ -14,12 +10,6 @@ No requirements.
 ## Modules
 
 No modules.
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_network_security_group.nsg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
 
 ## Inputs
 
@@ -38,4 +28,20 @@ No modules.
 | <a name="output_id"></a> [id](#output\_id) | ID of the Security Group resource. |
 | <a name="output_name"></a> [name](#output\_name) | Name of the Security Group resource. |
 | <a name="output_object"></a> [object](#output\_object) | Object of the Security Group resource. |
+
+# Usage
+
+```
+module "security-group" {
+  source = "github.com/ItayMayo/terraform-modules//network/security-group"
+
+  # Generic Resource Configuration
+  location            = "westeurope"
+  resource_group_name = "my-rg"
+
+  # Security Group Configuration
+  nsg_name           = "my-nsg"
+  nsg_security_rules = rules
+}
+```
 <!-- END_TF_DOCS -->

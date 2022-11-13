@@ -1,9 +1,5 @@
-# Virtual Machine
-
 <!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
+# Virtual Machine Module
 
 ## Providers
 
@@ -17,14 +13,6 @@ No requirements.
 |------|--------|---------|
 | <a name="module_diagnostics"></a> [diagnostics](#module\_diagnostics) | github.com/ItayMayo/terraform-modules//diagnostic-settings | n/a |
 | <a name="module_vm-network-interface"></a> [vm-network-interface](#module\_vm-network-interface) | github.com/ItayMayo/terraform-modules//Network/network-interface | n/a |
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_linux_virtual_machine.vm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine) | resource |
-| [azurerm_managed_disk.managed_disk](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_disk) | resource |
-| [azurerm_virtual_machine_data_disk_attachment.vm_disk_attachment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_data_disk_attachment) | resource |
 
 ## Inputs
 
@@ -55,4 +43,22 @@ No requirements.
 | <a name="output_name"></a> [name](#output\_name) | Virtual Machine resource name. |
 | <a name="output_nic_object"></a> [nic\_object](#output\_nic\_object) | Network Interface resource object associated with the Virtual Machine. |
 | <a name="output_object"></a> [object](#output\_object) | Virtual Machine resource object. |
+
+# Usage
+
+```
+module "vm" {
+  source = "github.com/ItayMayo/terraform-modules//virtual-machine"
+
+  # Generic Resource Configuration
+  resource_group_name = "my-rg"
+  location            = "westeurope"
+  # Virtual Machine Configuration
+  vm_name                            = "my-vm"
+  vm_admin_username                  = "empire"
+  vm_admin_password                  = "empire"
+  vm_disable_password_authentication = true
+  nic_subnet_id                      = "id"
+}
+```
 <!-- END_TF_DOCS -->

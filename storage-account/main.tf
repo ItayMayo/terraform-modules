@@ -1,3 +1,7 @@
+/**
+* # Storage Account Module
+*/
+
 locals {
   network_rules_provided = var.network_rules != null
 }

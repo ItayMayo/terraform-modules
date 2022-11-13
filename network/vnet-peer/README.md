@@ -1,9 +1,5 @@
-# Virtual Network Peering
-
 <!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
+# Virtual Network Peering
 
 ## Providers
 
@@ -14,13 +10,6 @@ No requirements.
 ## Modules
 
 No modules.
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_virtual_network_peering.peering_1_2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network_peering) | resource |
-| [azurerm_virtual_network_peering.peering_2_1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network_peering) | resource |
 
 ## Inputs
 
@@ -47,4 +36,22 @@ No modules.
 | <a name="output_target_peering_id"></a> [target\_peering\_id](#output\_target\_peering\_id) | ID of the target's peering resource. |
 | <a name="output_target_peering_name"></a> [target\_peering\_name](#output\_target\_peering\_name) | Name of the target's peering resource. |
 | <a name="output_target_peering_object"></a> [target\_peering\_object](#output\_target\_peering\_object) | Object of the target's peering resource. |
+
+# Usage
+
+```
+module "vnet-peering" {
+  source = "github.com/ItayMayo/terraform-modules//network/vnet-peer"
+
+  name = "my-peering"
+
+  origin_resource_group_name = "my-rg1"
+  target_resource_group_name = "my-rg2"
+
+  origin_vnet_name = "origin_vnet_name"
+  target_vnet_name = "target_vnet_name"
+  origin_vnet_id   = "origin_vnet_id"
+  target_vnet_id   = "target_vnet_id"
+}
+```
 <!-- END_TF_DOCS -->
