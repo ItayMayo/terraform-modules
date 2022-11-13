@@ -21,7 +21,7 @@
 | <a name="input_aks_acr_ids"></a> [aks\_acr\_ids](#input\_aks\_acr\_ids) | (Optional) Ids of Azure Container Registries to assign to this cluster. | `map(string)` | `null` | no |
 | <a name="input_aks_dns_prefix"></a> [aks\_dns\_prefix](#input\_aks\_dns\_prefix) | (Required) DNS prefix of the AKS cluster. | `string` | n/a | yes |
 | <a name="input_aks_private_dns_zone_id"></a> [aks\_private\_dns\_zone\_id](#input\_aks\_private\_dns\_zone\_id) | (Optional) ID of the private dns zone associated with the cluster. | `string` | `null` | no |
-| <a name="input_default_node_pool"></a> [default\_node\_pool](#input\_default\_node\_pool) | (Required) Default node pool block. If auto scaling is enabled, min\_count and max\_count must be set. Otherwise, node\_count must be set. | <pre>object({<br>    name                  = string<br>    vm_size               = string<br>    enable_auto_scaling   = bool<br>    node_count            = optional(number)<br>    os_sku                = optional(string)<br>    max_count             = optional(number)<br>    min_count             = optional(number)<br>    vnet_subnet_id        = optional(string)<br>  })</pre> | n/a | yes |
+| <a name="input_default_node_pool"></a> [default\_node\_pool](#input\_default\_node\_pool) | (Required) Default node pool block. If auto scaling is enabled, min\_count and max\_count must be set. Otherwise, node\_count must be set. | <pre>object({<br>    name                  = string<br>    vm_size               = string<br>    enable_auto_scaling   = optional(bool)<br>    node_count            = optional(number)<br>    os_sku                = optional(string)<br>    max_count             = optional(number)<br>    min_count             = optional(number)<br>    vnet_subnet_id        = optional(string)<br>  })</pre> | n/a | yes |
 | <a name="input_identity"></a> [identity](#input\_identity) | (Optional) AKS Identity block. | <pre>object({<br>    type         = string<br>    identity_ids = optional(list(string))<br>  })</pre> | `null` | no |
 | <a name="input_location"></a> [location](#input\_location) | (Required) Location of the resource. | `string` | n/a | yes |
 | <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Optional) ID of the log analytics workspace where logs should be sent to. | `string` | `null` | no |
@@ -37,12 +37,10 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_client_certificate"></a> [client\_certificate](#output\_client\_certificate) | AKS cluster resource client certificate. |
-| <a name="output_endpoint_object"></a> [endpoint\_object](#output\_endpoint\_object) | AKS Private Endpoint resource object. |
 | <a name="output_id"></a> [id](#output\_id) | AKS cluster resource id. |
 | <a name="output_kube_config"></a> [kube\_config](#output\_kube\_config) | AKS cluster resource kube config. |
 | <a name="output_name"></a> [name](#output\_name) | AKS cluster resource name. |
 | <a name="output_object"></a> [object](#output\_object) | AKS cluster resource object. |
-| <a name="output_private_dns_object"></a> [private\_dns\_object](#output\_private\_dns\_object) | AKS Private DNS resource object. |
 | <a name="output_private_dns_record_name"></a> [private\_dns\_record\_name](#output\_private\_dns\_record\_name) | Private DNS A record name. |
 
 # Usage
