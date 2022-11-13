@@ -12,17 +12,17 @@ data "azurerm_client_config" "current" {}
 
 
 resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
-  name                = var.gateway_name
+  name                = var.name
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  type     = var.gateway_type
-  vpn_type = var.gateway_vpn_type
+  type     = var.type
+  vpn_type = var.vpn_type
 
   active_active = var.enable_active_active
   enable_bgp    = var.enable_bgp
-  sku           = var.gateway_sku
-  generation    = var.gateway_sku_generation
+  sku           = var.sku
+  generation    = var.sku_generation
 
   dynamic "ip_configuration" {
     for_each = [try(azurerm_public_ip.public_ip["0"], [])]
