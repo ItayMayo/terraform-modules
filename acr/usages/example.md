@@ -8,7 +8,7 @@ module "acr" {
   resource_group_name = "my-rg"
   location            = "westeurope"
 
-  #Optional. Log Workspace Analytics ID
+  #(Optional) Log Workspace Analytics ID
   log_workspace_id    = "workspace-id"
 
   # ACR Configuration

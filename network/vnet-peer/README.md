@@ -15,16 +15,16 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_allow_forwarded_traffic"></a> [allow\_forwarded\_traffic](#input\_allow\_forwarded\_traffic) | Optional. Allow forwarded traffic from peered network. Default: true. | `bool` | `true` | no |
-| <a name="input_allow_origin_gateway_transit"></a> [allow\_origin\_gateway\_transit](#input\_allow\_origin\_gateway\_transit) | Optional. Allow gateway transit of peered network's traffic. If true, allow\_target\_gateway\_transit must be set to false and vice versa. Default: true. | `bool` | `true` | no |
-| <a name="input_allow_target_gateway_transit"></a> [allow\_target\_gateway\_transit](#input\_allow\_target\_gateway\_transit) | Optional. Allow gateway transit of origin network's traffic. If true, allow\_origin\_gateway\_transit must be set to false and vice versa. Default: false. | `bool` | `false` | no |
-| <a name="input_name"></a> [name](#input\_name) | Required. Name of the peering connection. | `string` | n/a | yes |
-| <a name="input_origin_resource_group_name"></a> [origin\_resource\_group\_name](#input\_origin\_resource\_group\_name) | Required. Name of the origin vnet's resource group. | `string` | n/a | yes |
-| <a name="input_origin_vnet_id"></a> [origin\_vnet\_id](#input\_origin\_vnet\_id) | Required. ID of the target vnet. | `string` | n/a | yes |
-| <a name="input_origin_vnet_name"></a> [origin\_vnet\_name](#input\_origin\_vnet\_name) | Required. Name of the origin Virtual Network. | `string` | n/a | yes |
-| <a name="input_target_resource_group_name"></a> [target\_resource\_group\_name](#input\_target\_resource\_group\_name) | Required. Name of the target vnet's resource group. | `string` | n/a | yes |
-| <a name="input_target_vnet_id"></a> [target\_vnet\_id](#input\_target\_vnet\_id) | Required. ID of the target vnet. | `string` | n/a | yes |
-| <a name="input_target_vnet_name"></a> [target\_vnet\_name](#input\_target\_vnet\_name) | Required. Name of the target Virtual Network. | `string` | n/a | yes |
+| <a name="input_allow_forwarded_traffic"></a> [allow\_forwarded\_traffic](#input\_allow\_forwarded\_traffic) | (Optional) Allow forwarded traffic from peered network. Default: true. | `bool` | `true` | no |
+| <a name="input_allow_origin_gateway_transit"></a> [allow\_origin\_gateway\_transit](#input\_allow\_origin\_gateway\_transit) | (Optional) Allow gateway transit of peered network's traffic. If true, allow\_target\_gateway\_transit must be set to false and vice versa. Default: true. | `bool` | `true` | no |
+| <a name="input_allow_target_gateway_transit"></a> [allow\_target\_gateway\_transit](#input\_allow\_target\_gateway\_transit) | (Optional) Allow gateway transit of origin network's traffic. If true, allow\_origin\_gateway\_transit must be set to false and vice versa. Default: false. | `bool` | `false` | no |
+| <a name="input_name"></a> [name](#input\_name) | (Required) Name of the peering connection. | `string` | n/a | yes |
+| <a name="input_origin_resource_group_name"></a> [origin\_resource\_group\_name](#input\_origin\_resource\_group\_name) | (Required) Name of the origin vnet's resource group. | `string` | n/a | yes |
+| <a name="input_origin_vnet_id"></a> [origin\_vnet\_id](#input\_origin\_vnet\_id) | (Required) ID of the target vnet. | `string` | n/a | yes |
+| <a name="input_origin_vnet_name"></a> [origin\_vnet\_name](#input\_origin\_vnet\_name) | (Required) Name of the origin Virtual Network. | `string` | n/a | yes |
+| <a name="input_target_resource_group_name"></a> [target\_resource\_group\_name](#input\_target\_resource\_group\_name) | (Required) Name of the target vnet's resource group. | `string` | n/a | yes |
+| <a name="input_target_vnet_id"></a> [target\_vnet\_id](#input\_target\_vnet\_id) | (Required) ID of the target vnet. | `string` | n/a | yes |
+| <a name="input_target_vnet_name"></a> [target\_vnet\_name](#input\_target\_vnet\_name) | (Required) Name of the target Virtual Network. | `string` | n/a | yes |
 
 ## Outputs
 

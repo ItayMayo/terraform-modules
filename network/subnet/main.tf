@@ -19,6 +19,10 @@ resource "azurerm_subnet_network_security_group_association" "nsg_association" {
 
   subnet_id                 = azurerm_subnet.subnet.id
   network_security_group_id = each.value
+
+  depends_on = [
+    azurerm_subnet.subnet
+  ]
 }
 
 locals {
@@ -30,4 +34,8 @@ resource "azurerm_subnet_route_table_association" "route_table_association" {
 
   subnet_id      = azurerm_subnet.subnet.id
   route_table_id = each.value
+
+  depends_on = [
+    azurerm_subnet.subnet
+  ]
 }

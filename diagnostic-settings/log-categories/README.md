@@ -15,7 +15,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_resource_id"></a> [resource\_id](#input\_resource\_id) | Required. Resource ID. | `string` | n/a | yes |
+| <a name="input_resource_id"></a> [resource\_id](#input\_resource\_id) | (Required) Resource ID. | `string` | n/a | yes |
 
 ## Outputs
 

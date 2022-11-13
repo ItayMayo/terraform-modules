@@ -20,6 +20,10 @@ resource "azurerm_private_dns_a_record" "a_record" {
   resource_group_name = var.resource_group_name
   ttl                 = each.value["ttl"]
   records             = each.value["records"]
+
+  depends_on = [
+    azurerm_private_dns_zone.private_dns
+  ]
 }
 
 locals {
@@ -34,4 +38,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "dns_vnet_link" {
   private_dns_zone_name = azurerm_private_dns_zone.private_dns.name
   virtual_network_id    = each.value
   tags                  = var.tags
+
+  depends_on = [
+    azurerm_private_dns_zone.private_dns
+  ]
 }

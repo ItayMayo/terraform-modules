@@ -15,11 +15,11 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Required. Name of the parent Resource Group. | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | Required. Tags assigned to the resource. | `map(string)` | `null` | no |
-| <a name="input_vnet_ids"></a> [vnet\_ids](#input\_vnet\_ids) | Required. DNS Zone associated vnet ids. | `map(string)` | n/a | yes |
-| <a name="input_zone_a_records"></a> [zone\_a\_records](#input\_zone\_a\_records) | Optional. DNS Zone A records. | <pre>map(object({<br>    name    = string<br>    ttl     = number<br>    records = list(string)<br>  }))</pre> | `null` | no |
-| <a name="input_zone_name"></a> [zone\_name](#input\_zone\_name) | Required. Name of the DNS zone. | `string` | n/a | yes |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | (Required) Name of the parent Resource Group. | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | (Required) Tags assigned to the resource. | `map(string)` | `null` | no |
+| <a name="input_vnet_ids"></a> [vnet\_ids](#input\_vnet\_ids) | (Required) DNS Zone associated vnet ids. | `map(string)` | n/a | yes |
+| <a name="input_zone_a_records"></a> [zone\_a\_records](#input\_zone\_a\_records) | (Optional) DNS Zone A records. | <pre>map(object({<br>    name    = string<br>    ttl     = number<br>    records = list(string)<br>  }))</pre> | `null` | no |
+| <a name="input_zone_name"></a> [zone\_name](#input\_zone\_name) | (Required) Name of the DNS zone. | `string` | n/a | yes |
 
 ## Outputs
 

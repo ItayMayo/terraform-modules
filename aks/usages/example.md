@@ -8,7 +8,7 @@ module "aks" {
   resource_group_name = "my-rg"
   location            = "westeurope"
 
-  #Optional. Log Workspace Analytics ID
+  #(Optional) Log Workspace Analytics ID
   log_workspace_id    = "workspace-id"
 
   #Cluster Initiation
@@ -19,9 +19,7 @@ module "aks" {
   default_node_pool = {
     name    = "default-pool"
 
-    enable_node_public_ip = false
     enable_auto_scaling   = false
-
     node_count = 2
   }
 

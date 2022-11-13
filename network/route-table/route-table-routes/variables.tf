@@ -1,11 +1,11 @@
 variable "resource_group_name" {
   type        = string
-  description = "Required. Name of the parent Resource Group."
+  description = "(Required) Name of the parent Resource Group."
 }
 
 variable "route_table_name" {
   type        = string
-  description = "Required. Name of the Route Table to assign the Routes to."
+  description = "(Required) Name of the Route Table to assign the Routes to."
 }
 
 variable "route_table_routes" {
@@ -16,5 +16,5 @@ variable "route_table_routes" {
     next_hop_in_ip_address = optional(string)
   }))
 
-  description = "Required. Routes to assign to the route table."
+  description = "(Required) Routes to assign to the route table."
 }

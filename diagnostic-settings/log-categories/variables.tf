@@ -1,4 +1,4 @@
 variable "resource_id" {
   type = string
-  description = "Required. Resource ID."
+  description = "(Required) Resource ID."
 }

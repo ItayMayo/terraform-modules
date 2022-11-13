@@ -12,8 +12,3 @@ output "object" {
   value       = azurerm_storage_account.storage_account
   description = "Storage Accuont resource object."
 }
-
-output "endpoint_object" {
-  value       = try(azurerm_private_endpoint.endpoint["storage_endpoint"], null)
-  description = "Storage Account Private Endpoint resource object."
-}

@@ -18,22 +18,22 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_disk_sizes_in_gb"></a> [disk\_sizes\_in\_gb](#input\_disk\_sizes\_in\_gb) | Optional. List of sizes for additional disks to attach to this Virtual Machine. | `list(number)` | <pre>[<br>  -1<br>]</pre> | no |
-| <a name="input_identity"></a> [identity](#input\_identity) | Optional. Identity block assigned to the Virtual Machine. identity\_ids field should only be set when using UserAssigned identities. | <pre>object({<br>    type         = string<br>    identity_ids = optional(list(string))<br>  })</pre> | `null` | no |
-| <a name="input_location"></a> [location](#input\_location) | Required. Location of the resource. | `string` | n/a | yes |
-| <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | Optional. ID of the log analytics workspace where logs should be sent to. | `string` | `null` | no |
-| <a name="input_nic_subnet_id"></a> [nic\_subnet\_id](#input\_nic\_subnet\_id) | Required. Subnet ID in which the Virtual Machine's NIC should be created. | `string` | n/a | yes |
-| <a name="input_os_disk_caching"></a> [os\_disk\_caching](#input\_os\_disk\_caching) | Optional. OS Disk caching. Default: ReadWrite. | `string` | `"ReadWrite"` | no |
-| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Required. Name of the parent Resource Group. | `string` | n/a | yes |
-| <a name="input_storage_account_type"></a> [storage\_account\_type](#input\_storage\_account\_type) | Optional. Type of the Virtual Machine's Storage Account. Default: Standard\_LRS. | `string` | `"Standard_LRS"` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | Optional. Tags assigned to the resource. | `map(string)` | `null` | no |
-| <a name="input_vm_admin_password"></a> [vm\_admin\_password](#input\_vm\_admin\_password) | Optional. Password of the Virtual Machine's admin account. Required when vm\_disable\_password\_authentication is set to false. | `string` | `null` | no |
-| <a name="input_vm_admin_ssh_key"></a> [vm\_admin\_ssh\_key](#input\_vm\_admin\_ssh\_key) | Optional. SSH publickey to use when logging in. Required when vm\_disable\_password\_authentication is set to true. | <pre>object({<br>    username   = string<br>    public_key = string<br>  })</pre> | `null` | no |
-| <a name="input_vm_admin_username"></a> [vm\_admin\_username](#input\_vm\_admin\_username) | Required. Username of the Virtual Machine's admin account. | `string` | n/a | yes |
-| <a name="input_vm_disable_password_authentication"></a> [vm\_disable\_password\_authentication](#input\_vm\_disable\_password\_authentication) | Optional. Disable VM password authentication and use SSH publickey. Default: true. | `bool` | `true` | no |
-| <a name="input_vm_name"></a> [vm\_name](#input\_vm\_name) | Required. Name of the Virtual Machine. | `string` | n/a | yes |
-| <a name="input_vm_size"></a> [vm\_size](#input\_vm\_size) | Optional. Size of the Virtual Machine. Default: Standard\_D2s\_v3. | `string` | `"Standard_D2s_v3"` | no |
-| <a name="input_vm_source_image_reference"></a> [vm\_source\_image\_reference](#input\_vm\_source\_image\_reference) | Optional. Virtual Machine OS image reference. Default: UbuntuServer 16.04-LTS. | <pre>object({<br>    publisher = string<br>    offer     = string<br>    sku       = string<br>    version   = string<br>  })</pre> | <pre>{<br>  "offer": "UbuntuServer",<br>  "publisher": "Canonical",<br>  "sku": "16.04-LTS",<br>  "version": "latest"<br>}</pre> | no |
+| <a name="input_disk_sizes_in_gb"></a> [disk\_sizes\_in\_gb](#input\_disk\_sizes\_in\_gb) | (Optional) List of sizes for additional disks to attach to this Virtual Machine. | `list(number)` | <pre>[<br>  -1<br>]</pre> | no |
+| <a name="input_identity"></a> [identity](#input\_identity) | (Optional) Identity block assigned to the Virtual Machine. identity\_ids field should only be set when using UserAssigned identities. | <pre>object({<br>    type         = string<br>    identity_ids = optional(list(string))<br>  })</pre> | `null` | no |
+| <a name="input_location"></a> [location](#input\_location) | (Required) Location of the resource. | `string` | n/a | yes |
+| <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Optional) ID of the log analytics workspace where logs should be sent to. | `string` | `null` | no |
+| <a name="input_nic_subnet_id"></a> [nic\_subnet\_id](#input\_nic\_subnet\_id) | (Required) Subnet ID in which the Virtual Machine's NIC should be created. | `string` | n/a | yes |
+| <a name="input_os_disk_caching"></a> [os\_disk\_caching](#input\_os\_disk\_caching) | (Optional) OS Disk caching. Default: ReadWrite. | `string` | `"ReadWrite"` | no |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | (Required) Name of the parent Resource Group. | `string` | n/a | yes |
+| <a name="input_storage_account_type"></a> [storage\_account\_type](#input\_storage\_account\_type) | (Optional) Type of the Virtual Machine's Storage Account. Default: Standard\_LRS. | `string` | `"Standard_LRS"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | (Optional) Tags assigned to the resource. | `map(string)` | `null` | no |
+| <a name="input_vm_admin_password"></a> [vm\_admin\_password](#input\_vm\_admin\_password) | (Optional) Password of the Virtual Machine's admin account. Required when vm\_disable\_password\_authentication is set to false. | `string` | `null` | no |
+| <a name="input_vm_admin_ssh_key"></a> [vm\_admin\_ssh\_key](#input\_vm\_admin\_ssh\_key) | (Optional) SSH publickey to use when logging in. Required when vm\_disable\_password\_authentication is set to true. | <pre>object({<br>    username   = string<br>    public_key = string<br>  })</pre> | `null` | no |
+| <a name="input_vm_admin_username"></a> [vm\_admin\_username](#input\_vm\_admin\_username) | (Required) Username of the Virtual Machine's admin account. | `string` | n/a | yes |
+| <a name="input_vm_disable_password_authentication"></a> [vm\_disable\_password\_authentication](#input\_vm\_disable\_password\_authentication) | (Optional) Disable VM password authentication and use SSH publickey. Default: true. | `bool` | `true` | no |
+| <a name="input_vm_name"></a> [vm\_name](#input\_vm\_name) | (Required) Name of the Virtual Machine. | `string` | n/a | yes |
+| <a name="input_vm_size"></a> [vm\_size](#input\_vm\_size) | (Optional) Size of the Virtual Machine. Default: Standard\_D2s\_v3. | `string` | `"Standard_D2s_v3"` | no |
+| <a name="input_vm_source_image_reference"></a> [vm\_source\_image\_reference](#input\_vm\_source\_image\_reference) | (Optional) Virtual Machine OS image reference. Default: UbuntuServer 16.04-LTS. | <pre>object({<br>    publisher = string<br>    offer     = string<br>    sku       = string<br>    version   = string<br>  })</pre> | <pre>{<br>  "offer": "UbuntuServer",<br>  "publisher": "Canonical",<br>  "sku": "16.04-LTS",<br>  "version": "latest"<br>}</pre> | no |
 
 ## Outputs
 

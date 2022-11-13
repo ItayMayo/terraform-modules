@@ -4,6 +4,7 @@
 
 locals {
   network_rules_provided = var.network_rules != null
+  public_access          = false
 }
 
 resource "azurerm_storage_account" "storage_account" {
@@ -15,8 +16,8 @@ resource "azurerm_storage_account" "storage_account" {
   account_kind             = var.account_kind
   account_replication_type = var.replication_type
 
-  allow_nested_items_to_be_public = var.allow_nested_items_to_be_public
-  public_network_access_enabled   = var.public_network_access_enabled
+  allow_nested_items_to_be_public = local.public_access
+  public_network_access_enabled   = local.public_access
 
   dynamic "network_rules" {
     for_each = local.network_rules_provided ? var.network_rules : []
@@ -42,19 +43,16 @@ resource "azurerm_storage_account" "storage_account" {
 }
 
 locals {
-  create_private_endpoint = var.private_endpoint_subnet_id != null
-  endpoint_name           = "${azurerm_storage_account.storage_account.name}-private-endpoint"
-  is_manual_connection    = false
-  subresource_names       = ["blob"]
+  endpoint_name        = "${azurerm_storage_account.storage_account.name}-private-endpoint"
+  is_manual_connection = false
+  subresource_names    = ["blob"]
 }
 
 resource "azurerm_private_endpoint" "endpoint" {
-  for_each = local.create_private_endpoint ? { storage_endpoint = var.private_endpoint_subnet_id } : {}
-
   name                = local.endpoint_name
   location            = var.location
   resource_group_name = var.resource_group_name
-  subnet_id           = each.value
+  subnet_id           = var.private_endpoint_subnet_id
 
   private_service_connection {
     name                           = local.endpoint_name
@@ -64,6 +62,10 @@ resource "azurerm_private_endpoint" "endpoint" {
   }
 
   tags = var.tags
+
+  depends_on = [
+    azurerm_storage_account.storage_account
+  ]
 }
 
 locals {
@@ -87,12 +89,14 @@ resource "azurerm_private_dns_a_record" "a_record" {
 }
 
 locals {
-  diagnostics_name   = "${var.name}-storage-account-diagnostics"
-  target_resource_id = azurerm_storage_account.storage_account.id
+  diagnostics_name               = "${var.name}-storage-account-diagnostics"
+  target_resource_id             = azurerm_storage_account.storage_account.id
+  diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
 module "diagnostics" {
-  source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+  source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+  for_each = local.diagnostics_workspace_provided ? [1] : []
 
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id
