@@ -20,12 +20,12 @@ variable "tags" {
   description = "Optional. Tags assigned to the resource."
 }
 
-variable "acr_name" {
+variable "name" {
   type        = string
   description = "Required. Name of the Container Registry."
 }
 
-variable "acr_sku" {
+variable "sku" {
   type        = string
   description = "Required. Container Registry SKU name."
 }
