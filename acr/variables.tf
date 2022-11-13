@@ -36,12 +36,6 @@ variable "admin_enabled" {
   description = "Optional. Enable admin account. Default: false."
 }
 
-variable "public_network_access_enabled" {
-  default     = true
-  type        = bool
-  description = "Optional. Enable ACR public network access. Default: true."
-}
-
 variable "data_endpoint_enabled" {
   default     = false
   type        = bool

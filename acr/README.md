@@ -24,7 +24,6 @@
 | <a name="input_name"></a> [name](#input\_name) | Required. Name of the Container Registry. | `string` | n/a | yes |
 | <a name="input_private_dns_zone_name"></a> [private\_dns\_zone\_name](#input\_private\_dns\_zone\_name) | Optional. Name of a Private DNS zone to be associated with the ACR. | `string` | `null` | no |
 | <a name="input_private_endpoint_subnet_id"></a> [private\_endpoint\_subnet\_id](#input\_private\_endpoint\_subnet\_id) | Optional. ID of the subnet in which to create a private endpoint for this ACR. | `string` | `null` | no |
-| <a name="input_public_network_access_enabled"></a> [public\_network\_access\_enabled](#input\_public\_network\_access\_enabled) | Optional. Enable ACR public network access. Default: true. | `bool` | `true` | no |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Required. Name of the parent Resource Group. | `string` | n/a | yes |
 | <a name="input_sku"></a> [sku](#input\_sku) | Required. Container Registry SKU name. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Optional. Tags assigned to the resource. | `map(string)` | `null` | no |
