@@ -25,16 +25,6 @@ output "kube_config" {
   description = "AKS cluster resource kube config."
 }
 
-output "endpoint_object" {
-  value       = try(azurerm_private_endpoint.endpoint["aks_endpoint"], null)
-  description = "AKS Private Endpoint resource object."
-}
-
-output "private_dns_object" {
-  value       = try(module.aks-private-dns["aks_dns"].dns_object, null)
-  description = "AKS Private DNS resource object."
-}
-
 output "private_dns_record_name" {
   value       = try(local.aks_dns_record_name, null)
   description = "Private DNS A record name."
