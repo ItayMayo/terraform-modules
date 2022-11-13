@@ -4,6 +4,7 @@
 
 locals {
   network_rules_provided = var.network_rules != null
+  public_access = false
 }
 
 resource "azurerm_storage_account" "storage_account" {
@@ -15,8 +16,8 @@ resource "azurerm_storage_account" "storage_account" {
   account_kind             = var.account_kind
   account_replication_type = var.replication_type
 
-  allow_nested_items_to_be_public = var.allow_nested_items_to_be_public
-  public_network_access_enabled   = var.public_network_access_enabled
+  allow_nested_items_to_be_public = local.public_access
+  public_network_access_enabled   = local.public_access
 
   dynamic "network_rules" {
     for_each = local.network_rules_provided ? var.network_rules : []

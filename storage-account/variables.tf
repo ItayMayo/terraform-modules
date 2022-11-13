@@ -43,18 +43,6 @@ variable "replication_type" {
   description = "Required. Storage Account replication type. Default: GRS."
 }
 
-variable "allow_nested_items_to_be_public" {
-  default     = false
-  type        = bool
-  description = "Optional. Allow Storage Account nested items to be accessible over the public network. Default: false."
-}
-
-variable "public_network_access_enabled" {
-  default     = false
-  type        = bool
-  description = "Optional. Enable Storage Account public network access. Default: false."
-}
-
 variable "network_rules" {
   default = null
 
