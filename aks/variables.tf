@@ -40,7 +40,7 @@ variable "default_node_pool" {
   type = object({
     name                  = string
     vm_size               = string
-    enable_auto_scaling   = bool
+    enable_auto_scaling   = optional(bool)
     node_count            = optional(number)
     os_sku                = optional(string)
     max_count             = optional(number)
