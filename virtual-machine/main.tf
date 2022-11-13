@@ -10,11 +10,11 @@ locals {
 module "vm-network-interface" {
   source = "github.com/ItayMayo/terraform-modules//Network/network-interface"
 
+  name                = local.nic_name
   resource_group_name = var.resource_group_name
   location            = var.location
   log_workspace_id    = var.log_workspace_id
 
-  name                  = local.nic_name
   ip_configuration_name = local.ip_configuration_name
   subnet_id             = var.nic_subnet_id
   tags                  = var.tags
