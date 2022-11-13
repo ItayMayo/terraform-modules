@@ -1,39 +1,39 @@
 variable "location" {
   type        = string
-  description = "Required. Location of the resource."
+  description = "(Required) Location of the resource."
 }
 
 variable "resource_group_name" {
   type        = string
-  description = "Required. Name of the parent Resource Group."
+  description = "(Required) Name of the parent Resource Group."
 }
 
 variable "log_workspace_id" {
   default     = null
   type        = string
-  description = "Optional. ID of the log analytics workspace where logs should be sent to."
+  description = "(Optional) ID of the log analytics workspace where logs should be sent to."
 }
 
 variable "tags" {
   default     = null
   type        = map(string)
-  description = "Optional. Tags assigned to the resource."
+  description = "(Optional) Tags assigned to the resource."
 }
 
 variable "vnet_name" {
   type        = string
-  description = "Required. Name of the vnet."
+  description = "(Required) Name of the vnet."
 }
 
 variable "address_space" {
   type        = list(string)
-  description = "Required. VNet Address Space. Usually has /16 CIDR."
+  description = "(Required) VNet Address Space. Usually has /16 CIDR."
 }
 
 variable "dns_servers" {
   default     = null
   type        = list(string)
-  description = "Optional. DNS servers to be associated with this Virtual Network.."
+  description = "(Optional) DNS servers to be associated with this Virtual Network.."
 }
 
 variable "subnets" {
@@ -44,5 +44,5 @@ variable "subnets" {
     route_table_id   = optional(string)
   }))
 
-  description = "Required. Map of subnets to be associated with this Virtual Network."
+  description = "(Required) Map of subnets to be associated with this Virtual Network."
 }

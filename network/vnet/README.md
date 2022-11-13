@@ -18,14 +18,14 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_address_space"></a> [address\_space](#input\_address\_space) | Required. VNet Address Space. Usually has /16 CIDR. | `list(string)` | n/a | yes |
-| <a name="input_dns_servers"></a> [dns\_servers](#input\_dns\_servers) | Optional. DNS servers to be associated with this Virtual Network.. | `list(string)` | `null` | no |
-| <a name="input_location"></a> [location](#input\_location) | Required. Location of the resource. | `string` | n/a | yes |
-| <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | Optional. ID of the log analytics workspace where logs should be sent to. | `string` | `null` | no |
-| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Required. Name of the parent Resource Group. | `string` | n/a | yes |
-| <a name="input_subnets"></a> [subnets](#input\_subnets) | Required. Map of subnets to be associated with this Virtual Network. | <pre>map(object({<br>    subnet_name      = string<br>    address_prefixes = list(string)<br>    nsg_id           = optional(string)<br>    route_table_id   = optional(string)<br>  }))</pre> | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | Optional. Tags assigned to the resource. | `map(string)` | `null` | no |
-| <a name="input_vnet_name"></a> [vnet\_name](#input\_vnet\_name) | Required. Name of the vnet. | `string` | n/a | yes |
+| <a name="input_address_space"></a> [address\_space](#input\_address\_space) | (Required) VNet Address Space. Usually has /16 CIDR. | `list(string)` | n/a | yes |
+| <a name="input_dns_servers"></a> [dns\_servers](#input\_dns\_servers) | (Optional) DNS servers to be associated with this Virtual Network.. | `list(string)` | `null` | no |
+| <a name="input_location"></a> [location](#input\_location) | (Required) Location of the resource. | `string` | n/a | yes |
+| <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Optional) ID of the log analytics workspace where logs should be sent to. | `string` | `null` | no |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | (Required) Name of the parent Resource Group. | `string` | n/a | yes |
+| <a name="input_subnets"></a> [subnets](#input\_subnets) | (Required) Map of subnets to be associated with this Virtual Network. | <pre>map(object({<br>    subnet_name      = string<br>    address_prefixes = list(string)<br>    nsg_id           = optional(string)<br>    route_table_id   = optional(string)<br>  }))</pre> | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | (Optional) Tags assigned to the resource. | `map(string)` | `null` | no |
+| <a name="input_vnet_name"></a> [vnet\_name](#input\_vnet\_name) | (Required) Name of the vnet. | `string` | n/a | yes |
 
 ## Outputs
 

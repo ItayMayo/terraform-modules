@@ -1,28 +1,28 @@
 variable "location" {
   type        = string
-  description = "Required. Location of the resource."
+  description = "(Required) Location of the resource."
 }
 
 variable "resource_group_name" {
   type        = string
-  description = "Required. Name of the parent Resource Group."
+  description = "(Required) Name of the parent Resource Group."
 }
 
 variable "tags" {
   default     = null
   type        = map(string)
-  description = "Optional. Tags assigned to the resource."
+  description = "(Optional) Tags assigned to the resource."
 }
 
 variable "route_table_name" {
   type        = string
-  description = "Required. Route table name."
+  description = "(Required) Route table name."
 }
 
 variable "disable_bgp_route_propagation" {
   default     = false
   type        = bool
-  description = "Optional. Disable route table bgp route propagation. Default: false."
+  description = "(Optional) Disable route table bgp route propagation. Default: false."
 }
 
 variable "route_table_routes" {
@@ -33,5 +33,5 @@ variable "route_table_routes" {
     next_hop_in_ip_address = optional(string)
   }))
 
-  description = "Required. Route table routes."
+  description = "(Required) Route table routes."
 }
