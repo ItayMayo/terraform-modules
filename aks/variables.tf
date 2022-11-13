@@ -20,12 +20,12 @@ variable "tags" {
   description = "Optional. Tags assigned to the resource."
 }
 
-variable "cluster_name" {
+variable "name" {
   type        = string
   description = "Required. Name of the AKS cluster."
 }
 
-variable "dns_prefix" {
+variable "aks_dns_prefix" {
   type        = string
   description = "Required. DNS prefix of the AKS cluster."
 }
@@ -36,7 +36,7 @@ variable "private_cluster_enabled" {
   description = "Optional. Enable or disable cluster internet access. Default is true."
 }
 
-variable "private_dns_zone_id" {
+variable "aks_private_dns_zone_id" {
   default     = null
   type        = string
   description = "Optional. ID of the private dns zone associated with the cluster."
