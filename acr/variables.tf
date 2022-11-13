@@ -37,19 +37,17 @@ variable "admin_enabled" {
 }
 
 variable "data_endpoint_enabled" {
-  default     = false
+  default     = true
   type        = bool
-  description = "Required. Enable ACR Data Endpoint. Default: false."
+  description = "Required. Enable ACR Data Endpoint. Default: true."
 }
 
 variable "private_endpoint_subnet_id" {
-  default     = null
   type        = string
-  description = "Optional. ID of the subnet in which to create a private endpoint for this ACR."
+  description = "Required. ID of the subnet in which to create a private endpoint for this ACR."
 }
 
 variable "private_dns_zone_name" {
-  default     = null
   type        = string
-  description = "Optional. Name of a Private DNS zone to be associated with the ACR."
+  description = "Required. Name of a Private DNS zone to be associated with the ACR."
 }

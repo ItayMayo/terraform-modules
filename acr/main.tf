@@ -18,19 +18,16 @@ resource "azurerm_container_registry" "acr" {
 }
 
 locals {
-  create_private_endpoint = var.private_endpoint_subnet_id != null
   endpoint_name           = "${azurerm_container_registry.acr.name}-private-endpoint"
   is_manual_connection    = false
   subresource_names       = ["registry"]
 }
 
 resource "azurerm_private_endpoint" "endpoint" {
-  for_each = local.create_private_endpoint ? { acr_endpoint = var.private_endpoint_subnet_id } : {}
-
   name                = local.endpoint_name
   location            = var.location
   resource_group_name = var.resource_group_name
-  subnet_id           = each.value
+  subnet_id           = var.private_endpoint_subnet_id
 
   private_service_connection {
     name                           = local.endpoint_name
@@ -43,8 +40,6 @@ resource "azurerm_private_endpoint" "endpoint" {
 }
 
 data "azurerm_network_interface" "acr_nic" {
-  for_each = local.create_private_endpoint ? { acr = "acr" } : {}
-
   name                = azurerm_private_endpoint.endpoint["acr_endpoint"].network_interface[0]["name"]
   resource_group_name = var.resource_group_name
 }
@@ -53,7 +48,6 @@ locals {
   data_record_name   = "${lower(azurerm_container_registry.acr.name)}.${var.location}.data"
   normal_record_name = lower(azurerm_container_registry.acr.name)
   dns_record_ttl     = 3600
-  create_dns_zone    = var.private_dns_zone_name != null
 
   zone_a_records = {
     acr_data_record = {
@@ -70,7 +64,7 @@ locals {
 }
 
 resource "azurerm_private_dns_a_record" "a_record" {
-  for_each = local.create_dns_zone ? local.zone_a_records : {}
+  for_each = local.zone_a_records
 
   name                = each.value["name"]
   zone_name           = var.private_dns_zone_name
