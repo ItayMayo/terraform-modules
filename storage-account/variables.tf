@@ -62,9 +62,8 @@ variable "network_rules" {
 }
 
 variable "private_endpoint_subnet_id" {
-  default     = null
   type        = string
-  description = "Optional. ID of the subnet in which to create a private endpoint for this Storage Account."
+  description = "Required. ID of the subnet in which to create a private endpoint for this Storage Account."
 }
 
 variable "private_dns_zone_name" {
