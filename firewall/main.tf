@@ -41,8 +41,8 @@ resource "azurerm_firewall_policy" "firewall_policy" {
 }
 
 locals {
-  firewall_pip_name     = "firewall_pip"
-  management_pip_name   = "firewall_management_pip"
+  firewall_pip_name     = "${var.firewall_name}-pip"
+  management_pip_name   = "${var.firewall_name}-management-pip"
   pip_allocation_method = "Static"
   pip_sku               = "Standard"
   pip_zones             = [1, 2, 3]
@@ -175,7 +175,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "firewall_policy_nat_co
 
 
 locals {
-  diagnostics_name   = "firewall-diagnostics"
+  diagnostics_name   = "${var.firewall_name}-firewall-diagnostics"
   target_resource_id = azurerm_firewall.firewall.id
 }
 

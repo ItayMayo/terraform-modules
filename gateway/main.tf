@@ -12,17 +12,17 @@ data "azurerm_client_config" "current" {}
 
 
 resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
-  name                = var.gateway_name
+  name                = var.name
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  type     = var.gateway_type
-  vpn_type = var.gateway_vpn_type
+  type     = var.type
+  vpn_type = var.vpn_type
 
   active_active = var.enable_active_active
   enable_bgp    = var.enable_bgp
-  sku           = var.gateway_sku
-  generation    = var.gateway_sku_generation
+  sku           = var.sku
+  generation    = var.sku_generation
 
   dynamic "ip_configuration" {
     for_each = [try(azurerm_public_ip.public_ip["0"], [])]
@@ -114,6 +114,7 @@ locals {
   should_create_two_pips   = var.enable_active_active || var.enable_point_to_site
   number_of_pips           = local.should_create_three_pips ? 3 : (local.should_create_two_pips ? 2 : 1)
 
+  pip_name_prefix       = "${var.name}-vng-pip"
   pip_allocation_method = "Static"
   pip_sku               = "Standard"
   pip_zones             = [1, 2, 3]
@@ -122,7 +123,7 @@ locals {
 resource "azurerm_public_ip" "public_ip" {
   for_each = { for i in range(local.number_of_pips) : tostring(i) => tostring(i) }
 
-  name                = "vng_pip_${each.value}"
+  name                = "${pip_name_prefix}-${each.value}"
   resource_group_name = var.resource_group_name
   location            = var.location
 
@@ -133,7 +134,7 @@ resource "azurerm_public_ip" "public_ip" {
 }
 
 locals {
-  diagnostics_name   = "gateway-diagnostics"
+  diagnostics_name   = "${var.name}-gateway-diagnostics"
   target_resource_id = azurerm_virtual_network_gateway.virtual_network_gateway.id
 }
 

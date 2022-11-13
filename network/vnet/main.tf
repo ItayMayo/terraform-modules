@@ -16,14 +16,14 @@ module "subnets" {
 
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  subnet_name          = each.value["subnet_name"]
+  name                 = each.value["subnet_name"]
   address_prefixes     = each.value["address_prefixes"]
   nsg_id               = each.value["nsg_id"]
   route_table_id       = each.value["route_table_id"]
 }
 
 locals {
-  diagnostics_name   = "vnet-diagnostics"
+  diagnostics_name   = "${var.vnet_name}-vnet-diagnostics"
   target_resource_id = azurerm_virtual_network.vnet.id
 }
 

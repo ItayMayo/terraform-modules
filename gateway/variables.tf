@@ -20,18 +20,18 @@ variable "tags" {
   description = "Optional. Tags assigned to the resource."
 }
 
-variable "gateway_name" {
+variable "name" {
   type        = string
   description = "Required. Name of the Gateway resource."
 }
 
-variable "gateway_type" {
+variable "type" {
   default     = "Vpn"
   type        = string
   description = "Required. Type of the Gateway Resource. Default: Vpn."
 }
 
-variable "gateway_vpn_type" {
+variable "vpn_type" {
   default     = "RouteBased"
   type        = string
   description = "Required. Type of the Gateway VPN. Default: RouteBased."
@@ -49,13 +49,13 @@ variable "enable_bgp" {
   description = "Optional. Enable Gateway BGP. Default: false."
 }
 
-variable "gateway_sku" {
+variable "sku" {
   default     = "VpnGw2AZ"
   type        = string
   description = "Optional. SKU of the Gateway. Default: VpnGw2AZ."
 }
 
-variable "gateway_sku_generation" {
+variable "sku_generation" {
   default     = "Generation2"
   type        = string
   description = "Optional. Generation of the Gateway SKU. Default: Generation2."

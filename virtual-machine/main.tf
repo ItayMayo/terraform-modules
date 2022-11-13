@@ -97,7 +97,7 @@ resource "azurerm_virtual_machine_data_disk_attachment" "vm_disk_attachment" {
 }
 
 locals {
-  diagnostics_name   = "virtual-machine-diagnostics"
+  diagnostics_name   = "${var.vm_name}-virtual-machine-diagnostics"
   target_resource_id = azurerm_linux_virtual_machine.vm.id
 }
 

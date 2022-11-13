@@ -3,14 +3,14 @@ locals {
 }
 
 resource "azurerm_kubernetes_cluster" "cluster" {
-  name                = var.cluster_name
+  name                = var.name
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  dns_prefix                    = var.dns_prefix
+  dns_prefix                    = var.aks_dns_prefix
   private_cluster_enabled       = var.private_cluster_enabled
   public_network_access_enabled = var.public_network_access_enabled
-  private_dns_zone_id           = var.private_dns_zone_id
+  private_dns_zone_id           = var.aks_private_dns_zone_id
 
 
   dynamic "default_node_pool" {
@@ -128,7 +128,7 @@ resource "azurerm_role_assignment" "aks-role-assignment" {
 
 
 locals {
-  diagnostics_name = "aks-diagnostics"
+  diagnostics_name = "${var.name}-aks-diagnostics"
   cluster_id       = azurerm_kubernetes_cluster.cluster.id
 }
 
