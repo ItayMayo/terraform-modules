@@ -26,8 +26,9 @@ variable "name" {
 }
 
 variable "ip_configuration_name" {
+  default = "internal"
   type        = string
-  description = "(Required) Network interface IP configuration name."
+  description = "(Optional) Network interface IP configuration name. Defualt: internal."
 }
 
 variable "subnet_id" {
