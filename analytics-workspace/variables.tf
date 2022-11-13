@@ -36,15 +36,3 @@ variable "daily_quota_gb" {
   type        = number
   description = "(Optional) Daily quota in gb. Default: Unlimited."
 }
-
-variable "internet_query_enabled" {
-  default     = true
-  type        = bool
-  description = "(Optional) Workspace query through the internet. Default: true."
-}
-
-variable "internet_ingestion_enabled" {
-  default     = true
-  type        = bool
-  description = "(Optional) Workspace ingestion through the internet. Default: true."
-}
