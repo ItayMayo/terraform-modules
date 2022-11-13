@@ -76,7 +76,7 @@ resource "azurerm_private_dns_a_record" "a_record" {
 }
 
 locals {
-  diagnostics_name   = "acr-diagnostics"
+  diagnostics_name   = "${var.name}-acr-diagnostics"
   target_resource_id = azurerm_container_registry.acr.id
 }
 
