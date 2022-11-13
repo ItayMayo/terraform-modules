@@ -8,7 +8,7 @@ variable "virtual_network_name" {
   description = "Required. Name of the Virtual Network to create this subnet in."
 }
 
-variable "subnet_name" {
+variable "name" {
   type        = string
   description = "Required. Name of the subnet."
 }
