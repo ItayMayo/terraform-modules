@@ -128,7 +128,7 @@ resource "azurerm_role_assignment" "aks-role-assignment" {
 
 
 locals {
-  diagnostics_name = "aks-diagnostics"
+  diagnostics_name = "${var.name}-aks-diagnostics"
   cluster_id       = azurerm_kubernetes_cluster.cluster.id
 }
 
