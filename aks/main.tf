@@ -3,7 +3,10 @@
 */
 
 locals {
+  identity_provided = var.identity != null
   network_profile_provided = var.network_profile != null
+  private_cluster = true
+  public_network_access_enabled = false
 }
 
 resource "azurerm_kubernetes_cluster" "cluster" {
@@ -12,8 +15,8 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   resource_group_name = var.resource_group_name
 
   dns_prefix                    = var.aks_dns_prefix
-  private_cluster_enabled       = var.private_cluster_enabled
-  public_network_access_enabled = var.public_network_access_enabled
+  private_cluster_enabled       = local.private_cluster
+  public_network_access_enabled = local.public_network_access_enabled
   private_dns_zone_id           = var.aks_private_dns_zone_id
 
 
@@ -26,7 +29,7 @@ resource "azurerm_kubernetes_cluster" "cluster" {
       vm_size    = default_node_pool.value["vm_size"]
 
       os_sku                = default_node_pool.value["os_sku"]
-      enable_node_public_ip = default_node_pool.value["enable_node_public_ip"]
+      enable_node_public_ip = local.public_network_access_enabled
       vnet_subnet_id        = default_node_pool.value["vnet_subnet_id"]
 
       enable_auto_scaling = default_node_pool.value["enable_auto_scaling"]
@@ -36,7 +39,7 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   }
 
   dynamic "identity" {
-    for_each = [var.identity]
+    for_each = local.identity_provided ? [var.identity] : []
 
     content {
       type         = identity.value["type"]

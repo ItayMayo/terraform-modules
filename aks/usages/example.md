@@ -19,9 +19,7 @@ module "aks" {
   default_node_pool = {
     name    = "default-pool"
 
-    enable_node_public_ip = false
     enable_auto_scaling   = false
-
     node_count = 2
   }
 

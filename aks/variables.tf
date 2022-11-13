@@ -30,29 +30,16 @@ variable "aks_dns_prefix" {
   description = "Required. DNS prefix of the AKS cluster."
 }
 
-variable "private_cluster_enabled" {
-  default     = true
-  type        = bool
-  description = "Optional. Enable or disable cluster internet access. Default is true."
-}
-
 variable "aks_private_dns_zone_id" {
   default     = null
   type        = string
   description = "Optional. ID of the private dns zone associated with the cluster."
 }
 
-variable "public_network_access_enabled" {
-  default     = false
-  type        = bool
-  description = "Optional. Enable or disable public network access. Default is false."
-}
-
 variable "default_node_pool" {
   type = object({
     name                  = string
     vm_size               = string
-    enable_node_public_ip = bool
     enable_auto_scaling   = bool
     node_count            = optional(number)
     os_sku                = optional(string)
