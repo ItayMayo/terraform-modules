@@ -83,7 +83,7 @@ resource "azurerm_private_dns_a_record" "a_record" {
 }
 
 locals {
-  diagnostics_name   = "storage-account-diagnostics"
+  diagnostics_name   = "${var.name}-storage-account-diagnostics"
   target_resource_id = azurerm_storage_account.storage_account.id
 }
 

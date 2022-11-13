@@ -175,7 +175,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "firewall_policy_nat_co
 
 
 locals {
-  diagnostics_name   = "firewall-diagnostics"
+  diagnostics_name   = "${var.firewall_name}-firewall-diagnostics"
   target_resource_id = azurerm_firewall.firewall.id
 }
 

@@ -23,7 +23,7 @@ module "subnets" {
 }
 
 locals {
-  diagnostics_name   = "vnet-diagnostics"
+  diagnostics_name   = "${var.vnet_name}-vnet-diagnostics"
   target_resource_id = azurerm_virtual_network.vnet.id
 }
 
