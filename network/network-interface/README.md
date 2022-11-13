@@ -17,7 +17,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_ip_configuration_name"></a> [ip\_configuration\_name](#input\_ip\_configuration\_name) | (Required) Network interface IP configuration name. | `string` | n/a | yes |
+| <a name="input_ip_configuration_name"></a> [ip\_configuration\_name](#input\_ip\_configuration\_name) | (Optional) Network interface IP configuration name. Defualt: internal. | `string` | `"internal"` | no |
 | <a name="input_location"></a> [location](#input\_location) | (Required) Location of the resource. | `string` | n/a | yes |
 | <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Optional) ID of the log analytics workspace where logs should be sent to. | `string` | `null` | no |
 | <a name="input_name"></a> [name](#input\_name) | (Required) Network interface name. | `string` | n/a | yes |
