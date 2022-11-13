@@ -41,8 +41,8 @@ resource "azurerm_firewall_policy" "firewall_policy" {
 }
 
 locals {
-  firewall_pip_name     = "firewall_pip"
-  management_pip_name   = "firewall_management_pip"
+  firewall_pip_name     = "${var.firewall_name}-pip"
+  management_pip_name   = "${var.firewall_name}-management-pip"
   pip_allocation_method = "Static"
   pip_sku               = "Standard"
   pip_zones             = [1, 2, 3]
