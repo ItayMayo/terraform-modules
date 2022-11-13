@@ -132,10 +132,12 @@ resource "azurerm_role_assignment" "aks-role-assignment" {
 locals {
   diagnostics_name = "${var.name}-aks-diagnostics"
   cluster_id       = azurerm_kubernetes_cluster.cluster.id
+  diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
 module "diagnostics" {
   source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+  for_each = local.diagnostics_workspace_provided ? [1] : []
 
   name                       = local.diagnostics_name
   target_resource_id         = local.cluster_id

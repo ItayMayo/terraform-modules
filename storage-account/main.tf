@@ -87,10 +87,12 @@ resource "azurerm_private_dns_a_record" "a_record" {
 locals {
   diagnostics_name   = "${var.name}-storage-account-diagnostics"
   target_resource_id = azurerm_storage_account.storage_account.id
+  diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
 module "diagnostics" {
   source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+  for_each = local.diagnostics_workspace_provided ? [1] : []
 
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id

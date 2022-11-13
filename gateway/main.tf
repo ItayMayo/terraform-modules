@@ -140,10 +140,12 @@ resource "azurerm_public_ip" "public_ip" {
 locals {
   diagnostics_name   = "${var.name}-gateway-diagnostics"
   target_resource_id = azurerm_virtual_network_gateway.virtual_network_gateway.id
+  diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
 module "diagnostics" {
   source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+  for_each = local.diagnostics_workspace_provided ? [1] : []
 
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id

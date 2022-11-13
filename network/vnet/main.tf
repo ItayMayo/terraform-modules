@@ -29,10 +29,12 @@ module "subnets" {
 locals {
   diagnostics_name   = "${var.vnet_name}-vnet-diagnostics"
   target_resource_id = azurerm_virtual_network.vnet.id
+  diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
 module "diagnostics" {
   source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+  for_each = local.diagnostics_workspace_provided ? [1] : []
 
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id

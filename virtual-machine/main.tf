@@ -103,10 +103,12 @@ resource "azurerm_virtual_machine_data_disk_attachment" "vm_disk_attachment" {
 locals {
   diagnostics_name   = "${var.vm_name}-virtual-machine-diagnostics"
   target_resource_id = azurerm_linux_virtual_machine.vm.id
+  diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
 module "diagnostics" {
   source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+  for_each = local.diagnostics_workspace_provided ? [1] : []
 
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id
