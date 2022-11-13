@@ -1,3 +1,7 @@
+/**
+* # Gateway Module
+*/
+
 locals {
   gateway_ip_name               = "primary"
   gateway_active_active_ip_name = "seconday"

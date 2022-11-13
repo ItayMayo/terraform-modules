@@ -1,8 +1,5 @@
-# ACR
-
-## Requirements
-
-No requirements.
+<!-- BEGIN_TF_DOCS -->
+# ACR Module
 
 ## Providers
 
@@ -15,15 +12,6 @@ No requirements.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_diagnostics"></a> [diagnostics](#module\_diagnostics) | github.com/ItayMayo/terraform-modules//diagnostic-settings | n/a |
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_container_registry.acr](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/container_registry) | resource |
-| [azurerm_private_dns_a_record.a_record](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
-| [azurerm_private_endpoint.endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_network_interface.acr_nic](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/network_interface) | data source |
 
 ## Inputs
 
@@ -49,3 +37,31 @@ No requirements.
 | <a name="output_id"></a> [id](#output\_id) | ACR resource id. |
 | <a name="output_name"></a> [name](#output\_name) | ACR resource name. |
 | <a name="output_object"></a> [object](#output\_object) | ACR resource object. |
+
+# Usage
+
+```
+module "acr" {
+  source = "github.com/ItayMayo/terraform-modules//acr"
+
+  # Generic Resource Initiation
+  resource_group_name = "my-rg"
+  location            = "westeurope"
+
+  #Optional. Log Workspace Analytics ID
+  log_workspace_id    = "workspace-id"
+
+  # ACR Configuration
+  acr_name = "myacr"
+  acr_sku  = "Standard"
+
+  admin_enabled                 = false
+  data_endpoint_enabled         = true
+
+  # Access Link
+  private_endpoint_subnet_id = "subnet_id"
+  private_dns_zone_name      = "privatelink.azurecr.io"
+}
+
+```
+<!-- END_TF_DOCS -->

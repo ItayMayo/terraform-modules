@@ -1,9 +1,7 @@
 # Diagnostic Settings
 
 <!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
+# Diagnostic Settings Module
 
 ## Providers
 
@@ -16,12 +14,6 @@ No requirements.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_log-categories"></a> [log-categories](#module\_log-categories) | ./log-categories | n/a |
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_monitor_diagnostic_setting.diagnostics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
 
 ## Inputs
 
@@ -42,4 +34,21 @@ No requirements.
 |------|-------------|
 | <a name="output_id"></a> [id](#output\_id) | ID of the diagnostic\_settings resource. |
 | <a name="output_object"></a> [object](#output\_object) | Object of the diagnostic\_settings resource. |
+
+# Usage
+
+```
+module "diagnostics" {
+  source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+
+  # Configuration
+  name                       = "resource-diagnostics"
+  target_resource_id         = "resource_id"
+  log_analytics_workspace_id = "workspace-id"
+
+  depends_on = [
+    target_resource
+  ]
+}
+```
 <!-- END_TF_DOCS -->

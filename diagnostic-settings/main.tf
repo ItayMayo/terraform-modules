@@ -1,3 +1,7 @@
+/**
+* # Diagnostic Settings Module
+*/
+
 locals {
   subscription_id_provided = var.subscription_id != null
 }

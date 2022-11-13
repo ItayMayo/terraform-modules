@@ -1,3 +1,7 @@
+/**
+* # AKS Module
+*/
+
 locals {
   network_profile_provided = var.network_profile != null
 }

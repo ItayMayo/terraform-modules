@@ -1,3 +1,7 @@
+/**
+* # Firewall Module
+*/
+
 locals {
   primary_ip_config_name    = "firewall-ip-configuration"
   management_ip_config_name = "management-ip-configuration"

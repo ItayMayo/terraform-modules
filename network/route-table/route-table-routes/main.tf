@@ -1,3 +1,7 @@
+/**
+* # Route Table Route Module
+*/
+
 resource "azurerm_route" "route-table-route" {
   for_each = { for index, value in var.route_table_routes : index => value }
 

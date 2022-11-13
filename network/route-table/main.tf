@@ -1,3 +1,7 @@
+/**
+* # Route Table Module
+*/
+
 resource "azurerm_route_table" "route-table" {
   name                          = var.route_table_name
   location                      = var.location

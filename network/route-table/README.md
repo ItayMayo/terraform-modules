@@ -1,9 +1,5 @@
-# Route Table
-
 <!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
+# Route Table Module
 
 ## Providers
 
@@ -14,12 +10,6 @@ No requirements.
 ## Modules
 
 No modules.
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_route_table.route-table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/route_table) | resource |
 
 ## Inputs
 
@@ -39,4 +29,19 @@ No modules.
 | <a name="output_id"></a> [id](#output\_id) | Route table resource id. |
 | <a name="output_name"></a> [name](#output\_name) | Route table resource name. |
 | <a name="output_object"></a> [object](#output\_object) | Route table resource object. |
+
+# Usage
+```
+module "route-table" {
+  source = "github.com/ItayMayo/terraform-modules//network/route-table"
+
+  # Generic Resource Configuration
+  location            = "westeurope"
+  resource_group_name = "my-rg"
+
+  route_table_name              = "route_table_name"
+  disable_bgp_route_propagation = true
+  route_table_routes            = routes
+}
+```
 <!-- END_TF_DOCS -->

@@ -1,9 +1,5 @@
-# Subnet
-
 <!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
+# Subnet Module
 
 ## Providers
 
@@ -14,14 +10,6 @@ No requirements.
 ## Modules
 
 No modules.
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_subnet.subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
-| [azurerm_subnet_network_security_group_association.nsg_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_network_security_group_association) | resource |
-| [azurerm_subnet_route_table_association.route_table_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_route_table_association) | resource |
 
 ## Inputs
 
@@ -41,4 +29,20 @@ No modules.
 | <a name="output_id"></a> [id](#output\_id) | ID of the subnet resource. |
 | <a name="output_name"></a> [name](#output\_name) | Name of the subnet resource. |
 | <a name="output_object"></a> [object](#output\_object) | Object of the subnet resource. |
+
+# Usage
+
+```
+module "subnets" {
+  source = "github.com/ItayMayo/terraform-modules//network/subnet"
+
+  # Configuration
+  resource_group_name  = "my-rg"
+  virtual_network_name = "my-vnet"
+  name                 = "my-subnet"
+  address_prefixes     = ["10.0.0.0/24"]
+  nsg_id               = "nsg_id"
+  route_table_id       = "route_table_id"
+}
+```
 <!-- END_TF_DOCS -->

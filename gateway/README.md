@@ -1,9 +1,5 @@
-# Gateway
-
 <!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
+# Gateway Module
 
 ## Providers
 
@@ -16,14 +12,6 @@ No requirements.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_diagnostics"></a> [diagnostics](#module\_diagnostics) | github.com/ItayMayo/terraform-modules//diagnostic-settings | n/a |
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_public_ip.public_ip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
-| [azurerm_virtual_network_gateway.virtual_network_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network_gateway) | resource |
-| [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 
 ## Inputs
 
@@ -52,4 +40,24 @@ No requirements.
 | <a name="output_id"></a> [id](#output\_id) | ID of the VNG resource. |
 | <a name="output_name"></a> [name](#output\_name) | Name of the VNG resource. |
 | <a name="output_object"></a> [object](#output\_object) | Object of the VNG resource. |
+
+# Usage
+
+```
+module "vpn-gateway" {
+  source = "github.com/ItayMayo/terraform-modules//gateway"
+
+  # Generic Resource Configuration
+  resource_group_name = "my-rg"
+  location            = local.location
+  log_workspace_id    = module.log-analytics-workspace.id
+
+  # Gateway Configuration
+  gateway_name      = "my-vpn-gateway"
+  gateway_subnet_id = GatewaySubnet
+
+  enable_point_to_site     = false
+}
+
+```
 <!-- END_TF_DOCS -->

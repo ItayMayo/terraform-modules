@@ -1,9 +1,5 @@
-# Network Interface
-
 <!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
+# Network Interface
 
 ## Providers
 
@@ -16,12 +12,6 @@ No requirements.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_diagnostics"></a> [diagnostics](#module\_diagnostics) | github.com/ItayMayo/terraform-modules//diagnostic-settings | n/a |
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_network_interface.network_interface](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface) | resource |
 
 ## Inputs
 
@@ -43,4 +33,21 @@ No requirements.
 | <a name="output_id"></a> [id](#output\_id) | ID of the network interface resource. |
 | <a name="output_name"></a> [name](#output\_name) | Name of the network interface resource. |
 | <a name="output_object"></a> [object](#output\_object) | Object of the network interface resource. |
+
+# Usage
+
+```
+module "network-interface" {
+  source = "github.com/ItayMayo/terraform-modules//Network/network-interface"
+
+  # Generic Resource Configuration
+  resource_group_name = "my-rg"
+  location            = "westeurope"
+
+  # Network Interface Configuration
+  name                  = "my-nic"
+  ip_configuration_name = "my-nic-ip"
+  subnet_id             = "subnet-id"
+}
+```
 <!-- END_TF_DOCS -->
