@@ -114,6 +114,7 @@ locals {
   should_create_two_pips   = var.enable_active_active || var.enable_point_to_site
   number_of_pips           = local.should_create_three_pips ? 3 : (local.should_create_two_pips ? 2 : 1)
 
+  pip_name_prefix       = "${var.name}-vng-pip"
   pip_allocation_method = "Static"
   pip_sku               = "Standard"
   pip_zones             = [1, 2, 3]
@@ -122,7 +123,7 @@ locals {
 resource "azurerm_public_ip" "public_ip" {
   for_each = { for i in range(local.number_of_pips) : tostring(i) => tostring(i) }
 
-  name                = "vng_pip_${each.value}"
+  name                = "${pip_name_prefix}-${each.value}"
   resource_group_name = var.resource_group_name
   location            = var.location
 
