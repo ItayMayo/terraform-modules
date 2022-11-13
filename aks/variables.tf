@@ -73,21 +73,13 @@ variable "network_profile" {
 }
 
 variable "private_endpoint_subnet_id" {
-  default     = null
   type        = string
-  description = "Optional. ID of the subnet in which to create a private endpoint for this AKS."
-}
-
-variable "create_private_dns" {
-  default     = false
-  type        = bool
-  description = "Optional. Create Private DNS associated with the AKS. Requires Private Endpoint. Default: false."
+  description = "Required. ID of the subnet in which to create a private endpoint for this AKS."
 }
 
 variable "private_dns_vnets" {
-  default     = null
   type        = map(string)
-  description = "Optional. Map of Virtual Networks to associate with the AKS. Required when create_private_dns is enabled."
+  description = "Required. Map of Virtual Networks to associate with the AKS. Required when create_private_dns is enabled."
 }
 
 variable "aks_acr_ids" {

@@ -61,19 +61,16 @@ resource "azurerm_kubernetes_cluster" "cluster" {
 }
 
 locals {
-  create_private_endpoint = var.private_endpoint_subnet_id != null
   endpoint_name           = "${azurerm_kubernetes_cluster.cluster.name}-private-endpoint"
   is_manual_connection    = false
   subresource_names       = ["management"]
 }
 
 resource "azurerm_private_endpoint" "endpoint" {
-  for_each = local.create_private_endpoint ? { aks_endpoint = var.private_endpoint_subnet_id } : {}
-
   name                = local.endpoint_name
   location            = var.location
   resource_group_name = var.resource_group_name
-  subnet_id           = each.value
+  subnet_id           = var.private_endpoint_subnet_id
 
   private_service_connection {
     name                           = local.endpoint_name
@@ -93,8 +90,6 @@ locals {
 
 module "aks-private-dns" {
   source = "github.com/ItayMayo/terraform-modules//private-dns"
-
-  for_each = var.create_private_dns ? { aks_dns = "aks_dns" } : {}
 
   resource_group_name = var.resource_group_name
 
