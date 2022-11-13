@@ -18,9 +18,9 @@ resource "azurerm_container_registry" "acr" {
 }
 
 locals {
-  endpoint_name           = "${azurerm_container_registry.acr.name}-private-endpoint"
-  is_manual_connection    = false
-  subresource_names       = ["registry"]
+  endpoint_name        = "${azurerm_container_registry.acr.name}-private-endpoint"
+  is_manual_connection = false
+  subresource_names    = ["registry"]
 }
 
 resource "azurerm_private_endpoint" "endpoint" {
@@ -37,11 +37,19 @@ resource "azurerm_private_endpoint" "endpoint" {
   }
 
   tags = var.tags
+
+  depends_on = [
+    azurerm_container_registry.acr
+  ]
 }
 
 data "azurerm_network_interface" "acr_nic" {
   name                = azurerm_private_endpoint.endpoint["acr_endpoint"].network_interface[0]["name"]
   resource_group_name = var.resource_group_name
+
+  depends_on = [
+    azurerm_private_endpoint.endpoint
+  ]
 }
 
 locals {
@@ -78,13 +86,13 @@ resource "azurerm_private_dns_a_record" "a_record" {
 }
 
 locals {
-  diagnostics_name   = "${var.name}-acr-diagnostics"
-  target_resource_id = azurerm_container_registry.acr.id
+  diagnostics_name               = "${var.name}-acr-diagnostics"
+  target_resource_id             = azurerm_container_registry.acr.id
   diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
 module "diagnostics" {
-  source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+  source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
   for_each = local.diagnostics_workspace_provided ? [1] : []
 
   name                       = local.diagnostics_name

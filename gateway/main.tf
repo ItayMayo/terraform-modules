@@ -14,6 +14,29 @@ locals {
 
 data "azurerm_client_config" "current" {}
 
+locals {
+  should_create_three_pips = var.enable_active_active && var.enable_point_to_site
+  should_create_two_pips   = var.enable_active_active || var.enable_point_to_site
+  number_of_pips           = local.should_create_three_pips ? 3 : (local.should_create_two_pips ? 2 : 1)
+
+  pip_name_prefix       = "${var.name}-vng-pip"
+  pip_allocation_method = "Static"
+  pip_sku               = "Standard"
+  pip_zones             = [1, 2, 3]
+}
+
+resource "azurerm_public_ip" "public_ip" {
+  for_each = { for i in range(local.number_of_pips) : tostring(i) => tostring(i) }
+
+  name                = "${pip_name_prefix}-${each.value}"
+  resource_group_name = var.resource_group_name
+  location            = var.location
+
+  allocation_method = local.pip_allocation_method
+  sku               = local.pip_sku
+  zones             = local.pip_zones
+  tags              = var.tags
+}
 
 resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
   name                = var.name
@@ -29,7 +52,7 @@ resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
   generation    = var.sku_generation
 
   dynamic "ip_configuration" {
-    for_each = [try(azurerm_public_ip.public_ip["0"], [])]
+    for_each = azurerm_public_ip.public_ip["0"]
 
     content {
       name                          = local.gateway_ip_name
@@ -111,40 +134,21 @@ resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
   }
 
   tags = var.tags
+
+  depends_on = [
+    azurerm_public_ip.public_ip,
+    data.azurerm_client_config.current
+  ]
 }
 
 locals {
-  should_create_three_pips = var.enable_active_active && var.enable_point_to_site
-  should_create_two_pips   = var.enable_active_active || var.enable_point_to_site
-  number_of_pips           = local.should_create_three_pips ? 3 : (local.should_create_two_pips ? 2 : 1)
-
-  pip_name_prefix       = "${var.name}-vng-pip"
-  pip_allocation_method = "Static"
-  pip_sku               = "Standard"
-  pip_zones             = [1, 2, 3]
-}
-
-resource "azurerm_public_ip" "public_ip" {
-  for_each = { for i in range(local.number_of_pips) : tostring(i) => tostring(i) }
-
-  name                = "${pip_name_prefix}-${each.value}"
-  resource_group_name = var.resource_group_name
-  location            = var.location
-
-  allocation_method = local.pip_allocation_method
-  sku               = local.pip_sku
-  zones             = local.pip_zones
-  tags              = var.tags
-}
-
-locals {
-  diagnostics_name   = "${var.name}-gateway-diagnostics"
-  target_resource_id = azurerm_virtual_network_gateway.virtual_network_gateway.id
+  diagnostics_name               = "${var.name}-gateway-diagnostics"
+  target_resource_id             = azurerm_virtual_network_gateway.virtual_network_gateway.id
   diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
 module "diagnostics" {
-  source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+  source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
   for_each = local.diagnostics_workspace_provided ? [1] : []
 
   name                       = local.diagnostics_name

@@ -4,7 +4,7 @@
 
 locals {
   network_rules_provided = var.network_rules != null
-  public_access = false
+  public_access          = false
 }
 
 resource "azurerm_storage_account" "storage_account" {
@@ -43,9 +43,9 @@ resource "azurerm_storage_account" "storage_account" {
 }
 
 locals {
-  endpoint_name           = "${azurerm_storage_account.storage_account.name}-private-endpoint"
-  is_manual_connection    = false
-  subresource_names       = ["blob"]
+  endpoint_name        = "${azurerm_storage_account.storage_account.name}-private-endpoint"
+  is_manual_connection = false
+  subresource_names    = ["blob"]
 }
 
 resource "azurerm_private_endpoint" "endpoint" {
@@ -62,6 +62,10 @@ resource "azurerm_private_endpoint" "endpoint" {
   }
 
   tags = var.tags
+
+  depends_on = [
+    azurerm_storage_account.storage_account
+  ]
 }
 
 locals {
@@ -85,13 +89,13 @@ resource "azurerm_private_dns_a_record" "a_record" {
 }
 
 locals {
-  diagnostics_name   = "${var.name}-storage-account-diagnostics"
-  target_resource_id = azurerm_storage_account.storage_account.id
+  diagnostics_name               = "${var.name}-storage-account-diagnostics"
+  target_resource_id             = azurerm_storage_account.storage_account.id
   diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
 module "diagnostics" {
-  source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+  source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
   for_each = local.diagnostics_workspace_provided ? [1] : []
 
   name                       = local.diagnostics_name

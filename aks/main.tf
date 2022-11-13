@@ -3,9 +3,9 @@
 */
 
 locals {
-  identity_provided = var.identity != null
-  network_profile_provided = var.network_profile != null
-  private_cluster = true
+  identity_provided             = var.identity != null
+  network_profile_provided      = var.network_profile != null
+  private_cluster               = true
   public_network_access_enabled = false
 }
 
@@ -61,9 +61,9 @@ resource "azurerm_kubernetes_cluster" "cluster" {
 }
 
 locals {
-  endpoint_name           = "${azurerm_kubernetes_cluster.cluster.name}-private-endpoint"
-  is_manual_connection    = false
-  subresource_names       = ["management"]
+  endpoint_name        = "${azurerm_kubernetes_cluster.cluster.name}-private-endpoint"
+  is_manual_connection = false
+  subresource_names    = ["management"]
 }
 
 resource "azurerm_private_endpoint" "endpoint" {
@@ -80,6 +80,10 @@ resource "azurerm_private_endpoint" "endpoint" {
   }
 
   tags = var.tags
+
+  depends_on = [
+    azurerm_kubernetes_cluster.cluster
+  ]
 }
 
 locals {
@@ -130,13 +134,13 @@ resource "azurerm_role_assignment" "aks-role-assignment" {
 
 
 locals {
-  diagnostics_name = "${var.name}-aks-diagnostics"
-  cluster_id       = azurerm_kubernetes_cluster.cluster.id
+  diagnostics_name               = "${var.name}-aks-diagnostics"
+  cluster_id                     = azurerm_kubernetes_cluster.cluster.id
   diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
 module "diagnostics" {
-  source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+  source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
   for_each = local.diagnostics_workspace_provided ? [1] : []
 
   name                       = local.diagnostics_name

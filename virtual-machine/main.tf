@@ -67,6 +67,10 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 
   tags = var.tags
+
+  depends_on = [
+    module.vm-network-interface
+  ]
 }
 
 locals {
@@ -98,16 +102,20 @@ resource "azurerm_virtual_machine_data_disk_attachment" "vm_disk_attachment" {
   virtual_machine_id = azurerm_linux_virtual_machine.vm.id
   lun                = (each.value + 1) * 10
   caching            = local.vm_disk_caching
+
+  depends_on = [
+    azurerm_linux_virtual_machine.vm
+  ]
 }
 
 locals {
-  diagnostics_name   = "${var.vm_name}-virtual-machine-diagnostics"
-  target_resource_id = azurerm_linux_virtual_machine.vm.id
+  diagnostics_name               = "${var.vm_name}-virtual-machine-diagnostics"
+  target_resource_id             = azurerm_linux_virtual_machine.vm.id
   diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
 module "diagnostics" {
-  source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+  source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
   for_each = local.diagnostics_workspace_provided ? [1] : []
 
   name                       = local.diagnostics_name

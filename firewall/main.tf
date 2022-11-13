@@ -2,6 +2,34 @@
 * # Firewall Module
 */
 
+resource "azurerm_firewall_policy" "firewall_policy" {
+  name                = var.firewall_policy_name
+  resource_group_name = var.resource_group_name
+  location            = var.location
+}
+
+locals {
+  firewall_pip_name     = "${var.firewall_name}-pip"
+  management_pip_name   = "${var.firewall_name}-management-pip"
+  pip_allocation_method = "Static"
+  pip_sku               = "Standard"
+  pip_zones             = [1, 2, 3]
+}
+
+resource "azurerm_public_ip" "public_ip" {
+  for_each = var.enable_tunneling ? toset([local.firewall_pip_name, local.management_pip_name]) : [local.firewall_pip_name]
+
+  name                = each.value
+  resource_group_name = var.resource_group_name
+  location            = var.location
+
+  allocation_method = local.pip_allocation_method
+  sku               = local.pip_sku
+  zones             = local.pip_zones
+
+  tags = var.tags
+}
+
 locals {
   primary_ip_config_name    = "firewall-ip-configuration"
   management_ip_config_name = "management-ip-configuration"
@@ -36,34 +64,11 @@ resource "azurerm_firewall" "firewall" {
   }
 
   tags = var.tags
-}
 
-resource "azurerm_firewall_policy" "firewall_policy" {
-  name                = var.firewall_policy_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-}
-
-locals {
-  firewall_pip_name     = "${var.firewall_name}-pip"
-  management_pip_name   = "${var.firewall_name}-management-pip"
-  pip_allocation_method = "Static"
-  pip_sku               = "Standard"
-  pip_zones             = [1, 2, 3]
-}
-
-resource "azurerm_public_ip" "public_ip" {
-  for_each = var.enable_tunneling ? toset([local.firewall_pip_name, local.management_pip_name]) : [local.firewall_pip_name]
-
-  name                = each.value
-  resource_group_name = var.resource_group_name
-  location            = var.location
-
-  allocation_method = local.pip_allocation_method
-  sku               = local.pip_sku
-  zones             = local.pip_zones
-
-  tags = var.tags
+  depends_on = [
+    azurerm_firewall_policy.firewall_policy,
+    azurerm_public_ip.public_ip
+  ]
 }
 
 locals {
@@ -98,6 +103,10 @@ resource "azurerm_firewall_policy_rule_collection_group" "firewall_policy_networ
       }
     }
   }
+
+  depends_on = [
+    azurerm_firewall_policy.firewall_policy
+  ]
 }
 
 locals {
@@ -139,6 +148,10 @@ resource "azurerm_firewall_policy_rule_collection_group" "firewall_policy_applic
       }
     }
   }
+
+  depends_on = [
+    azurerm_firewall_policy.firewall_policy
+  ]
 }
 
 locals {
@@ -175,17 +188,21 @@ resource "azurerm_firewall_policy_rule_collection_group" "firewall_policy_nat_co
       }
     }
   }
+
+  depends_on = [
+    azurerm_firewall_policy.firewall_policy
+  ]
 }
 
 
 locals {
-  diagnostics_name   = "${var.firewall_name}-firewall-diagnostics"
-  target_resource_id = azurerm_firewall.firewall.id
+  diagnostics_name               = "${var.firewall_name}-firewall-diagnostics"
+  target_resource_id             = azurerm_firewall.firewall.id
   diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
 module "diagnostics" {
-  source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+  source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
   for_each = local.diagnostics_workspace_provided ? [1] : []
 
   name                       = local.diagnostics_name

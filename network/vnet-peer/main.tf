@@ -7,7 +7,7 @@ locals {
   target_origin_suffix = "target_origin"
 }
 
-resource "azurerm_virtual_network_peering" "peering_1_2" {
+resource "azurerm_virtual_network_peering" "peering_origin_target" {
   name                      = "${var.name}_${local.origin_target_suffix}"
   resource_group_name       = var.origin_resource_group_name
   virtual_network_name      = var.origin_vnet_name
@@ -18,7 +18,7 @@ resource "azurerm_virtual_network_peering" "peering_1_2" {
   use_remote_gateways     = var.allow_target_gateway_transit
 }
 
-resource "azurerm_virtual_network_peering" "peering_2_1" {
+resource "azurerm_virtual_network_peering" "peering_target_origin" {
   name                      = "${var.name}_${local.target_origin_suffix}"
   resource_group_name       = var.target_resource_group_name
   virtual_network_name      = var.target_vnet_name
