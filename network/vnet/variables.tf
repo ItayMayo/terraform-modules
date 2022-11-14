@@ -40,7 +40,7 @@ variable "subnets" {
   type = map(object({
     subnet_name      = string
     address_prefixes = list(string)
-    nsg_id           = optional(string)
+    nsg_name         = optional(string)
     route_table_id   = optional(string)
   }))
 
