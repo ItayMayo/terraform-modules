@@ -36,12 +36,6 @@ variable "admin_enabled" {
   description = "(Optional) Enable admin account. Default: false."
 }
 
-variable "data_endpoint_enabled" {
-  default     = true
-  type        = bool
-  description = "(Required) Enable ACR Data Endpoint. Default: true."
-}
-
 variable "private_endpoint_subnet_id" {
   type        = string
   description = "(Required) ID of the subnet in which to create a private endpoint for this ACR."
@@ -50,4 +44,9 @@ variable "private_endpoint_subnet_id" {
 variable "private_dns_zone_name" {
   type        = string
   description = "(Required) Name of a Private DNS zone to be associated with the ACR."
+}
+
+variable "acr_endpoint_ip_address" {
+  type        = string
+  description = "(Required) Private IP Address to be assigned to the ACR endpoint."
 }
