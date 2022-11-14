@@ -43,43 +43,30 @@ resource "azurerm_storage_account" "storage_account" {
 }
 
 locals {
-  nic_name              = "${var.name}-endpoint-nic"
-  ip_configuration_name = "internal"
-}
-
-module "endpoint-network-interface" {
-  source = "github.com/ItayMayo/terraform-modules//Network/network-interface"
-
-  name                = local.nic_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  log_workspace_id    = var.log_workspace_id
-
-  private_ip_address    = var.endpoint_ip_address
-  ip_configuration_name = local.ip_configuration_name
-  subnet_id             = var.private_endpoint_subnet_id
-
-  tags = var.tags
-}
-
-locals {
   endpoint_name        = "${azurerm_storage_account.storage_account.name}-private-endpoint"
   is_manual_connection = false
   subresource_names    = ["blob"]
+
+  ip_configuration_name = "internal"
 }
 
 resource "azurerm_private_endpoint" "endpoint" {
-  name                          = local.endpoint_name
-  location                      = var.location
-  resource_group_name           = var.resource_group_name
-  subnet_id                     = var.private_endpoint_subnet_id
-  custom_network_interface_name = module.endpoint-network-interface.name
+  name                = local.endpoint_name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  subnet_id           = var.private_endpoint_subnet_id
 
   private_service_connection {
     name                           = local.endpoint_name
     private_connection_resource_id = azurerm_storage_account.storage_account.id
     is_manual_connection           = local.is_manual_connection
     subresource_names              = local.subresource_names
+  }
+
+  ip_configuration {
+    name               = local.ip_configuration_name
+    private_ip_address = var.endpoint_ip_address
+    subresource_name   = local.subresource_names[0]
   }
 
   tags = var.tags
