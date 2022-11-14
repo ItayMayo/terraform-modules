@@ -17,39 +17,16 @@ resource "azurerm_container_registry" "acr" {
 }
 
 locals {
-  nic_name              = "${var.name}-endpoint-nic"
-  ip_configuration_name = "internal"
-}
-
-module "endpoint-network-interface" {
-  source = "github.com/ItayMayo/terraform-modules//Network/network-interface"
-
-  name                = local.nic_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  log_workspace_id    = var.log_workspace_id
-
-  private_ip_address    = var.acr_endpoint_ip_address
-  ip_configuration_name = local.ip_configuration_name
-  subnet_id             = var.private_endpoint_subnet_id
-
-  tags = var.tags
-}
-
-locals {
   endpoint_name        = "${azurerm_container_registry.acr.name}-private-endpoint"
   is_manual_connection = false
   subresource_names    = ["registry"]
-
-  ip_configuration_name = "internal"
 }
 
 resource "azurerm_private_endpoint" "endpoint" {
-  name                          = local.endpoint_name
-  location                      = var.location
-  resource_group_name           = var.resource_group_name
-  subnet_id                     = var.private_endpoint_subnet_id
-  custom_network_interface_name = module.endpoint-network-interface.name
+  name                = local.endpoint_name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  subnet_id           = var.private_endpoint_subnet_id
 
   private_service_connection {
     name                           = local.endpoint_name
@@ -61,8 +38,7 @@ resource "azurerm_private_endpoint" "endpoint" {
   tags = var.tags
 
   depends_on = [
-    azurerm_container_registry.acr,
-    module.endpoint-network-interface
+    azurerm_container_registry.acr
   ]
 }
 
@@ -74,7 +50,7 @@ locals {
     acr_normal_record = {
       name    = local.normal_record_name
       ttl     = local.dns_record_ttl
-      records = [var.acr_endpoint_ip_address]
+      records = [azurerm_private_endpoint.endpoint.private_service_connection[0].private_ip_address]
     }
   }
 }

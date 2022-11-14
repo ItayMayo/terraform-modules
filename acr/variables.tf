@@ -45,8 +45,3 @@ variable "private_dns_zone_name" {
   type        = string
   description = "(Required) Name of a Private DNS zone to be associated with the ACR."
 }
-
-variable "acr_endpoint_ip_address" {
-  type        = string
-  description = "(Required) Private IP Address to be assigned to the ACR endpoint."
-}
