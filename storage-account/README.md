@@ -19,6 +19,7 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_kind"></a> [account\_kind](#input\_account\_kind) | (Required) Storage Account kind. Default: StorageV2. | `string` | `"StorageV2"` | no |
 | <a name="input_account_tier"></a> [account\_tier](#input\_account\_tier) | (Required) Storage Accuont tier. Default: Standard. | `string` | `"Standard"` | no |
+| <a name="input_endpoint_ip_address"></a> [endpoint\_ip\_address](#input\_endpoint\_ip\_address) | (Required) Private IP Address to associate with this Storage Account's private endpoint. | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | (Required) Location of the resource. | `string` | n/a | yes |
 | <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Optional) ID of the log analytics workspace where logs should be sent to. | `string` | `null` | no |
 | <a name="input_name"></a> [name](#input\_name) | (Required) Storage Accuont name. | `string` | n/a | yes |

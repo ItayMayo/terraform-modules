@@ -26,7 +26,7 @@ variable "name" {
 }
 
 variable "ip_configuration_name" {
-  default = "internal"
+  default     = "internal"
   type        = string
   description = "(Optional) Network interface IP configuration name. Defualt: internal."
 }
@@ -36,8 +36,8 @@ variable "subnet_id" {
   description = "(Required) ID of the subnet to associate the network interface with."
 }
 
-variable "private_ip_address_allocation" {
-  default     = "Dynamic"
+variable "private_ip_address" {
+  default     = null
   type        = string
-  description = "(Optional) Network interface ip allocation method. Default: Dynamic."
+  description = "(Optional) Network interface Private IP address."
 }

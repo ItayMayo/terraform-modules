@@ -13,7 +13,6 @@ resource "azurerm_container_registry" "acr" {
   sku                           = var.sku
   admin_enabled                 = var.admin_enabled
   public_network_access_enabled = local.public_network_enabled
-  data_endpoint_enabled         = var.data_endpoint_enabled
   tags                          = var.tags
 }
 
@@ -21,6 +20,8 @@ locals {
   endpoint_name        = "${azurerm_container_registry.acr.name}-private-endpoint"
   is_manual_connection = false
   subresource_names    = ["registry"]
+
+  ip_configuration_name = "internal"
 }
 
 resource "azurerm_private_endpoint" "endpoint" {
@@ -36,6 +37,12 @@ resource "azurerm_private_endpoint" "endpoint" {
     subresource_names              = local.subresource_names
   }
 
+  ip_configuration {
+    ip_configuration_name = local.ip_configuration_name
+    private_ip_address    = var.acr_endpoint_ip_address
+    subresource_name      = local.subresource_names[0]
+  }
+
   tags = var.tags
 
   depends_on = [
@@ -43,30 +50,15 @@ resource "azurerm_private_endpoint" "endpoint" {
   ]
 }
 
-data "azurerm_network_interface" "acr_nic" {
-  name                = azurerm_private_endpoint.endpoint.network_interface[0]["name"]
-  resource_group_name = var.resource_group_name
-
-  depends_on = [
-    azurerm_private_endpoint.endpoint
-  ]
-}
-
 locals {
-  data_record_name   = "${lower(azurerm_container_registry.acr.name)}.${var.location}.data"
   normal_record_name = lower(azurerm_container_registry.acr.name)
   dns_record_ttl     = 3600
 
   zone_a_records = {
-    acr_data_record = {
-      name    = local.data_record_name
-      ttl     = local.dns_record_ttl
-      records = [data.azurerm_network_interface.acr_nic.private_ip_addresses[0]]
-    },
     acr_normal_record = {
       name    = local.normal_record_name
       ttl     = local.dns_record_ttl
-      records = [data.azurerm_network_interface.acr_nic.private_ip_addresses[1]]
+      records = [var.acr_endpoint_ip_address]
     }
   }
 }
@@ -93,7 +85,7 @@ locals {
 
 module "diagnostics" {
   source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
-  for_each = local.diagnostics_workspace_provided ? {"1": "1"} : {}
+  for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
 
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id

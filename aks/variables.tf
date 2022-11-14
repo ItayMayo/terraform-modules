@@ -38,14 +38,14 @@ variable "aks_private_dns_zone_id" {
 
 variable "default_node_pool" {
   type = object({
-    name                  = string
-    vm_size               = string
-    enable_auto_scaling   = optional(bool)
-    node_count            = optional(number)
-    os_sku                = optional(string)
-    max_count             = optional(number)
-    min_count             = optional(number)
-    vnet_subnet_id        = optional(string)
+    name                = string
+    vm_size             = string
+    enable_auto_scaling = optional(bool)
+    node_count          = optional(number)
+    os_sku              = optional(string)
+    max_count           = optional(number)
+    min_count           = optional(number)
+    vnet_subnet_id      = optional(string)
   })
 
   description = "(Required) Default node pool block. If auto scaling is enabled, min_count and max_count must be set. Otherwise, node_count must be set."
@@ -86,4 +86,9 @@ variable "aks_acr_ids" {
   default     = null
   type        = map(string)
   description = "(Optional) Ids of Azure Container Registries to assign to this cluster."
+}
+
+variable "endpoint_ip_address" {
+  type        = string
+  description = "(Required) Private IP Address to associate with this Storage Account's private endpoint."
 }

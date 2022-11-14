@@ -110,6 +110,12 @@ variable "identity" {
 variable "disk_sizes_in_gb" {
   default = [-1]
 
-  type = list(number)
+  type        = list(number)
   description = "(Optional) List of sizes for additional disks to attach to this Virtual Machine."
+}
+
+variable "private_ip_address" {
+  default     = null
+  type        = string
+  description = "(Optional) Private IP Address to associate with this Virtual Machine."
 }

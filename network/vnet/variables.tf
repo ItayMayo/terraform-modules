@@ -46,3 +46,22 @@ variable "subnets" {
 
   description = "(Required) Map of subnets to be associated with this Virtual Network."
 }
+
+variable "security_groups" {
+  default = null
+  type = map(list(object({
+    name                         = string
+    priority                     = number
+    direction                    = string
+    access                       = string
+    protocol                     = string
+    source_port_range            = string
+    destination_port_range       = string
+    source_address_prefix        = optional(string)
+    source_address_prefixes      = optional(list(string))
+    destination_address_prefix   = optional(string)
+    destination_address_prefixes = optional(list(string))
+  })))
+
+  description = "(Optional) Network Security Groups to create."
+}

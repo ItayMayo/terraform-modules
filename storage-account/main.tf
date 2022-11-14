@@ -46,6 +46,8 @@ locals {
   endpoint_name        = "${azurerm_storage_account.storage_account.name}-private-endpoint"
   is_manual_connection = false
   subresource_names    = ["blob"]
+
+  ip_configuration_name = "internal"
 }
 
 resource "azurerm_private_endpoint" "endpoint" {
@@ -61,6 +63,12 @@ resource "azurerm_private_endpoint" "endpoint" {
     subresource_names              = local.subresource_names
   }
 
+  ip_configuration {
+    ip_configuration_name = local.ip_configuration_name
+    private_ip_address    = var.endpoint_ip_address
+    subresource_name      = local.subresource_names[0]
+  }
+
   tags = var.tags
 
   depends_on = [
@@ -71,7 +79,6 @@ resource "azurerm_private_endpoint" "endpoint" {
 locals {
   dns_record_ttl         = 300
   create_dns_zone_record = var.private_dns_zone_name != null
-  endpoint_private_ip    = azurerm_private_endpoint.endpoint.private_service_connection[0].private_ip_address
 }
 
 resource "azurerm_private_dns_a_record" "a_record" {
@@ -81,7 +88,7 @@ resource "azurerm_private_dns_a_record" "a_record" {
   zone_name           = var.private_dns_zone_name
   resource_group_name = var.resource_group_name
   ttl                 = local.dns_record_ttl
-  records             = [local.endpoint_private_ip]
+  records             = [var.endpoint_ip_address]
 
   depends_on = [
     azurerm_private_endpoint.endpoint
@@ -96,7 +103,7 @@ locals {
 
 module "diagnostics" {
   source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
-    for_each = local.diagnostics_workspace_provided ? {"1": "1"} : {}
+  for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
 
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id

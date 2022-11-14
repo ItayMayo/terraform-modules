@@ -71,3 +71,8 @@ variable "private_dns_zone_name" {
   type        = string
   description = "(Optional) Name of a Private DNS zone to be associated with the storage account."
 }
+
+variable "endpoint_ip_address" {
+  type = string
+  description = "(Required) Private IP Address to associate with this Storage Account's private endpoint."
+}
