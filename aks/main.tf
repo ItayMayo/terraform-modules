@@ -104,7 +104,7 @@ module "aks-private-dns" {
     storage_account = {
       name    = local.aks_dns_record_name
       ttl     = local.dns_record_ttl
-      records = [azurerm_private_endpoint.endpoint["aks_endpoint"].private_service_connection[0].private_ip_address]
+      records = [azurerm_private_endpoint.endpoint.private_service_connection[0].private_ip_address]
     }
   }
 
@@ -141,7 +141,7 @@ locals {
 
 module "diagnostics" {
   source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
-  for_each = local.diagnostics_workspace_provided ? [1] : []
+    for_each = local.diagnostics_workspace_provided ? {"1": "1"} : {}
 
   name                       = local.diagnostics_name
   target_resource_id         = local.cluster_id

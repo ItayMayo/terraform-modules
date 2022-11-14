@@ -33,10 +33,10 @@
 
 | Name | Description |
 |------|-------------|
-| <a name="output_endpoint_object"></a> [endpoint\_object](#output\_endpoint\_object) | Storage Account Private Endpoint resource object. |
+| <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | Endpoint object associated with the Storage Account. |
 | <a name="output_id"></a> [id](#output\_id) | Storage Account resource id. |
-| <a name="output_name"></a> [name](#output\_name) | Storage Accuont resource name. |
-| <a name="output_object"></a> [object](#output\_object) | Storage Accuont resource object. |
+| <a name="output_name"></a> [name](#output\_name) | Storage Account resource name. |
+| <a name="output_object"></a> [object](#output\_object) | Storage Account resource object. |
 
 # Usage
 

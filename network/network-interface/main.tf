@@ -17,14 +17,14 @@ resource "azurerm_network_interface" "network_interface" {
 }
 
 locals {
-  diagnostics_name   = "${var.name}-nic-diagnostics"
-  target_resource_id = azurerm_network_interface.network_interface.id
+  diagnostics_name               = "${var.name}-nic-diagnostics"
+  target_resource_id             = azurerm_network_interface.network_interface.id
   diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
 module "diagnostics" {
-  source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
-  for_each = local.diagnostics_workspace_provided ? [1] : []
+  source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+  for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
 
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id

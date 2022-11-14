@@ -44,7 +44,7 @@ resource "azurerm_private_endpoint" "endpoint" {
 }
 
 data "azurerm_network_interface" "acr_nic" {
-  name                = azurerm_private_endpoint.endpoint["acr_endpoint"].network_interface[0]["name"]
+  name                = azurerm_private_endpoint.endpoint.network_interface[0]["name"]
   resource_group_name = var.resource_group_name
 
   depends_on = [
@@ -61,12 +61,12 @@ locals {
     acr_data_record = {
       name    = local.data_record_name
       ttl     = local.dns_record_ttl
-      records = [data.azurerm_network_interface.acr_nic["acr"].private_ip_addresses[0]]
+      records = [data.azurerm_network_interface.acr_nic.private_ip_addresses[0]]
     },
     acr_normal_record = {
       name    = local.normal_record_name
       ttl     = local.dns_record_ttl
-      records = [data.azurerm_network_interface.acr_nic["acr"].private_ip_addresses[1]]
+      records = [data.azurerm_network_interface.acr_nic.private_ip_addresses[1]]
     }
   }
 }
@@ -93,7 +93,7 @@ locals {
 
 module "diagnostics" {
   source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
-  for_each = local.diagnostics_workspace_provided ? [1] : []
+  for_each = local.diagnostics_workspace_provided ? {"1": "1"} : {}
 
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id

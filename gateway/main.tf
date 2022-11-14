@@ -28,7 +28,7 @@ locals {
 resource "azurerm_public_ip" "public_ip" {
   for_each = { for i in range(local.number_of_pips) : tostring(i) => tostring(i) }
 
-  name                = "${pip_name_prefix}-${each.value}"
+  name                = "${local.pip_name_prefix}-${each.value}"
   resource_group_name = var.resource_group_name
   location            = var.location
 
@@ -52,7 +52,7 @@ resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
   generation    = var.sku_generation
 
   dynamic "ip_configuration" {
-    for_each = azurerm_public_ip.public_ip["0"]
+    for_each = [azurerm_public_ip.public_ip["0"]]
 
     content {
       name                          = local.gateway_ip_name
@@ -149,7 +149,7 @@ locals {
 
 module "diagnostics" {
   source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
-  for_each = local.diagnostics_workspace_provided ? [1] : []
+    for_each = local.diagnostics_workspace_provided ? {"1": "1"} : {}
 
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id

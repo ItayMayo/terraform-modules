@@ -71,7 +71,7 @@ resource "azurerm_private_endpoint" "endpoint" {
 locals {
   dns_record_ttl         = 300
   create_dns_zone_record = var.private_dns_zone_name != null
-  endpoint_private_ip    = azurerm_private_endpoint.endpoint["storage_endpoint"].private_service_connection[0].private_ip_address
+  endpoint_private_ip    = azurerm_private_endpoint.endpoint.private_service_connection[0].private_ip_address
 }
 
 resource "azurerm_private_dns_a_record" "a_record" {
@@ -96,7 +96,7 @@ locals {
 
 module "diagnostics" {
   source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
-  for_each = local.diagnostics_workspace_provided ? [1] : []
+    for_each = local.diagnostics_workspace_provided ? {"1": "1"} : {}
 
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id
