@@ -17,8 +17,8 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_acr_endpoint_ip_address"></a> [acr\_endpoint\_ip\_address](#input\_acr\_endpoint\_ip\_address) | (Required) Private IP Address to be assigned to the ACR endpoint. | `string` | n/a | yes |
 | <a name="input_admin_enabled"></a> [admin\_enabled](#input\_admin\_enabled) | (Optional) Enable admin account. Default: false. | `bool` | `false` | no |
-| <a name="input_data_endpoint_enabled"></a> [data\_endpoint\_enabled](#input\_data\_endpoint\_enabled) | (Required) Enable ACR Data Endpoint. Default: true. | `bool` | `true` | no |
 | <a name="input_location"></a> [location](#input\_location) | (Required) Location of the resource. | `string` | n/a | yes |
 | <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Optional) ID of the log analytics workspace where logs should be sent to. | `string` | `null` | no |
 | <a name="input_name"></a> [name](#input\_name) | (Required) Name of the Container Registry. | `string` | n/a | yes |
@@ -32,7 +32,6 @@
 
 | Name | Description |
 |------|-------------|
-| <a name="output_endpoint_object"></a> [endpoint\_object](#output\_endpoint\_object) | Storage Account Private Endpoint resource object. |
 | <a name="output_id"></a> [id](#output\_id) | ACR resource id. |
 | <a name="output_name"></a> [name](#output\_name) | ACR resource name. |
 | <a name="output_object"></a> [object](#output\_object) | ACR resource object. |
