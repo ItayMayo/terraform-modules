@@ -38,7 +38,7 @@ resource "azurerm_private_endpoint" "endpoint" {
   }
 
   ip_configuration {
-    ip_configuration_name = "internal"
+    ip_configuration_name = local.ip_configuration_name
     private_ip_address    = var.acr_endpoint_ip_address
     subresource_name      = local.subresource_names[0]
   }
