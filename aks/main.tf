@@ -82,9 +82,9 @@ resource "azurerm_private_endpoint" "endpoint" {
   }
 
   ip_configuration {
-    ip_configuration_name = local.ip_configuration_name
-    private_ip_address    = var.endpoint_ip_address
-    subresource_name      = local.subresource_names[0]
+    name               = local.ip_configuration_name
+    private_ip_address = var.endpoint_ip_address
+    subresource_name   = local.subresource_names[0]
   }
 
   tags = var.tags
