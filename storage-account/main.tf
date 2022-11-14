@@ -72,8 +72,7 @@ resource "azurerm_private_endpoint" "endpoint" {
   tags = var.tags
 
   depends_on = [
-    azurerm_storage_account.storage_account,
-    module.endpoint-network-interface
+    azurerm_storage_account.storage_account
   ]
 }
 
