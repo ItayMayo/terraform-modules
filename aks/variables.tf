@@ -87,8 +87,3 @@ variable "aks_acr_ids" {
   type        = map(string)
   description = "(Optional) Ids of Azure Container Registries to assign to this cluster."
 }
-
-variable "endpoint_ip_address" {
-  type        = string
-  description = "(Required) Private IP Address to associate with this Storage Account's private endpoint."
-}
