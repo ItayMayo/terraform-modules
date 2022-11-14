@@ -24,6 +24,7 @@
 | <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Optional) ID of the log analytics workspace where logs should be sent to. | `string` | `null` | no |
 | <a name="input_nic_subnet_id"></a> [nic\_subnet\_id](#input\_nic\_subnet\_id) | (Required) Subnet ID in which the Virtual Machine's NIC should be created. | `string` | n/a | yes |
 | <a name="input_os_disk_caching"></a> [os\_disk\_caching](#input\_os\_disk\_caching) | (Optional) OS Disk caching. Default: ReadWrite. | `string` | `"ReadWrite"` | no |
+| <a name="input_private_ip_address"></a> [private\_ip\_address](#input\_private\_ip\_address) | (Optional) Private IP Address to associate with this Virtual Machine. | `string` | `null` | no |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | (Required) Name of the parent Resource Group. | `string` | n/a | yes |
 | <a name="input_storage_account_type"></a> [storage\_account\_type](#input\_storage\_account\_type) | (Optional) Type of the Virtual Machine's Storage Account. Default: Standard\_LRS. | `string` | `"Standard_LRS"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | (Optional) Tags assigned to the resource. | `map(string)` | `null` | no |

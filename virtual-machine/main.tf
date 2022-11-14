@@ -15,9 +15,11 @@ module "vm-network-interface" {
   location            = var.location
   log_workspace_id    = var.log_workspace_id
 
+  private_ip_address    = var.private_ip_address
   ip_configuration_name = local.ip_configuration_name
   subnet_id             = var.nic_subnet_id
-  tags                  = var.tags
+
+  tags = var.tags
 }
 
 locals {
@@ -116,7 +118,7 @@ locals {
 
 module "diagnostics" {
   source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
-    for_each = local.diagnostics_workspace_provided ? {"1": "1"} : {}
+  for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
 
   name                       = local.diagnostics_name
   target_resource_id         = local.target_resource_id
