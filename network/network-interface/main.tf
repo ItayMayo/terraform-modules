@@ -2,6 +2,11 @@
 * # Network Interface
 */
 
+locals {
+  ip_address_provided           = var.private_ip_address != null
+  private_ip_address_allocation = local.ip_address_provided ? "Static" : "Dynamic"
+}
+
 resource "azurerm_network_interface" "network_interface" {
   name                = var.name
   resource_group_name = var.resource_group_name
@@ -10,7 +15,8 @@ resource "azurerm_network_interface" "network_interface" {
   ip_configuration {
     name                          = var.ip_configuration_name
     subnet_id                     = var.subnet_id
-    private_ip_address_allocation = var.private_ip_address_allocation
+    private_ip_address_allocation = local.private_ip_address_allocation
+    private_ip_address            = var.private_ip_address
   }
 
   tags = var.tags
