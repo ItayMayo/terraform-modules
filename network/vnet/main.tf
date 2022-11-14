@@ -2,10 +2,14 @@
 * # Virtual Network Module
 */
 
+locals {
+  nsg_provided = var.security_groups != null
+}
+
 module "network-security-groups" {
   source = "github.com/ItayMayo/terraform-modules//network/security-group"
 
-  for_each = local.security_groups
+  for_each = local.nsg_provided ? var.security_groups : {}
 
   nsg_name            = each.key
   location            = var.location
@@ -36,7 +40,7 @@ module "subnets" {
   virtual_network_name = azurerm_virtual_network.vnet.name
   name                 = each.value["subnet_name"]
   address_prefixes     = each.value["address_prefixes"]
-  nsg_id               = each.value["nsg_id"]
+  nsg_id               = each.value["nsg_name"] != null ? try(module.network-security-groups[each.value["nsg_name"]].id, null) : null
   route_table_id       = each.value["route_table_id"]
 
   depends_on = [
