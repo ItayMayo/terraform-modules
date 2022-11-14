@@ -32,7 +32,6 @@ locals {
   ]
 }
 
-
 resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
   name               = var.name
   target_resource_id = local.subscription_id_provided ? var.subscription_id : var.target_resource_id
@@ -112,4 +111,8 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
       }
     }
   }
+
+  depends_on = [
+    module.log-categories
+  ]
 }
