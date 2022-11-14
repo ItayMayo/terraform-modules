@@ -66,8 +66,6 @@ locals {
   endpoint_name        = "${azurerm_storage_account.storage_account.name}-private-endpoint"
   is_manual_connection = false
   subresource_names    = ["blob"]
-
-  ip_configuration_name = "internal"
 }
 
 resource "azurerm_private_endpoint" "endpoint" {

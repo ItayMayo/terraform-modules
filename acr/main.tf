@@ -40,8 +40,6 @@ locals {
   endpoint_name        = "${azurerm_container_registry.acr.name}-private-endpoint"
   is_manual_connection = false
   subresource_names    = ["registry"]
-
-  ip_configuration_name = "internal"
 }
 
 resource "azurerm_private_endpoint" "endpoint" {

@@ -84,8 +84,6 @@ locals {
   endpoint_name        = "${azurerm_kubernetes_cluster.cluster.name}-private-endpoint"
   is_manual_connection = false
   subresource_names    = ["management"]
-
-  ip_configuration_name = "internal"
 }
 
 resource "azurerm_private_endpoint" "endpoint" {
