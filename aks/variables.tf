@@ -9,9 +9,8 @@ variable "resource_group_name" {
 }
 
 variable "log_workspace_id" {
-  default     = null
   type        = string
-  description = "(Optional) ID of the log analytics workspace where logs should be sent to."
+  description = "(Required) ID of the log analytics workspace where logs should be sent to. Set as null if not needed."
 }
 
 variable "tags" {
@@ -57,8 +56,10 @@ variable "identity" {
     identity_ids = optional(list(string))
   })
 
-  default     = null
-  description = "(Optional) AKS Identity block."
+  default     = {
+    type = "SystemAssigned"
+  }
+  description = "(Optional) AKS Identity block. Default: SystemAssigned."
 }
 
 variable "network_profile" {
@@ -86,9 +87,4 @@ variable "aks_acr_ids" {
   default     = null
   type        = map(string)
   description = "(Optional) Ids of Azure Container Registries to assign to this cluster."
-}
-
-variable "endpoint_ip_address" {
-  type        = string
-  description = "(Required) Private IP Address to associate with this Storage Account's private endpoint."
 }

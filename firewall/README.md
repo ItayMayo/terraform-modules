@@ -12,6 +12,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_diagnostics"></a> [diagnostics](#module\_diagnostics) | github.com/ItayMayo/terraform-modules//diagnostic-settings | n/a |
+| <a name="module_firewall-policy"></a> [firewall-policy](#module\_firewall-policy) | ./firewall-policy | n/a |
 
 ## Inputs
 
@@ -21,12 +22,13 @@
 | <a name="input_enable_tunneling"></a> [enable\_tunneling](#input\_enable\_tunneling) | (Optional) Enable Firewall tunneling. Default: false. | `bool` | `false` | no |
 | <a name="input_firewall_dns_servers"></a> [firewall\_dns\_servers](#input\_firewall\_dns\_servers) | (Optional) Firewall associated DNS servers. | `list(string)` | `null` | no |
 | <a name="input_firewall_name"></a> [firewall\_name](#input\_firewall\_name) | (Required) Name of the Firewall resource. | `string` | n/a | yes |
-| <a name="input_firewall_policy_name"></a> [firewall\_policy\_name](#input\_firewall\_policy\_name) | (Required) Name of the Firewall's policy. | `string` | n/a | yes |
+| <a name="input_firewall_policy_id"></a> [firewall\_policy\_id](#input\_firewall\_policy\_id) | (Optional) Id of a Firewall Policy. Required if Policy Name is not specified. | `string` | `null` | no |
+| <a name="input_firewall_policy_name"></a> [firewall\_policy\_name](#input\_firewall\_policy\_name) | (Optional) Name of the Firewall's policy. This creates a new policy and is required if Policy ID is not specified. | `string` | `null` | no |
 | <a name="input_firewall_sku_name"></a> [firewall\_sku\_name](#input\_firewall\_sku\_name) | (Optional) Name of the Firewall's SKU. Default: AZFW\_VNet. | `string` | `"AZFW_VNet"` | no |
 | <a name="input_firewall_sku_tier"></a> [firewall\_sku\_tier](#input\_firewall\_sku\_tier) | (Optional) Tier of the Firewall's SKU. Default: Standard | `string` | `"Standard"` | no |
 | <a name="input_firewall_zones"></a> [firewall\_zones](#input\_firewall\_zones) | (Optional) Availability Zones where the Firewall should be deployed to. | `list(string)` | `null` | no |
 | <a name="input_location"></a> [location](#input\_location) | (Required) Location of the resource. | `string` | n/a | yes |
-| <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Optional) ID of the log analytics workspace where logs should be sent to. | `string` | `null` | no |
+| <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Required) ID of the log analytics workspace where logs should be sent to. Set as null if not needed. | `string` | n/a | yes |
 | <a name="input_management_subnet_id"></a> [management\_subnet\_id](#input\_management\_subnet\_id) | (Optional) Firewall Management Subnet ID. Should only be set if enable\_tunneling is true. | `string` | `null` | no |
 | <a name="input_nat_collection_groups"></a> [nat\_collection\_groups](#input\_nat\_collection\_groups) | (Optional) A map of Policy Rule Collection Groups containing NAT Rule Collections. | <pre>map(object({<br>    name     = string<br>    priority = number<br><br>    nat_rule_collections = list(object({<br>      name     = string<br>      priority = number<br>      action   = string<br><br>      rule = list(object({<br>        name                = string<br>        protocols           = list(string)<br>        source_addresses    = list(string)<br>        destination_address = string<br>        destination_ports   = list(string)<br>        translated_address  = string<br>        translated_port     = string<br>      }))<br>    }))<br>  }))</pre> | `null` | no |
 | <a name="input_network_collection_groups"></a> [network\_collection\_groups](#input\_network\_collection\_groups) | (Optional) A map of Policy Rule Collection Groups containing Network Rule Collections. | <pre>map(object({<br>    name     = string<br>    priority = number<br><br>    network_rule_collections = list(object({<br>      name     = string<br>      priority = number<br>      action   = string<br><br>      rule = list(object({<br>        name                  = string<br>        protocols             = list(string)<br>        source_addresses      = list(string)<br>        destination_addresses = list(string)<br>        destination_ports     = list(string)<br>      }))<br>    }))<br>  }))</pre> | `null` | no |

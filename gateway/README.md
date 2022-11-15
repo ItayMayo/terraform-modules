@@ -23,7 +23,7 @@
 | <a name="input_enable_point_to_site"></a> [enable\_point\_to\_site](#input\_enable\_point\_to\_site) | (Optional) Enable Point-To-Site connections. Default: false. | `bool` | `false` | no |
 | <a name="input_gateway_subnet_id"></a> [gateway\_subnet\_id](#input\_gateway\_subnet\_id) | (Required) ID of the Gateway Subnet. | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | (Required) Location of the resource. | `string` | n/a | yes |
-| <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Optional) ID of the log analytics workspace where logs should be sent to. | `string` | `null` | no |
+| <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Required) ID of the log analytics workspace where logs should be sent to. Set as null if not needed. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | (Required) Name of the Gateway resource. | `string` | n/a | yes |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | (Required) Name of the parent Resource Group. | `string` | n/a | yes |
 | <a name="input_sku"></a> [sku](#input\_sku) | (Optional) SKU of the Gateway. Default: VpnGw2AZ. | `string` | `"VpnGw2AZ"` | no |

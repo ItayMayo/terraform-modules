@@ -9,9 +9,8 @@ variable "resource_group_name" {
 }
 
 variable "log_workspace_id" {
-  default     = null
   type        = string
-  description = "(Optional) ID of the log analytics workspace where logs should be sent to."
+  description = "(Required) ID of the log analytics workspace where logs should be sent to. Set as null if not needed."
 }
 
 variable "tags" {
@@ -49,7 +48,6 @@ variable "network_rules" {
   type = list(object({
     default_action             = string
     bypass                     = list(string)
-    ip_rules                   = list(string)
     virtual_network_subnet_ids = list(string)
 
     private_link_access = object({

@@ -9,9 +9,8 @@ variable "resource_group_name" {
 }
 
 variable "log_workspace_id" {
-  default     = null
   type        = string
-  description = "(Optional) ID of the log analytics workspace where logs should be sent to."
+  description = "(Required) ID of the log analytics workspace where logs should be sent to. Set as null if not needed."
 }
 
 variable "tags" {
@@ -23,6 +22,17 @@ variable "tags" {
 variable "vm_name" {
   type        = string
   description = "(Required) Name of the Virtual Machine."
+}
+
+variable "vm_os_name" {
+  default     = "Linux"
+  type        = string
+  description = "(Optional) Name of the Operating System. Accepted Values: Linux, Windows. Default: Linux."
+
+  validation {
+    condition     = contains(["Windows", "Linux"], var.vm_os_name)
+    error_message = "Allowed values for input_parameter are \"Windows\", or \"Linux\"."
+  }
 }
 
 variable "vm_size" {
@@ -46,7 +56,7 @@ variable "vm_admin_password" {
 variable "vm_disable_password_authentication" {
   default     = true
   type        = bool
-  description = "(Optional) Disable VM password authentication and use SSH publickey. Default: true."
+  description = "(Optional) Disable VM password authentication and use SSH publickey. Only applies to Linux VMs. Default: true."
 }
 
 variable "vm_admin_ssh_key" {
@@ -58,7 +68,7 @@ variable "vm_admin_ssh_key" {
   })
 
   sensitive   = true
-  description = "(Optional) SSH publickey to use when logging in. Required when vm_disable_password_authentication is set to true."
+  description = "(Optional) SSH publickey to use when logging in. Only applies to Linux VMs. Required when vm_disable_password_authentication is set to true."
 }
 
 variable "vm_source_image_reference" {

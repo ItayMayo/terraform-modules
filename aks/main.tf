@@ -64,8 +64,6 @@ locals {
   endpoint_name        = "${azurerm_kubernetes_cluster.cluster.name}-private-endpoint"
   is_manual_connection = false
   subresource_names    = ["management"]
-
-  ip_configuration_name = "internal"
 }
 
 resource "azurerm_private_endpoint" "endpoint" {
@@ -79,12 +77,6 @@ resource "azurerm_private_endpoint" "endpoint" {
     private_connection_resource_id = azurerm_kubernetes_cluster.cluster.id
     is_manual_connection           = local.is_manual_connection
     subresource_names              = local.subresource_names
-  }
-
-  ip_configuration {
-    name               = local.ip_configuration_name
-    private_ip_address = var.endpoint_ip_address
-    subresource_name   = local.subresource_names[0]
   }
 
   tags = var.tags
@@ -112,7 +104,7 @@ module "aks-private-dns" {
     storage_account = {
       name    = local.aks_dns_record_name
       ttl     = local.dns_record_ttl
-      records = [var.endpoint_ip_address]
+      records = [azurerm_private_endpoint.endpoint.private_service_connection[0].private_ip_address]
     }
   }
 

@@ -14,5 +14,6 @@ module "vm" {
   vm_admin_password                  = "empire"
   vm_disable_password_authentication = true
   nic_subnet_id                      = "id"
+  vm_os_name                         = "Linux"
 }
 ```

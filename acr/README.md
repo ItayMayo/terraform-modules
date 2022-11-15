@@ -19,7 +19,7 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_admin_enabled"></a> [admin\_enabled](#input\_admin\_enabled) | (Optional) Enable admin account. Default: false. | `bool` | `false` | no |
 | <a name="input_location"></a> [location](#input\_location) | (Required) Location of the resource. | `string` | n/a | yes |
-| <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Optional) ID of the log analytics workspace where logs should be sent to. | `string` | `null` | no |
+| <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Required) ID of the log analytics workspace where logs should be sent to. Set as null if not needed. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | (Required) Name of the Container Registry. | `string` | n/a | yes |
 | <a name="input_private_dns_zone_name"></a> [private\_dns\_zone\_name](#input\_private\_dns\_zone\_name) | (Required) Name of a Private DNS zone to be associated with the ACR. | `string` | n/a | yes |
 | <a name="input_private_endpoint_subnet_id"></a> [private\_endpoint\_subnet\_id](#input\_private\_endpoint\_subnet\_id) | (Required) ID of the subnet in which to create a private endpoint for this ACR. | `string` | n/a | yes |

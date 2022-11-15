@@ -1,0 +1,20 @@
+{
+    "test_route_table": {
+        "table_name": "test-route-table",
+        "disable_bgp_route_propagation": true,
+        "table_routes": [
+            {
+                "name": "test1",
+                "address_prefix": "0.0.0.0/0",
+                "next_hop_type": "VirtualAppliance",
+                "next_hop_in_ip_address": "192.168.0.66"
+            },
+            {
+                "name": "test2",
+                "address_prefix": "192.166.0.0/16",
+                "next_hop_type": "VirtualAppliance",
+                "next_hop_in_ip_address": "192.168.0.66"
+            }
+        ]
+    }
+}
