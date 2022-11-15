@@ -21,6 +21,7 @@
 | <a name="input_location"></a> [location](#input\_location) | (Required) Location of the resource. | `string` | n/a | yes |
 | <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Required) ID of the log analytics workspace where logs should be sent to. Set as null if not needed. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | (Required) Network interface name. | `string` | n/a | yes |
+| <a name="input_nsg_id"></a> [nsg\_id](#input\_nsg\_id) | (Optional) ID of a Network Security Group to associate with this Network Interface. | `string` | `null` | no |
 | <a name="input_private_ip_address"></a> [private\_ip\_address](#input\_private\_ip\_address) | (Optional) Network interface Private IP address. | `string` | `null` | no |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | (Required) Name of the parent Resource Group. | `string` | n/a | yes |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | (Required) ID of the subnet to associate the network interface with. | `string` | n/a | yes |
