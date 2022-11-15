@@ -3,13 +3,12 @@ resource "azurerm_resource_group" "test-rg" {
   location = "West Europe"
 }
 
-module "log-analytics-workspace" {
-  source = "github.com/ItayMayo/terraform-modules//analytics-workspace"
-
-  name = "test-log-analytics"
-
+resource "azurerm_log_analytics_workspace" "log-analytics-workspace" {
+  name                = "test-workspace"
   resource_group_name = azurerm_resource_group.test-rg.name
   location            = "westeurope"
+
+  sku               = "PerGB2018"
 
   depends_on = [
     azurerm_resource_group.test-rg
@@ -23,7 +22,7 @@ module "vnet" {
   resource_group_name = azurerm_resource_group.test-rg.name
 
   location         = "westeurope"
-  log_workspace_id = module.log-analytics-workspace.id
+  log_workspace_id = azurerm_log_analytics_workspace.log-analytics-workspace.id
 
   address_space = ["192.166.0.0/16"]
 
@@ -36,7 +35,7 @@ module "vnet" {
 
   depends_on = [
     azurerm_resource_group.test-rg,
-    module.log-analytics-workspace
+    azurerm_log_analytics_workspace.log-analytics-workspace
   ]
 }
 
@@ -47,7 +46,7 @@ module "test-vm" {
 
   resource_group_name = azurerm_resource_group.test-rg.name
   location            = "westeurope"
-  log_workspace_id    = module.log-analytics-workspace.id
+  log_workspace_id    = azurerm_log_analytics_workspace.log-analytics-workspace.id
 
   vm_os_name = "Windows"
 
@@ -68,6 +67,6 @@ module "test-vm" {
   depends_on = [
     azurerm_resource_group.test-rg,
     module.vnet,
-    module.log-analytics-workspace
+    azurerm_log_analytics_workspace.log-analytics-workspace
   ]
 }
