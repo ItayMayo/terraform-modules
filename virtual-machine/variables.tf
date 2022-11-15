@@ -157,7 +157,7 @@ variable "private_ip_address" {
 }
 
 variable "nic_nsg_id" {
-  default = null
-  type = string
+  default     = null
+  type        = string
   description = "(Optional) ID of a Network Security Group to associate with the Virutal Machine."
 }
