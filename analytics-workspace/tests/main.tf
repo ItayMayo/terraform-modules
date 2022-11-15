@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "test-rg" {
-  name     = "itaym-acr-test"
+  name     = "itaym-test-rg"
   location = "West Europe"
 }
 
