@@ -10,10 +10,9 @@ locals {
 }
 
 resource "azurerm_kubernetes_cluster" "cluster" {
-  name                = var.name
-  location            = var.location
-  resource_group_name = var.resource_group_name
-
+  name                          = var.name
+  location                      = var.location
+  resource_group_name           = var.resource_group_name
   dns_prefix                    = var.aks_dns_prefix
   private_cluster_enabled       = local.private_cluster
   public_network_access_enabled = local.public_network_access_enabled
@@ -24,17 +23,15 @@ resource "azurerm_kubernetes_cluster" "cluster" {
     for_each = [var.default_node_pool]
 
     content {
-      name       = default_node_pool.value["name"]
-      node_count = default_node_pool.value["node_count"]
-      vm_size    = default_node_pool.value["vm_size"]
-
+      name                  = default_node_pool.value["name"]
+      node_count            = default_node_pool.value["node_count"]
+      vm_size               = default_node_pool.value["vm_size"]
       os_sku                = default_node_pool.value["os_sku"]
       enable_node_public_ip = local.public_network_access_enabled
       vnet_subnet_id        = default_node_pool.value["vnet_subnet_id"]
-
-      enable_auto_scaling = default_node_pool.value["enable_auto_scaling"]
-      max_count           = default_node_pool.value["max_count"]
-      min_count           = default_node_pool.value["min_count"]
+      enable_auto_scaling   = default_node_pool.value["enable_auto_scaling"]
+      max_count             = default_node_pool.value["max_count"]
+      min_count             = default_node_pool.value["min_count"]
     }
   }
 
@@ -96,9 +93,8 @@ module "aks-private-dns" {
   source = "github.com/ItayMayo/terraform-modules//private-dns"
 
   resource_group_name = var.resource_group_name
-
-  zone_name = local.aks_dns_zone_name
-  vnet_ids  = var.private_dns_vnets
+  zone_name           = local.aks_dns_zone_name
+  vnet_ids            = var.private_dns_vnets
 
   zone_a_records = {
     storage_account = {
@@ -135,16 +131,16 @@ resource "azurerm_role_assignment" "aks-role-assignment" {
 
 locals {
   diagnostics_name               = "${var.name}-aks-diagnostics"
-  cluster_id                     = azurerm_kubernetes_cluster.cluster.id
   diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
 module "diagnostics" {
-  source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+  source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+
   for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
 
   name                       = local.diagnostics_name
-  target_resource_id         = local.cluster_id
+  target_resource_id         = azurerm_kubernetes_cluster.cluster.id
   log_analytics_workspace_id = var.log_workspace_id
 
   depends_on = [

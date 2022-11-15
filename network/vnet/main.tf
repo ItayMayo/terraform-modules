@@ -14,21 +14,17 @@ module "network-security-groups" {
   nsg_name            = each.key
   location            = var.location
   resource_group_name = var.resource_group_name
-
-  nsg_security_rules = each.value
-
-  tags = var.tags
+  nsg_security_rules  = each.value
+  tags                = var.tags
 }
 
 resource "azurerm_virtual_network" "vnet" {
   name                = var.vnet_name
   resource_group_name = var.resource_group_name
   location            = var.location
-
-  address_space = var.address_space
-  dns_servers   = var.dns_servers
-
-  tags = var.tags
+  address_space       = var.address_space
+  dns_servers         = var.dns_servers
+  tags                = var.tags
 }
 
 module "subnets" {
@@ -51,7 +47,6 @@ module "subnets" {
 
 locals {
   diagnostics_name               = "${var.vnet_name}-vnet-diagnostics"
-  target_resource_id             = azurerm_virtual_network.vnet.id
   diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
@@ -60,7 +55,7 @@ module "diagnostics" {
   for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
 
   name                       = local.diagnostics_name
-  target_resource_id         = local.target_resource_id
+  target_resource_id         = azurerm_virtual_network.vnet.id
   log_analytics_workspace_id = var.log_workspace_id
 
   depends_on = [

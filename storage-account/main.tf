@@ -11,11 +11,9 @@ resource "azurerm_storage_account" "storage_account" {
   name                = var.name
   resource_group_name = var.resource_group_name
   location            = var.location
-
   account_tier             = var.account_tier
   account_kind             = var.account_kind
   account_replication_type = var.replication_type
-
   allow_nested_items_to_be_public = local.public_access
   public_network_access_enabled   = local.public_access
 
@@ -45,7 +43,6 @@ locals {
   endpoint_name        = "${azurerm_storage_account.storage_account.name}-private-endpoint"
   is_manual_connection = false
   subresource_names    = ["blob"]
-
   ip_configuration_name = "internal"
 }
 
@@ -96,7 +93,6 @@ resource "azurerm_private_dns_a_record" "a_record" {
 
 locals {
   diagnostics_name               = "${var.name}-storage-account-diagnostics"
-  target_resource_id             = azurerm_storage_account.storage_account.id
   diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
@@ -105,7 +101,7 @@ module "diagnostics" {
   for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
 
   name                       = local.diagnostics_name
-  target_resource_id         = local.target_resource_id
+  target_resource_id         = azurerm_storage_account.storage_account.id
   log_analytics_workspace_id = var.log_workspace_id
 
   depends_on = [
