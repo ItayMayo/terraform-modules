@@ -37,9 +37,9 @@ variable "account_kind" {
 }
 
 variable "replication_type" {
-  default     = "GRS"
+  default     = "LRS"
   type        = string
-  description = "(Required) Storage Account replication type. Default: GRS."
+  description = "(Required) Storage Account replication type. Default: LRS."
 }
 
 variable "network_rules" {
