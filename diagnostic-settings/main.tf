@@ -42,28 +42,11 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostics" {
   eventhub_authorization_rule_id = var.eventhub_authorization_rule_id
 
   dynamic "log" {
-    for_each = local.subscription_id_provided || local.does_resource_contain_category_groups ? [] : module.log-categories["resource"].diagnostic_category_types
+    for_each = !local.subscription_id_provided ? (local.does_resource_contain_category_groups ? module.log-categories["resource"].diagnostic_category_groups : module.log-categories["resource"].diagnostic_category_types) : []
 
     content {
-      category = log.value
-      enabled  = local.logs_enabled
-
-      dynamic "retention_policy" {
-        for_each = local.enable_retention_policy ? [1] : []
-
-        content {
-          days    = var.retention_policy_days
-          enabled = local.logs_enabled
-        }
-      }
-    }
-  }
-
-  dynamic "log" {
-    for_each = local.subscription_id_provided ? [] : module.log-categories["resource"].diagnostic_category_groups
-
-    content {
-      category_group = log.value
+      category       = local.does_resource_contain_category_groups ? null : log.value
+      category_group = local.does_resource_contain_category_groups ? log.value : null
       enabled        = local.logs_enabled
 
       dynamic "retention_policy" {
