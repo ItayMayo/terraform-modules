@@ -25,7 +25,6 @@ resource "azurerm_storage_account" "storage_account" {
     content {
       default_action             = network_rules.value["default_action"]
       bypass                     = network_rules.value["bypass"]
-      ip_rules                   = network_rules.value["ip_rules"]
       virtual_network_subnet_ids = network_rules.value["virtual_network_subnet_ids"]
 
       dynamic "private_link_access" {
