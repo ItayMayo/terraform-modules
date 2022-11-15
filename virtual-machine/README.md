@@ -1,18 +1,25 @@
 <!-- BEGIN_TF_DOCS -->
 # Virtual Machine Module
 
+## Requirements
+
+No requirements.
+
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | n/a |
+No providers.
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_diagnostics"></a> [diagnostics](#module\_diagnostics) | github.com/ItayMayo/terraform-modules//diagnostic-settings | n/a |
+| <a name="module_linux-vm"></a> [linux-vm](#module\_linux-vm) | ./linux-vm | n/a |
 | <a name="module_vm-network-interface"></a> [vm-network-interface](#module\_vm-network-interface) | github.com/ItayMayo/terraform-modules//Network/network-interface | n/a |
+| <a name="module_windows-vm"></a> [windows-vm](#module\_windows-vm) | ./windows-vm | n/a |
+
+## Resources
+
+No resources.
 
 ## Inputs
 
@@ -29,10 +36,11 @@
 | <a name="input_storage_account_type"></a> [storage\_account\_type](#input\_storage\_account\_type) | (Optional) Type of the Virtual Machine's Storage Account. Default: Standard\_LRS. | `string` | `"Standard_LRS"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | (Optional) Tags assigned to the resource. | `map(string)` | `null` | no |
 | <a name="input_vm_admin_password"></a> [vm\_admin\_password](#input\_vm\_admin\_password) | (Optional) Password of the Virtual Machine's admin account. Required when vm\_disable\_password\_authentication is set to false. | `string` | `null` | no |
-| <a name="input_vm_admin_ssh_key"></a> [vm\_admin\_ssh\_key](#input\_vm\_admin\_ssh\_key) | (Optional) SSH publickey to use when logging in. Required when vm\_disable\_password\_authentication is set to true. | <pre>object({<br>    username   = string<br>    public_key = string<br>  })</pre> | `null` | no |
+| <a name="input_vm_admin_ssh_key"></a> [vm\_admin\_ssh\_key](#input\_vm\_admin\_ssh\_key) | (Optional) SSH publickey to use when logging in. Only applies to Linux VMs. Required when vm\_disable\_password\_authentication is set to true. | <pre>object({<br>    username   = string<br>    public_key = string<br>  })</pre> | `null` | no |
 | <a name="input_vm_admin_username"></a> [vm\_admin\_username](#input\_vm\_admin\_username) | (Required) Username of the Virtual Machine's admin account. | `string` | n/a | yes |
-| <a name="input_vm_disable_password_authentication"></a> [vm\_disable\_password\_authentication](#input\_vm\_disable\_password\_authentication) | (Optional) Disable VM password authentication and use SSH publickey. Default: true. | `bool` | `true` | no |
+| <a name="input_vm_disable_password_authentication"></a> [vm\_disable\_password\_authentication](#input\_vm\_disable\_password\_authentication) | (Optional) Disable VM password authentication and use SSH publickey. Only applies to Linux VMs. Default: true. | `bool` | `true` | no |
 | <a name="input_vm_name"></a> [vm\_name](#input\_vm\_name) | (Required) Name of the Virtual Machine. | `string` | n/a | yes |
+| <a name="input_vm_os_name"></a> [vm\_os\_name](#input\_vm\_os\_name) | (Optional) Name of the Operating System. Accepted Values: Linux, Windows. Default: Linux. | `string` | `"Linux"` | no |
 | <a name="input_vm_size"></a> [vm\_size](#input\_vm\_size) | (Optional) Size of the Virtual Machine. Default: Standard\_D2s\_v3. | `string` | `"Standard_D2s_v3"` | no |
 | <a name="input_vm_source_image_reference"></a> [vm\_source\_image\_reference](#input\_vm\_source\_image\_reference) | (Optional) Virtual Machine OS image reference. Default: UbuntuServer 16.04-LTS. | <pre>object({<br>    publisher = string<br>    offer     = string<br>    sku       = string<br>    version   = string<br>  })</pre> | <pre>{<br>  "offer": "UbuntuServer",<br>  "publisher": "Canonical",<br>  "sku": "16.04-LTS",<br>  "version": "latest"<br>}</pre> | no |
 
@@ -44,22 +52,5 @@
 | <a name="output_name"></a> [name](#output\_name) | Virtual Machine resource name. |
 | <a name="output_nic_object"></a> [nic\_object](#output\_nic\_object) | Network Interface resource object associated with the Virtual Machine. |
 | <a name="output_object"></a> [object](#output\_object) | Virtual Machine resource object. |
-
-# Usage
-
-```
-module "vm" {
-  source = "github.com/ItayMayo/terraform-modules//virtual-machine"
-
-  # Generic Resource Configuration
-  resource_group_name = "my-rg"
-  location            = "westeurope"
-  # Virtual Machine Configuration
-  vm_name                            = "my-vm"
-  vm_admin_username                  = "empire"
-  vm_admin_password                  = "empire"
-  vm_disable_password_authentication = true
-  nic_subnet_id                      = "id"
-}
-```
+| <a name="output_vm_os_name"></a> [vm\_os\_name](#output\_vm\_os\_name) | Name of the Operating System for the Virtual Machine. |
 <!-- END_TF_DOCS -->
