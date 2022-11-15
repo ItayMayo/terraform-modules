@@ -8,13 +8,12 @@ locals {
   work_subnet_name = "default"
 }
 
-module "log-analytics-workspace" {
-  source = "github.com/ItayMayo/terraform-modules//analytics-workspace"
-
-  name = "test-log-analytics"
-
+resource "azurerm_log_analytics_workspace" "log-analytics-workspace" {
+  name                = "test-workspace"
   resource_group_name = azurerm_resource_group.test-rg.name
   location            = "westeurope"
+
+  sku               = "PerGB2018"
 
   depends_on = [
     azurerm_resource_group.test-rg
@@ -38,7 +37,7 @@ module "diagnostics" {
 
   name                       = "test-vnet-diagnostics"
   target_resource_id         = azurerm_virtual_network.vnet.id
-  log_analytics_workspace_id = module.log-analytics_workspace.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log-analytics-workspace.id
 
   depends_on = [
     azurerm_virtual_network.vnet
