@@ -1,15 +1,15 @@
 output "id" {
-  value       = try(module.windows-vm["vm"].id, module.linux-vm["vm"].id)
+  value       = try(azurerm_linux_virtual_machine.vm["vm"].id, azurerm_windows_virtual_machine.vm["vm"].id)
   description = "Virtual Machine resource id."
 }
 
 output "name" {
-  value       = try(module.windows-vm["vm"].name, module.linux-vm["vm"].name)
+  value       = try(azurerm_linux_virtual_machine.vm["vm"].name, azurerm_windows_virtual_machine.vm["vm"].name)
   description = "Virtual Machine resource name."
 }
 
 output "object" {
-  value       = var.vm_os_name == "Windows" ? module.windows-vm["vm"].object : module.linux-vm["vm"].object
+  value       = var.vm_os_name == "Linux" ? azurerm_linux_virtual_machine.vm["vm"] : azurerm_windows_virtual_machine.vm["vm"]
   description = "Virtual Machine resource object."
 }
 
