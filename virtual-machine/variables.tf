@@ -155,3 +155,9 @@ variable "private_ip_address" {
   type        = string
   description = "(Optional) Private IP Address to associate with this Virtual Machine."
 }
+
+variable "nic_nsg_id" {
+  default = null
+  type = string
+  description = "(Optional) ID of a Network Security Group to associate with the Virutal Machine."
+}

@@ -17,8 +17,8 @@ module "vm-network-interface" {
   private_ip_address    = var.private_ip_address
   ip_configuration_name = local.ip_configuration_name
   subnet_id             = var.nic_subnet_id
-
-  tags = var.tags
+  nsg_id                = var.nic_nsg_id
+  tags                  = var.tags
 }
 
 locals {

@@ -35,6 +35,7 @@ No requirements.
 | <a name="input_identity"></a> [identity](#input\_identity) | (Optional) Identity block assigned to the Virtual Machine. identity\_ids field should only be set when using UserAssigned identities. | <pre>object({<br>    type         = string<br>    identity_ids = optional(list(string))<br>  })</pre> | `null` | no |
 | <a name="input_location"></a> [location](#input\_location) | (Required) Location of the resource. | `string` | n/a | yes |
 | <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Required) ID of the log analytics workspace where logs should be sent to. Set as null if not needed. | `string` | n/a | yes |
+| <a name="input_nic_nsg_id"></a> [nic\_nsg\_id](#input\_nic\_nsg\_id) | (Optional) ID of a Network Security Group to associate with the Virutal Machine. | `string` | `null` | no |
 | <a name="input_nic_subnet_id"></a> [nic\_subnet\_id](#input\_nic\_subnet\_id) | (Required) Subnet ID in which the Virtual Machine's NIC should be created. | `string` | n/a | yes |
 | <a name="input_os_disk_caching"></a> [os\_disk\_caching](#input\_os\_disk\_caching) | (Optional) OS Disk caching. Default: ReadWrite. | `string` | `"ReadWrite"` | no |
 | <a name="input_os_disk_size_gb"></a> [os\_disk\_size\_gb](#input\_os\_disk\_size\_gb) | (Optional) Size of the Virtual Machine's Operating System disk in Gigabytes. Sizes must be between 25gb and 2tb. | `number` | `-1` | no |
