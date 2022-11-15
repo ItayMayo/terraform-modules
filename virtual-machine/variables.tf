@@ -39,6 +39,11 @@ variable "vm_size" {
   default     = "Standard_D2s_v3"
   type        = string
   description = "(Optional) Size of the Virtual Machine. Default: Standard_D2s_v3."
+
+  validation {
+    condition     = can(regex("Standard_D2", var.vm_size))
+    error_message = "Selected size is not allowed. Allowed sizes prefix: Standard_D2."
+  }
 }
 
 variable "vm_admin_username" {
@@ -117,11 +122,32 @@ variable "identity" {
   description = "(Optional) Identity block assigned to the Virtual Machine. identity_ids field should only be set when using UserAssigned identities."
 }
 
+variable "os_disk_size_gb" {
+  default = -1
+
+  type        = number
+  description = "(Optional) Size of the Virtual Machine's Operating System disk in Gigabytes. Sizes must be between 25gb and 2tb."
+
+  validation {
+    condition = var.os_disk_size_gb == -1 || (var.os_disk_size_gb < 2000 && var.os_disk_size_gb > 25)
+
+    error_message = "Disk size must be between 25gb - 2000gb."
+  }
+}
+
 variable "disk_sizes_in_gb" {
   default = [-1]
 
   type        = list(number)
-  description = "(Optional) List of sizes for additional disks to attach to this Virtual Machine."
+  description = "(Optional) List of sizes for additional disks to attach to this Virtual Machine. Sizes must be between 1gb and 2tb."
+
+  validation {
+    condition = contains(var.disk_sizes_in_gb, -1) || alltrue([
+      for size in var.disk_sizes_in_gb : size < 2000 && size > 1
+    ])
+
+    error_message = "Disk size must be between 1gb - 2000gb."
+  }
 }
 
 variable "private_ip_address" {
