@@ -49,10 +49,19 @@ module "test-vm" {
   location            = "westeurope"
   log_workspace_id    = module.log-analytics-workspace.id
 
+  vm_os_name = "Windows"
+
   vm_admin_username                  = "empire"
   vm_admin_password                  = "Empire6!"
   vm_disable_password_authentication = false
   nic_subnet_id                      = module.vnet.subnet_ids["default"]
+ 
+  vm_source_image_reference = {
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2016-Datacenter"
+    version   = "latest"
+  }
 
   tags = { test = "test" }
 
