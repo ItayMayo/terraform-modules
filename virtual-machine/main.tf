@@ -25,7 +25,7 @@ module "vm-network-interface" {
 module "windows-vm" {
   source = "./windows-vm"
 
-  for_each = contains(["Windows"], var.vm_os_name) ? { vm = "Windows" } : {}
+  for_each = var.vm_os_name == "Windows" ? { vm = "Windows" } : {}
 
   resource_group_name = var.resource_group_name
   location            = var.location
@@ -56,7 +56,7 @@ module "windows-vm" {
 module "linux-vm" {
   source = "./linux-vm"
 
-  for_each = contains(["Linux"], var.vm_os_name) ? { vm = "Linux" } : {}
+  for_each = var.vm_os_name == "Linux" ? { vm = "Linux" } : {}
 
   resource_group_name = var.resource_group_name
   location            = var.location

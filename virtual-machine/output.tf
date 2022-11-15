@@ -1,15 +1,15 @@
 output "id" {
-  value       = try(module.windows-vm.id, module.linux-vm.id)
+  value       = try(module.windows-vm["vm"].id, module.linux-vm["vm"].id)
   description = "Virtual Machine resource id."
 }
 
 output "name" {
-  value       = try(module.windows-vm.name, module.linux-vm.name)
+  value       = try(module.windows-vm["vm"].name, module.linux-vm["vm"].name)
   description = "Virtual Machine resource name."
 }
 
 output "object" {
-  value       = contains(["Windows"], var.vm_os_name) ? module.windows-vm : module.linux-vm
+  value       = var.vm_os_name == "Windows" ? module.windows-vm["vm"].object : module.linux-vm["vm"].object
   description = "Virtual Machine resource object."
 }
 
