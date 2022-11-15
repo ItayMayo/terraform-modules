@@ -12,6 +12,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_diagnostics"></a> [diagnostics](#module\_diagnostics) | github.com/ItayMayo/terraform-modules//diagnostic-settings | n/a |
+| <a name="module_firewall-policy"></a> [firewall-policy](#module\_firewall-policy) | ./firewall-policy | n/a |
 
 ## Inputs
 
@@ -21,7 +22,8 @@
 | <a name="input_enable_tunneling"></a> [enable\_tunneling](#input\_enable\_tunneling) | (Optional) Enable Firewall tunneling. Default: false. | `bool` | `false` | no |
 | <a name="input_firewall_dns_servers"></a> [firewall\_dns\_servers](#input\_firewall\_dns\_servers) | (Optional) Firewall associated DNS servers. | `list(string)` | `null` | no |
 | <a name="input_firewall_name"></a> [firewall\_name](#input\_firewall\_name) | (Required) Name of the Firewall resource. | `string` | n/a | yes |
-| <a name="input_firewall_policy_name"></a> [firewall\_policy\_name](#input\_firewall\_policy\_name) | (Required) Name of the Firewall's policy. | `string` | n/a | yes |
+| <a name="input_firewall_policy_id"></a> [firewall\_policy\_id](#input\_firewall\_policy\_id) | (Optional) Id of a Firewall Policy. Required if Policy Name is not specified. | `string` | `null` | no |
+| <a name="input_firewall_policy_name"></a> [firewall\_policy\_name](#input\_firewall\_policy\_name) | (Optional) Name of the Firewall's policy. This creates a new policy and is required if Policy ID is not specified. | `string` | `null` | no |
 | <a name="input_firewall_sku_name"></a> [firewall\_sku\_name](#input\_firewall\_sku\_name) | (Optional) Name of the Firewall's SKU. Default: AZFW\_VNet. | `string` | `"AZFW_VNet"` | no |
 | <a name="input_firewall_sku_tier"></a> [firewall\_sku\_tier](#input\_firewall\_sku\_tier) | (Optional) Tier of the Firewall's SKU. Default: Standard | `string` | `"Standard"` | no |
 | <a name="input_firewall_zones"></a> [firewall\_zones](#input\_firewall\_zones) | (Optional) Availability Zones where the Firewall should be deployed to. | `list(string)` | `null` | no |

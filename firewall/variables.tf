@@ -66,8 +66,15 @@ variable "enable_tunneling" {
 }
 
 variable "firewall_policy_name" {
+  default     = null
   type        = string
-  description = "(Required) Name of the Firewall's policy."
+  description = "(Optional) Name of the Firewall's policy. This creates a new policy and is required if Policy ID is not specified."
+}
+
+variable "firewall_policy_id" {
+  default     = null
+  type        = string
+  description = "(Optional) Id of a Firewall Policy. Required if Policy Name is not specified."
 }
 
 variable "network_collection_groups" {
