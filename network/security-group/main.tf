@@ -38,6 +38,8 @@ locals {
 module "diagnostics" {
   source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
 
+  for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
+
   name                       = local.diagnostics_name
   target_resource_id         = azurerm_network_security_group.nsg.id
   log_analytics_workspace_id = var.log_workspace_id

@@ -33,6 +33,7 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_id"></a> [id](#output\_id) | ID of the diagnostic\_settings resource. |
+| <a name="output_name"></a> [name](#output\_name) | Name of the diagnostic\_settings resource. |
 | <a name="output_object"></a> [object](#output\_object) | Object of the diagnostic\_settings resource. |
 
 # Usage
