@@ -3,11 +3,6 @@ resource "azurerm_resource_group" "test-rg" {
   location = "West Europe"
 }
 
-locals {
-  work_vnet_name   = "test-vnet"
-  work_subnet_name = "default"
-}
-
 module "log-analytics-workspace" {
   source = "github.com/ItayMayo/terraform-modules//analytics-workspace"
 
