@@ -21,7 +21,7 @@
 | <a name="input_account_tier"></a> [account\_tier](#input\_account\_tier) | (Required) Storage Accuont tier. Default: Standard. | `string` | `"Standard"` | no |
 | <a name="input_endpoint_ip_address"></a> [endpoint\_ip\_address](#input\_endpoint\_ip\_address) | (Required) Private IP Address to associate with this Storage Account's private endpoint. | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | (Required) Location of the resource. | `string` | n/a | yes |
-| <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Optional) ID of the log analytics workspace where logs should be sent to. | `string` | `null` | no |
+| <a name="input_log_workspace_id"></a> [log\_workspace\_id](#input\_log\_workspace\_id) | (Required) ID of the log analytics workspace where logs should be sent to. Set as null if not needed. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | (Required) Storage Accuont name. | `string` | n/a | yes |
 | <a name="input_network_rules"></a> [network\_rules](#input\_network\_rules) | (Optional) Storage Account Network Rules. | <pre>list(object({<br>    default_action             = string<br>    bypass                     = list(string)<br>    ip_rules                   = list(string)<br>    virtual_network_subnet_ids = list(string)<br><br>    private_link_access = object({<br>      endpoint_resource_id = string<br>      endpoint_tenant_id   = string<br>    })<br>  }))</pre> | `null` | no |
 | <a name="input_private_dns_zone_name"></a> [private\_dns\_zone\_name](#input\_private\_dns\_zone\_name) | (Optional) Name of a Private DNS zone to be associated with the storage account. | `string` | `null` | no |
@@ -34,7 +34,6 @@
 
 | Name | Description |
 |------|-------------|
-| <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | Endpoint object associated with the Storage Account. |
 | <a name="output_id"></a> [id](#output\_id) | Storage Account resource id. |
 | <a name="output_name"></a> [name](#output\_name) | Storage Account resource name. |
 | <a name="output_object"></a> [object](#output\_object) | Storage Account resource object. |

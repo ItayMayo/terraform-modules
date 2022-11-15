@@ -9,9 +9,8 @@ variable "resource_group_name" {
 }
 
 variable "log_workspace_id" {
-  default     = null
   type        = string
-  description = "(Optional) ID of the log analytics workspace where logs should be sent to."
+  description = "(Required) ID of the log analytics workspace where logs should be sent to. Set as null if not needed."
 }
 
 variable "tags" {
