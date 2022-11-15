@@ -27,6 +27,11 @@ variable "name" {
 variable "sku" {
   type        = string
   description = "(Required) Container Registry SKU name."
+
+  validation {
+    condition = contains(["Basic", "Standard", "Premium"], var.sku)
+    error_message = "sku must contain one of the following values: Basic, Standard, Premium."
+  }
 }
 
 variable "admin_enabled" {
