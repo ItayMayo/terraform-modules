@@ -56,8 +56,10 @@ variable "identity" {
     identity_ids = optional(list(string))
   })
 
-  default     = null
-  description = "(Optional) AKS Identity block."
+  default     = {
+    type = "SystemAssigned"
+  }
+  description = "(Optional) AKS Identity block. Default: SystemAssigned."
 }
 
 variable "network_profile" {
