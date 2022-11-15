@@ -24,6 +24,17 @@ variable "vm_name" {
   description = "(Required) Name of the Virtual Machine."
 }
 
+variable "vm_os_name" {
+  default     = "Linux"
+  type        = string
+  description = "(Optional) Name of the Operating System. Accepted Values: Linux, Windows. Default: Linux."
+
+  validation {
+    condition     = contains(["Windows", "Linux"], var.vm_os_name)
+    error_message = "Allowed values for input_parameter are \"Windows\", or \"Linux\"."
+  }
+}
+
 variable "vm_size" {
   default     = "Standard_D2s_v3"
   type        = string
@@ -45,7 +56,7 @@ variable "vm_admin_password" {
 variable "vm_disable_password_authentication" {
   default     = true
   type        = bool
-  description = "(Optional) Disable VM password authentication and use SSH publickey. Default: true."
+  description = "(Optional) Disable VM password authentication and use SSH publickey. Only applies to Linux VMs. Default: true."
 }
 
 variable "vm_admin_ssh_key" {
@@ -57,7 +68,7 @@ variable "vm_admin_ssh_key" {
   })
 
   sensitive   = true
-  description = "(Optional) SSH publickey to use when logging in. Required when vm_disable_password_authentication is set to true."
+  description = "(Optional) SSH publickey to use when logging in. Only applies to Linux VMs. Required when vm_disable_password_authentication is set to true."
 }
 
 variable "vm_source_image_reference" {
