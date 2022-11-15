@@ -29,3 +29,20 @@ resource "azurerm_network_security_group" "nsg" {
 
   tags = var.tags
 }
+
+locals {
+  diagnostics_name               = "${var.nsg_name}-nsg-diagnostics"
+  diagnostics_workspace_provided = var.log_workspace_id != null
+}
+
+module "diagnostics" {
+  source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+
+  name                       = local.diagnostics_name
+  target_resource_id         = azurerm_network_security_group.nsg.id
+  log_analytics_workspace_id = var.log_workspace_id
+
+  depends_on = [
+    azurerm_network_security_group.nsg
+  ]
+}
