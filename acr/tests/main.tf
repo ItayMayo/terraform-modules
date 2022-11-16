@@ -13,7 +13,7 @@ resource "azurerm_log_analytics_workspace" "log-analytics-workspace" {
   resource_group_name = azurerm_resource_group.test-rg.name
   location            = "westeurope"
 
-  sku               = "PerGB2018"
+  sku = "PerGB2018"
 
   depends_on = [
     azurerm_resource_group.test-rg
