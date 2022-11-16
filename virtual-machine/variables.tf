@@ -22,6 +22,11 @@ variable "tags" {
 variable "vm_name" {
   type        = string
   description = "(Required) Name of the Virtual Machine."
+
+  validation {
+    condition     = length(var.vm_name) < 15 && length(var.vm_name) > 0
+    error_message = "Length must be between 1 and 15 characters."
+  }
 }
 
 variable "vm_os_name" {
