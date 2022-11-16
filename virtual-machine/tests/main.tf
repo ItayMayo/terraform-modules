@@ -7,8 +7,7 @@ resource "azurerm_log_analytics_workspace" "log-analytics-workspace" {
   name                = "test-workspace"
   resource_group_name = azurerm_resource_group.test-rg.name
   location            = "westeurope"
-
-  sku               = "PerGB2018"
+  sku                 = "PerGB2018"
 
   depends_on = [
     azurerm_resource_group.test-rg
@@ -20,11 +19,9 @@ module "vnet" {
 
   vnet_name           = "test-vnet"
   resource_group_name = azurerm_resource_group.test-rg.name
-
-  location         = "westeurope"
-  log_workspace_id = azurerm_log_analytics_workspace.log-analytics-workspace.id
-
-  address_space = ["192.166.0.0/16"]
+  location            = "westeurope"
+  log_workspace_id    = azurerm_log_analytics_workspace.log-analytics-workspace.id
+  address_space       = ["192.166.0.0/16"]
 
   subnets = {
     default = {
@@ -42,19 +39,16 @@ module "vnet" {
 module "test-vm" {
   source = "../"
 
-  vm_name = "test-vm"
-
-  resource_group_name = azurerm_resource_group.test-rg.name
-  location            = "westeurope"
-  log_workspace_id    = azurerm_log_analytics_workspace.log-analytics-workspace.id
-
-  vm_os_name = "Windows"
-
+  vm_name                            = "test-vm"
+  resource_group_name                = azurerm_resource_group.test-rg.name
+  location                           = "westeurope"
+  log_workspace_id                   = azurerm_log_analytics_workspace.log-analytics-workspace.id
+  vm_os_name                         = "Windows"
   vm_admin_username                  = "empire"
   vm_admin_password                  = "Empire6!"
   vm_disable_password_authentication = false
   nic_subnet_id                      = module.vnet.subnet_ids["default"]
- 
+
   vm_source_image_reference = {
     publisher = "MicrosoftWindowsServer"
     offer     = "WindowsServer"

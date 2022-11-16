@@ -13,8 +13,7 @@ module "test-nsg" {
   nsg_name            = "test-security-group"
   location            = "westeurope"
   resource_group_name = azurerm_resource_group.test-rg.name
-
-  nsg_security_rules = local.nsg["test-security-group"]
+  nsg_security_rules  = local.nsg["test-security-group"]
 
   tags = { test = "test" }
 }

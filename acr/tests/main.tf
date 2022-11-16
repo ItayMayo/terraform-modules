@@ -12,8 +12,7 @@ resource "azurerm_log_analytics_workspace" "log-analytics-workspace" {
   name                = "test-workspace"
   resource_group_name = azurerm_resource_group.test-rg.name
   location            = "westeurope"
-
-  sku = "PerGB2018"
+  sku                 = "PerGB2018"
 
   depends_on = [
     azurerm_resource_group.test-rg
@@ -25,11 +24,9 @@ module "vnet" {
 
   vnet_name           = "test-vnet"
   resource_group_name = azurerm_resource_group.test-rg.name
-
-  location         = "westeurope"
-  log_workspace_id = azurerm_log_analytics_workspace.log-analytics-workspace.id
-
-  address_space = ["192.166.0.0/16"]
+  location            = "westeurope"
+  log_workspace_id    = azurerm_log_analytics_workspace.log-analytics-workspace.id
+  address_space       = ["192.166.0.0/16"]
 
   subnets = {
     default = {
@@ -52,8 +49,7 @@ module "acr-private-dns" {
 
   zone_name           = "privatelink.azurecr.io"
   resource_group_name = azurerm_resource_group.test-rg.name
-
-  vnet_ids = { default = module.vnet.id }
+  vnet_ids            = { default = module.vnet.id }
 
   depends_on = [
     azurerm_resource_group.test-rg,
@@ -64,15 +60,12 @@ module "acr-private-dns" {
 module "acr" {
   source = "../"
 
-  name                  = "itaymtestacr"
-  private_dns_zone_name = "privatelink.azurecr.io"
-
-  resource_group_name = azurerm_resource_group.test-rg.name
-  location            = "westeurope"
-  log_workspace_id    = azurerm_log_analytics_workspace.log-analytics-workspace.id
-
-  sku = "Premium"
-
+  name                       = "itaymtestacr"
+  private_dns_zone_name      = "privatelink.azurecr.io"
+  resource_group_name        = azurerm_resource_group.test-rg.name
+  location                   = "westeurope"
+  log_workspace_id           = azurerm_log_analytics_workspace.log-analytics-workspace.id
+  sku                        = "Premium"
   admin_enabled              = true
   private_endpoint_subnet_id = module.vnet.subnet_ids["default"]
 
