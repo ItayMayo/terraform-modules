@@ -17,7 +17,7 @@ resource "azurerm_container_registry" "acr" {
 }
 
 locals {
-  endpoint_name        = "${azurerm_container_registry.acr.name}-private-endpoint"
+  endpoint_name        = "${var.name}-private-endpoint"
   is_manual_connection = false
   subresource_names    = ["registry"]
 }
@@ -43,7 +43,7 @@ resource "azurerm_private_endpoint" "endpoint" {
 }
 
 locals {
-  normal_record_name = lower(azurerm_container_registry.acr.name)
+  normal_record_name = lower(var.name)
   dns_record_ttl     = 3600
 
   zone_a_records = {
