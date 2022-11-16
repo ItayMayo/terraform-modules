@@ -8,13 +8,11 @@ locals {
   work_subnet_name = "default"
 }
 
-module "log-analytics-workspace" {
-  source = "github.com/ItayMayo/terraform-modules//analytics-workspace"
-
-  name = "test-log-analytics"
-
+resource "azurerm_log_analytics_workspace" "log-analytics-workspace" {
+  name                = "test-workspace"
   resource_group_name = azurerm_resource_group.test-rg.name
   location            = "westeurope"
+  sku                 = "PerGB2018"
 
   depends_on = [
     azurerm_resource_group.test-rg
@@ -26,11 +24,9 @@ module "vnet" {
 
   vnet_name           = "test-vnet"
   resource_group_name = azurerm_resource_group.test-rg.name
-
-  location         = "westeurope"
-  log_workspace_id = module.log-analytics-workspace.id
-
-  address_space = ["192.166.0.0/16"]
+  location            = "westeurope"
+  log_workspace_id    = azurerm_log_analytics_workspace.id
+  address_space       = ["192.166.0.0/16"]
 
   subnets = {
     AzureFirewallSubnet = {
@@ -45,7 +41,7 @@ module "vnet" {
 
   depends_on = [
     azurerm_resource_group.test-rg,
-    module.log-analytics-workspace
+    azurerm_log_analytics_workspace
   ]
 }
 
@@ -64,17 +60,14 @@ locals {
 module "hub-firewall" {
   source = "../"
 
-  firewall_name        = "test-firewall"
-  firewall_policy_name = "test-firewall-policy"
-
-  resource_group_name = azurerm_resource_group.test-rg.name
-  location            = "westeurope"
-  log_workspace_id    = module.log-analytics-workspace.id
-
-  enable_tunneling     = true
-  subnet_id            = module.vnet.subnet_ids["AzureFirewallSubnet"]
-  management_subnet_id = module.vnet.subnet_ids["AzureFirewallManagementSubnet"]
-
+  firewall_name                 = "test-firewall"
+  firewall_policy_name          = "test-firewall-policy"
+  resource_group_name           = azurerm_resource_group.test-rg.name
+  location                      = "westeurope"
+  log_workspace_id              = azurerm_log_analytics_workspace.id
+  enable_tunneling              = true
+  subnet_id                     = module.vnet.subnet_ids["AzureFirewallSubnet"]
+  management_subnet_id          = module.vnet.subnet_ids["AzureFirewallManagementSubnet"]
   network_collection_groups     = local.network_collection_groups
   application_collection_groups = local.application_collection_groups
 

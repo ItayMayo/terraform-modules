@@ -8,10 +8,8 @@ module "vnet" {
 
   vnet_name           = "test-vnet"
   resource_group_name = azurerm_resource_group.test-rg.name
-
-  location = "westeurope"
-
-  address_space = ["192.166.0.0/16"]
+  location            = "westeurope"
+  address_space       = ["192.166.0.0/16"]
 
   subnets = {
     default = {
@@ -30,9 +28,8 @@ module "private-dns" {
 
   zone_name           = "privatelink.testzone.io"
   resource_group_name = azurerm_resource_group.test-rg.name
-
-  vnet_ids = { vnet = module.vnet.id }
-  tags     = { test = "test" }
+  vnet_ids            = { vnet = module.vnet.id }
+  tags                = { test = "test" }
 
   depends_on = [
     azurerm_resource_group.test-rg,

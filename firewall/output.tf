@@ -12,3 +12,8 @@ output "object" {
   value       = azurerm_firewall.firewall
   description = "Object of the Firewall resource."
 }
+
+output "policy_object" {
+  value       = module.firewall-policy.object
+  description = "Object of the Firewall Policy resource."
+}

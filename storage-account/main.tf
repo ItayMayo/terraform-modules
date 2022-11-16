@@ -40,7 +40,7 @@ resource "azurerm_storage_account" "storage_account" {
 }
 
 locals {
-  endpoint_name        = "${azurerm_storage_account.storage_account.name}-private-endpoint"
+  endpoint_name        = "${var.name}-private-endpoint"
   is_manual_connection = false
   subresource_names    = ["blob"]
   ip_configuration_name = "internal"
@@ -80,7 +80,7 @@ locals {
 resource "azurerm_private_dns_a_record" "a_record" {
   for_each = local.create_dns_zone_record ? { record = var.private_dns_zone_name } : {}
 
-  name                = azurerm_storage_account.storage_account.name
+  name                = var.name
   zone_name           = var.private_dns_zone_name
   resource_group_name = var.resource_group_name
   ttl                 = local.dns_record_ttl

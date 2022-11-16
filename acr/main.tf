@@ -17,7 +17,7 @@ resource "azurerm_container_registry" "acr" {
 }
 
 locals {
-  endpoint_name        = "${azurerm_container_registry.acr.name}-private-endpoint"
+  endpoint_name        = "${var.name}-private-endpoint"
   is_manual_connection = false
   subresource_names    = ["registry"]
 }
@@ -43,26 +43,23 @@ resource "azurerm_private_endpoint" "endpoint" {
 }
 
 locals {
-  normal_record_name = lower(azurerm_container_registry.acr.name)
+  normal_record_name = lower(var.name)
   dns_record_ttl     = 3600
 
   zone_a_records = {
-    acr_normal_record = {
-      name    = local.normal_record_name
-      ttl     = local.dns_record_ttl
-      records = [azurerm_private_endpoint.endpoint.private_service_connection[0].private_ip_address]
-    }
+    name    = local.normal_record_name
+    ttl     = local.dns_record_ttl
+    records = [azurerm_private_endpoint.endpoint.private_service_connection[0].private_ip_address]
   }
+
 }
 
 resource "azurerm_private_dns_a_record" "a_record" {
-  for_each = local.zone_a_records
-
-  name                = each.value["name"]
+  name                = local.zone_a_records["name"]
   zone_name           = var.private_dns_zone_name
   resource_group_name = var.resource_group_name
-  ttl                 = each.value["ttl"]
-  records             = each.value["records"]
+  ttl                 = local.zone_a_records["ttl"]
+  records             = local.zone_a_records["records"]
 
   depends_on = [
     azurerm_private_endpoint.endpoint
