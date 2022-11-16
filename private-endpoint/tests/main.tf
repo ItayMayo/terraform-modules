@@ -43,7 +43,6 @@ module "private_endpoint" {
   resource_group_name        = azurerm_resource_group.test-rg.name
   name                       = "test-endpoint"
   private_endpoint_subnet_id = module.vnet.subnet_ids["default"]
-  endpoint_ip_address        = "192.166.0.66"
   subresource_names          = ["blob"]
   target_resource_id         = azurerm_storage_account.storage_account.id
 
