@@ -69,7 +69,7 @@ locals {
 }
 
 resource "azurerm_private_dns_a_record" "a_record" {
-  for_each = local.create_dns_zone_record ? { record = var.private_dns_zone_name } : {}
+  count = local.create_dns_zone_record ? 1 : 0
 
   name                = var.name
   zone_name           = var.private_dns_zone_name
@@ -89,7 +89,8 @@ locals {
 
 module "diagnostics" {
   source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
-  for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
+
+  count = local.diagnostics_workspace_provided ? 1 : 0
 
   name                       = local.diagnostics_name
   target_resource_id         = azurerm_storage_account.storage_account.id

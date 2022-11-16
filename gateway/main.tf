@@ -47,33 +47,18 @@ resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
   sku                 = var.sku
   generation          = var.sku_generation
 
-  dynamic "ip_configuration" {
-    for_each = [azurerm_public_ip.public_ip["0"]]
-
-    content {
-      name                          = local.gateway_ip_name
-      public_ip_address_id          = ip_configuration.value["id"]
-      private_ip_address_allocation = local.private_ip_allocation
-      subnet_id                     = var.gateway_subnet_id
-    }
+  ip_configuration {
+    name                          = local.gateway_ip_name
+    public_ip_address_id          = azurerm_public_ip.public_ip["0"].id
+    private_ip_address_allocation = local.private_ip_allocation
+    subnet_id                     = var.gateway_subnet_id
   }
 
   dynamic "ip_configuration" {
-    for_each = [try(azurerm_public_ip.public_ip["1"], [])]
+    for_each = local.number_of_pips > 1 ? [for index in range(local.number_of_pips - 1): tostring(index + 1)] : []
 
     content {
       name                          = local.gateway_active_active_ip_name
-      public_ip_address_id          = ip_configuration.value["id"]
-      private_ip_address_allocation = local.private_ip_allocation
-      subnet_id                     = var.gateway_subnet_id
-    }
-  }
-
-  dynamic "ip_configuration" {
-    for_each = [try(azurerm_public_ip.public_ip["2"], [])]
-
-    content {
-      name                          = local.gateway_p2s_ip_name
       public_ip_address_id          = ip_configuration.value["id"]
       private_ip_address_allocation = local.private_ip_allocation
       subnet_id                     = var.gateway_subnet_id
@@ -141,8 +126,9 @@ locals {
 }
 
 module "diagnostics" {
-  source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
-  for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
+  source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
+
+  count = local.diagnostics_workspace_provided ? 1 : 0
 
   name                       = local.diagnostics_name
   target_resource_id         = azurerm_virtual_network_gateway.virtual_network_gateway.id

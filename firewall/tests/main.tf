@@ -25,7 +25,7 @@ module "vnet" {
   vnet_name           = "test-vnet"
   resource_group_name = azurerm_resource_group.test-rg.name
   location            = "westeurope"
-  log_workspace_id    = azurerm_log_analytics_workspace.id
+  log_workspace_id    = azurerm_log_analytics_workspace.log-analytics-workspace.id
   address_space       = ["192.166.0.0/16"]
 
   subnets = {
@@ -41,7 +41,7 @@ module "vnet" {
 
   depends_on = [
     azurerm_resource_group.test-rg,
-    azurerm_log_analytics_workspace
+    azurerm_log_analytics_workspace.log-analytics-workspace
   ]
 }
 
@@ -64,7 +64,7 @@ module "hub-firewall" {
   firewall_policy_name          = "test-firewall-policy"
   resource_group_name           = azurerm_resource_group.test-rg.name
   location                      = "westeurope"
-  log_workspace_id              = azurerm_log_analytics_workspace.id
+  log_workspace_id              = azurerm_log_analytics_workspace.log-analytics-workspace.id
   enable_tunneling              = true
   subnet_id                     = module.vnet.subnet_ids["AzureFirewallSubnet"]
   management_subnet_id          = module.vnet.subnet_ids["AzureFirewallManagementSubnet"]

@@ -14,6 +14,7 @@ module "test-nsg" {
   location            = "westeurope"
   resource_group_name = azurerm_resource_group.test-rg.name
   nsg_security_rules  = local.nsg["test-security-group"]
+  log_workspace_id    = null
 
   tags = { test = "test" }
 }

@@ -25,7 +25,7 @@ module "vnet" {
   vnet_name           = "test-vnet"
   resource_group_name = azurerm_resource_group.test-rg.name
   location            = "westeurope"
-  log_workspace_id    = azurerm_log_analytics_workspace.id
+  log_workspace_id    = azurerm_log_analytics_workspace.log-analytics-workspace.id
   address_space       = ["192.166.0.0/16"]
 
   subnets = {
@@ -37,7 +37,7 @@ module "vnet" {
 
   depends_on = [
     azurerm_resource_group.test-rg,
-    azurerm_log_analytics_workspace
+    azurerm_log_analytics_workspace.log-analytics-workspace
   ]
 }
 
@@ -63,7 +63,7 @@ module "acr" {
   private_dns_zone_name      = "privatelink.azurecr.io"
   resource_group_name        = azurerm_resource_group.test-rg.name
   location                   = "westeurope"
-  log_workspace_id           = azurerm_log_analytics_workspace.id
+  log_workspace_id           = azurerm_log_analytics_workspace.log-analytics-workspace.id
   sku                        = "Premium"
   admin_enabled              = true
   private_endpoint_subnet_id = module.vnet.subnet_ids["default"]
@@ -71,7 +71,7 @@ module "acr" {
   depends_on = [
     azurerm_resource_group.test-rg,
     module.acr-private-dns,
-    azurerm_log_analytics_workspace
+    azurerm_log_analytics_workspace.log-analytics-workspace
   ]
 }
 
@@ -81,7 +81,7 @@ module "aks" {
   name                       = "itaymtestcluster"
   resource_group_name        = azurerm_resource_group.test-rg.name
   location                   = "westeurope"
-  log_workspace_id           = azurerm_log_analytics_workspace.id
+  log_workspace_id           = azurerm_log_analytics_workspace.log-analytics-workspace.id
   aks_dns_prefix             = "itaymtestcluster"
   private_endpoint_subnet_id = module.vnet.subnet_ids["default"]
   private_dns_vnets          = { default = module.vnet.id }
@@ -105,7 +105,7 @@ module "aks" {
   depends_on = [
     azurerm_resource_group.test-rg,
     module.vnet,
-    azurerm_log_analytics_workspace,
+    azurerm_log_analytics_workspace.log-analytics-workspace,
     module.acr
   ]
 }

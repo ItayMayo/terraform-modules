@@ -26,7 +26,7 @@ locals {
 }
 
 resource "azurerm_windows_virtual_machine" "vm" {
-  for_each = var.vm_os_name == "Windows" ? { vm = "Windows" } : {}
+  count = var.vm_os_name == "Windows" ? 1 : 0
 
   name                  = var.vm_name
   resource_group_name   = var.resource_group_name
@@ -67,7 +67,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
 
 
 resource "azurerm_linux_virtual_machine" "vm" {
-  for_each = var.vm_os_name == "Linux" ? { vm = "Linux" } : {}
+  count = var.vm_os_name == "Linux" ? 1 : 0
 
 
   name                            = var.vm_name
@@ -122,7 +122,7 @@ locals {
   managed_disk_name_prefix          = "${var.vm_name}-managed-disk"
   managed_disk_storage_account_type = "Standard_LRS"
   managed_disk_create_option        = "Empty"
-  vm_resource_id                    = try(azurerm_linux_virtual_machine.vm["vm"].id, azurerm_windows_virtual_machine.vm["vm"].id)
+  vm_resource                    = try(azurerm_linux_virtual_machine.vm[0], azurerm_windows_virtual_machine.vm[0])
 }
 
 resource "azurerm_managed_disk" "managed_disk" {
@@ -144,7 +144,7 @@ resource "azurerm_virtual_machine_data_disk_attachment" "vm_disk_attachment" {
   for_each = local.create_additional_disks ? { for index in range(length(var.disk_sizes_in_gb)) : index => index } : {}
 
   managed_disk_id    = azurerm_managed_disk.managed_disk[each.value].id
-  virtual_machine_id = local.vm_resource_id
+  virtual_machine_id = local.vm_resource.id
   lun                = (each.value + 1) * 10
   caching            = local.vm_disk_caching
 
@@ -160,10 +160,11 @@ locals {
 
 module "diagnostics" {
   source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
-  for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
+  
+  count = local.diagnostics_workspace_provided ? 1 : 0
 
   name                       = local.diagnostics_name
-  target_resource_id         = local.vm_resource_id
+  target_resource_id         = local.vm_resource.id
   log_analytics_workspace_id = var.log_workspace_id
 
   depends_on = [

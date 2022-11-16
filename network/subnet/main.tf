@@ -14,10 +14,10 @@ locals {
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsg_association" {
-  for_each = local.nsg_provided ? { nsg = var.nsg_id } : {}
+  count = local.nsg_provided ? 1 : 0
 
   subnet_id                 = azurerm_subnet.subnet.id
-  network_security_group_id = each.value
+  network_security_group_id = var.nsg_id
 
   depends_on = [
     azurerm_subnet.subnet
@@ -29,10 +29,10 @@ locals {
 }
 
 resource "azurerm_subnet_route_table_association" "route_table_association" {
-  for_each = local.route_table_provided ? { route_table = var.route_table_id } : {}
+  count = local.route_table_provided ? 1 : 0
 
   subnet_id      = azurerm_subnet.subnet.id
-  route_table_id = each.value
+  route_table_id = var.route_table_id
 
   depends_on = [
     azurerm_subnet.subnet

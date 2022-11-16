@@ -19,20 +19,16 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   private_dns_zone_id           = var.aks_private_dns_zone_id
 
 
-  dynamic "default_node_pool" {
-    for_each = [var.default_node_pool]
-
-    content {
-      name                  = default_node_pool.value["name"]
-      node_count            = default_node_pool.value["node_count"]
-      vm_size               = default_node_pool.value["vm_size"]
-      os_sku                = default_node_pool.value["os_sku"]
-      enable_node_public_ip = local.public_network_access_enabled
-      vnet_subnet_id        = default_node_pool.value["vnet_subnet_id"]
-      enable_auto_scaling   = default_node_pool.value["enable_auto_scaling"]
-      max_count             = default_node_pool.value["max_count"]
-      min_count             = default_node_pool.value["min_count"]
-    }
+  default_node_pool {
+    name                  = var.default_node_pool["name"]
+    node_count            = var.default_node_pool["node_count"]
+    vm_size               = var.default_node_pool["vm_size"]
+    os_sku                = var.default_node_pool["os_sku"]
+    enable_node_public_ip = local.public_network_access_enabled
+    vnet_subnet_id        = var.default_node_pool["vnet_subnet_id"]
+    enable_auto_scaling   = var.default_node_pool["enable_auto_scaling"]
+    max_count             = var.default_node_pool["max_count"]
+    min_count             = var.default_node_pool["min_count"]
   }
 
   dynamic "identity" {
@@ -80,8 +76,9 @@ module "private-endpoint" {
 
 locals {
   dns_record_ttl      = 300
-  aks_dns_zone_name   = join(".", slice(split(".", azurerm_kubernetes_cluster.cluster.private_fqdn), 1, length(split(".", azurerm_kubernetes_cluster.cluster.private_fqdn))))
-  aks_dns_record_name = split(".", azurerm_kubernetes_cluster.cluster.private_fqdn)[0]
+  split_fqdn          = split(".", azurerm_kubernetes_cluster.cluster.private_fqdn)
+  aks_dns_zone_name   = join(".", slice(local.split_fqdn, 1, length(local.split_fqdn)))
+  aks_dns_record_name = local.split_fqdn[0]
 }
 
 module "aks-private-dns" {
@@ -132,7 +129,8 @@ locals {
 module "diagnostics" {
   source = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
 
-  for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
+
+  count = local.diagnostics_workspace_provided ? 1 : 0
 
   name                       = local.diagnostics_name
   target_resource_id         = azurerm_kubernetes_cluster.cluster.id

@@ -23,7 +23,7 @@ resource "azurerm_network_interface" "network_interface" {
 }
 
 resource "azurerm_network_interface_security_group_association" "nsg_association" {
-  for_each = var.nsg_id != null ? { association = "association" } : {}
+  count = var.nsg_id != null ? 1 : 0
 
   network_interface_id      = azurerm_network_interface.network_interface.id
   network_security_group_id = var.nsg_id
@@ -40,7 +40,8 @@ locals {
 
 module "diagnostics" {
   source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
-  for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
+  
+  count = local.diagnostics_workspace_provided ? 1 : 0
 
   name                       = local.diagnostics_name
   target_resource_id         = azurerm_network_interface.network_interface.id

@@ -53,7 +53,8 @@ locals {
 
 module "diagnostics" {
   source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
-  for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
+  
+  count = local.diagnostics_workspace_provided ? 1 : 0
 
   name                       = local.diagnostics_name
   target_resource_id         = azurerm_virtual_network.vnet.id

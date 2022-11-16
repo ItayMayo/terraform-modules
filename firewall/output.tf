@@ -14,6 +14,6 @@ output "object" {
 }
 
 output "policy_object" {
-  value       = module.firewall-policy.object
+  value       = try(module.firewall-policy[0].object, null)
   description = "Object of the Firewall Policy resource."
 }

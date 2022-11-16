@@ -5,7 +5,7 @@
 module "firewall-policy" {
   source = "./firewall-policy"
 
-  for_each = var.firewall_policy_id == null ? { policy = "policy" } : {}
+  count = var.firewall_policy_id == null ? 1 : 0
 
   location                      = var.location
   resource_group_name           = var.resource_group_name
@@ -17,7 +17,7 @@ module "firewall-policy" {
 
 locals {
   firewall_pip_name     = "${var.firewall_name}-pip"
-  management_pip_name   = "${var.firewall_name}-management-pip"
+  management_pip_name   = var.enable_tunneling ? "${var.firewall_name}-management-pip" : ""
   pip_allocation_method = "Static"
   pip_sku               = "Standard"
   pip_zones             = [1, 2, 3]
@@ -37,14 +37,14 @@ resource "azurerm_public_ip" "public_ip" {
 
 locals {
   primary_ip_config_name    = "firewall-ip-configuration"
-  management_ip_config_name = "management-ip-configuration"
+  management_ip_config_name = var.enable_tunneling ? "management-ip-configuration" : ""
 }
 
 resource "azurerm_firewall" "firewall" {
   name                = var.firewall_name
   location            = var.location
   resource_group_name = var.resource_group_name
-  firewall_policy_id  = var.firewall_policy_id != null ? var.firewall_policy_id : module.firewall-policy["policy"].id
+  firewall_policy_id  = var.firewall_policy_id != null ? var.firewall_policy_id : module.firewall-policy[0].id
   dns_servers         = var.firewall_dns_servers
   zones               = var.firewall_zones
   sku_name            = var.firewall_sku_name
@@ -81,7 +81,8 @@ locals {
 
 module "diagnostics" {
   source   = "github.com/ItayMayo/terraform-modules//diagnostic-settings"
-  for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
+  
+  count = local.diagnostics_workspace_provided ? 1 : 0
 
   name                       = local.diagnostics_name
   target_resource_id         = azurerm_firewall.firewall.id
