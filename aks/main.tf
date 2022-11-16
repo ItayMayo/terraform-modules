@@ -58,25 +58,20 @@ resource "azurerm_kubernetes_cluster" "cluster" {
 }
 
 locals {
-  endpoint_name        = "${var.name}-private-endpoint"
-  is_manual_connection = false
-  subresource_names    = ["management"]
+  endpoint_name     = "${var.name}-private-endpoint"
+  subresource_names = ["management"]
 }
 
-resource "azurerm_private_endpoint" "endpoint" {
-  name                = local.endpoint_name
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  subnet_id           = var.private_endpoint_subnet_id
+module "private-endpoint" {
+  source = "github.com/ItayMayo/terraform-modules//private-endpoint"
 
-  private_service_connection {
-    name                           = local.endpoint_name
-    private_connection_resource_id = azurerm_kubernetes_cluster.cluster.id
-    is_manual_connection           = local.is_manual_connection
-    subresource_names              = local.subresource_names
-  }
-
-  tags = var.tags
+  name                       = local.endpoint_name
+  location                   = var.location
+  resource_group_name        = var.resource_group_name
+  private_endpoint_subnet_id = var.private_endpoint_subnet_id
+  subresource_names          = local.subresource_names
+  target_resource_id         = azurerm_kubernetes_cluster.cluster.id
+  tags                       = var.tags
 
   depends_on = [
     azurerm_kubernetes_cluster.cluster
@@ -100,14 +95,14 @@ module "aks-private-dns" {
     storage_account = {
       name    = local.aks_dns_record_name
       ttl     = local.dns_record_ttl
-      records = [azurerm_private_endpoint.endpoint.private_service_connection[0].private_ip_address]
+      records = [module.private-endpoint.object.private_service_connection[0].private_ip_address]
     }
   }
 
   tags = var.tags
 
   depends_on = [
-    azurerm_private_endpoint.endpoint
+    module.private-endpoint
   ]
 }
 
