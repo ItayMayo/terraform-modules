@@ -14,6 +14,7 @@ module "network-security-groups" {
   nsg_name            = each.key
   location            = var.location
   resource_group_name = var.resource_group_name
+  log_workspace_id    = var.log_workspace_id
   nsg_security_rules  = each.value
   tags                = var.tags
 }
