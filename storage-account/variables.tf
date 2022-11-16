@@ -28,6 +28,11 @@ variable "account_tier" {
   default     = "Standard"
   type        = string
   description = "(Required) Storage Accuont tier. Default: Standard."
+
+  validation {
+    condition = contains(["Standard", "Premium"], var.account_tier)
+    error_message = "Account Tier must be of value Standard or Premium."
+  }
 }
 
 variable "account_kind" {
@@ -37,9 +42,9 @@ variable "account_kind" {
 }
 
 variable "replication_type" {
-  default     = "GRS"
+  default     = "LRS"
   type        = string
-  description = "(Required) Storage Account replication type. Default: GRS."
+  description = "(Optional) Storage Account replication type. Default: LRS."
 }
 
 variable "network_rules" {

@@ -26,7 +26,7 @@
 | <a name="input_network_rules"></a> [network\_rules](#input\_network\_rules) | (Optional) Storage Account Network Rules. | <pre>list(object({<br>    default_action             = string<br>    bypass                     = list(string)<br>    virtual_network_subnet_ids = list(string)<br><br>    private_link_access = object({<br>      endpoint_resource_id = string<br>      endpoint_tenant_id   = string<br>    })<br>  }))</pre> | `null` | no |
 | <a name="input_private_dns_zone_name"></a> [private\_dns\_zone\_name](#input\_private\_dns\_zone\_name) | (Optional) Name of a Private DNS zone to be associated with the storage account. | `string` | `null` | no |
 | <a name="input_private_endpoint_subnet_id"></a> [private\_endpoint\_subnet\_id](#input\_private\_endpoint\_subnet\_id) | (Required) ID of the subnet in which to create a private endpoint for this Storage Account. | `string` | n/a | yes |
-| <a name="input_replication_type"></a> [replication\_type](#input\_replication\_type) | (Required) Storage Account replication type. Default: GRS. | `string` | `"GRS"` | no |
+| <a name="input_replication_type"></a> [replication\_type](#input\_replication\_type) | (Optional) Storage Account replication type. Default: LRS. | `string` | `"LRS"` | no |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | (Required) Name of the parent Resource Group. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | (Required) Tags assigned to the resource. | `map(string)` | `null` | no |
 

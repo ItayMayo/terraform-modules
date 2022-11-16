@@ -40,3 +40,9 @@ variable "private_ip_address" {
   type        = string
   description = "(Optional) Network interface Private IP address."
 }
+
+variable "nsg_id" {
+  default = null
+  type = string
+  description = "(Optional) ID of a Network Security Group to associate with this Network Interface."
+}

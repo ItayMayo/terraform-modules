@@ -2,27 +2,26 @@
 * # Gateway Module
 */
 
+data "azurerm_client_config" "current" {}
+
 locals {
   gateway_ip_name               = "primary"
   gateway_active_active_ip_name = "seconday"
   gateway_p2s_ip_name           = "third"
   private_ip_allocation         = "Dynamic"
   aad_audience                  = "41b23e61-6c1e-4545-b367-cd054e0ed4b4"
-  aad_tenant_base_address       = "https://login.microsoftonline.com"
-  aad_issuer_base_address       = "https://sts.windows.net"
+  aad_tenant_base_address       = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/"
+  aad_issuer_base_address       = "https://sts.windows.net/${data.azurerm_client_config.current.tenant_id}/"
 }
-
-data "azurerm_client_config" "current" {}
 
 locals {
   should_create_three_pips = var.enable_active_active && var.enable_point_to_site
   should_create_two_pips   = var.enable_active_active || var.enable_point_to_site
   number_of_pips           = local.should_create_three_pips ? 3 : (local.should_create_two_pips ? 2 : 1)
-
-  pip_name_prefix       = "${var.name}-vng-pip"
-  pip_allocation_method = "Static"
-  pip_sku               = "Standard"
-  pip_zones             = [1, 2, 3]
+  pip_name_prefix          = "${var.name}-vng-pip"
+  pip_allocation_method    = "Static"
+  pip_sku                  = "Standard"
+  pip_zones                = [1, 2, 3]
 }
 
 resource "azurerm_public_ip" "public_ip" {
@@ -31,25 +30,22 @@ resource "azurerm_public_ip" "public_ip" {
   name                = "${local.pip_name_prefix}-${each.value}"
   resource_group_name = var.resource_group_name
   location            = var.location
-
-  allocation_method = local.pip_allocation_method
-  sku               = local.pip_sku
-  zones             = local.pip_zones
-  tags              = var.tags
+  allocation_method   = local.pip_allocation_method
+  sku                 = local.pip_sku
+  zones               = local.pip_zones
+  tags                = var.tags
 }
 
 resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
   name                = var.name
   location            = var.location
   resource_group_name = var.resource_group_name
-
-  type     = var.type
-  vpn_type = var.vpn_type
-
-  active_active = var.enable_active_active
-  enable_bgp    = var.enable_bgp
-  sku           = var.sku
-  generation    = var.sku_generation
+  type                = var.type
+  vpn_type            = var.vpn_type
+  active_active       = var.enable_active_active
+  enable_bgp          = var.enable_bgp
+  sku                 = var.sku
+  generation          = var.sku_generation
 
   dynamic "ip_configuration" {
     for_each = [azurerm_public_ip.public_ip["0"]]
@@ -88,14 +84,12 @@ resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
     for_each = var.enable_point_to_site ? [var.vpn_client_configuration] : []
 
     content {
-      address_space        = vpn_client_configuration.value["address_space"]
-      vpn_auth_types       = vpn_client_configuration.value["auth_types"]
-      vpn_client_protocols = vpn_client_configuration.value["client_protocols"]
-
-      aad_tenant   = contains(vpn_client_configuration.value["auth_types"], "AAD") ? "${local.aad_tenant_base_address}/${data.azurerm_client_config.current.tenant_id}/" : null
-      aad_audience = contains(vpn_client_configuration.value["auth_types"], "AAD") ? local.aad_audience : null
-      aad_issuer   = contains(vpn_client_configuration.value["auth_types"], "AAD") ? "${local.aad_issuer_base_address}/${data.azurerm_client_config.current.tenant_id}/" : null
-
+      address_space         = vpn_client_configuration.value["address_space"]
+      vpn_auth_types        = vpn_client_configuration.value["auth_types"]
+      vpn_client_protocols  = vpn_client_configuration.value["client_protocols"]
+      aad_tenant            = contains(vpn_client_configuration.value["auth_types"], "AAD") ? local.aad_tenant_base_address : null
+      aad_audience          = contains(vpn_client_configuration.value["auth_types"], "AAD") ? local.aad_audience : null
+      aad_issuer            = contains(vpn_client_configuration.value["auth_types"], "AAD") ? local.aad_issuer_base_address : null
       radius_server_address = vpn_client_configuration.value["radius_server_address"]
       radius_server_secret  = vpn_client_configuration.value["radius_server_secret"]
 
@@ -143,7 +137,6 @@ resource "azurerm_virtual_network_gateway" "virtual_network_gateway" {
 
 locals {
   diagnostics_name               = "${var.name}-gateway-diagnostics"
-  target_resource_id             = azurerm_virtual_network_gateway.virtual_network_gateway.id
   diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
@@ -152,7 +145,7 @@ module "diagnostics" {
   for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
 
   name                       = local.diagnostics_name
-  target_resource_id         = local.target_resource_id
+  target_resource_id         = azurerm_virtual_network_gateway.virtual_network_gateway.id
   log_analytics_workspace_id = var.log_workspace_id
 
   depends_on = [

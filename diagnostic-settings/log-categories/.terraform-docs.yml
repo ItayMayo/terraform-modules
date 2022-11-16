@@ -1,5 +1,5 @@
 formatter: ""
-header-from: log_categories_data.tf
+header-from: main.tf
 footer-from: ./usages/example.md
 content: |-
   {{ .Header }}

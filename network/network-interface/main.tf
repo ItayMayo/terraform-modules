@@ -22,9 +22,19 @@ resource "azurerm_network_interface" "network_interface" {
   tags = var.tags
 }
 
+resource "azurerm_network_interface_security_group_association" "nsg_association" {
+  for_each = var.nsg_id != null ? { association = "association" } : {}
+
+  network_interface_id      = azurerm_network_interface.network_interface.id
+  network_security_group_id = var.nsg_id
+
+  depends_on = [
+    azurerm_network_interface.network_interface
+  ]
+}
+
 locals {
   diagnostics_name               = "${var.name}-nic-diagnostics"
-  target_resource_id             = azurerm_network_interface.network_interface.id
   diagnostics_workspace_provided = var.log_workspace_id != null
 }
 
@@ -33,7 +43,7 @@ module "diagnostics" {
   for_each = local.diagnostics_workspace_provided ? { "1" : "1" } : {}
 
   name                       = local.diagnostics_name
-  target_resource_id         = local.target_resource_id
+  target_resource_id         = azurerm_network_interface.network_interface.id
   log_analytics_workspace_id = var.log_workspace_id
 
   depends_on = [

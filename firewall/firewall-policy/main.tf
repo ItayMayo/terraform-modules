@@ -87,7 +87,6 @@ resource "azurerm_firewall_policy_rule_collection_group" "firewall_policy_applic
   }
 
   depends_on = [
-    azurerm_firewall_policy.firewall_policy,
     azurerm_firewall_policy_rule_collection_group.firewall_policy_network_collection_group
   ]
 }
@@ -128,7 +127,6 @@ resource "azurerm_firewall_policy_rule_collection_group" "firewall_policy_nat_co
   }
 
   depends_on = [
-    azurerm_firewall_policy.firewall_policy,
     azurerm_firewall_policy_rule_collection_group.firewall_policy_application_collection_group
   ]
 }

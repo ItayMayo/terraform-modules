@@ -8,13 +8,12 @@ locals {
   work_subnet_name = "default"
 }
 
-module "log-analytics-workspace" {
-  source = "github.com/ItayMayo/terraform-modules//analytics-workspace"
-
-  name = "test-log-analytics"
-
+resource "azurerm_log_analytics_workspace" "log-analytics-workspace" {
+  name                = "test-workspace"
   resource_group_name = azurerm_resource_group.test-rg.name
   location            = "westeurope"
+
+  sku               = "PerGB2018"
 
   depends_on = [
     azurerm_resource_group.test-rg
@@ -28,7 +27,7 @@ module "vnet" {
   resource_group_name = azurerm_resource_group.test-rg.name
 
   location         = "westeurope"
-  log_workspace_id = module.log-analytics-workspace.id
+  log_workspace_id = azurerm_log_analytics_workspace.log-analytics-workspace.id
 
   address_space = ["192.166.0.0/16"]
 
@@ -41,7 +40,7 @@ module "vnet" {
 
   depends_on = [
     azurerm_resource_group.test-rg,
-    module.log-analytics-workspace
+    azurerm_log_analytics_workspace.log-analytics-workspace
   ]
 }
 
@@ -70,7 +69,7 @@ module "acr" {
 
   resource_group_name = azurerm_resource_group.test-rg.name
   location            = "westeurope"
-  log_workspace_id    = module.log-analytics-workspace.id
+  log_workspace_id    = azurerm_log_analytics_workspace.log-analytics-workspace.id
 
   sku = "Premium"
 
@@ -80,6 +79,6 @@ module "acr" {
   depends_on = [
     azurerm_resource_group.test-rg,
     module.acr-private-dns,
-    module.log-analytics-workspace
+    azurerm_log_analytics_workspace.log-analytics-workspace
   ]
 }
