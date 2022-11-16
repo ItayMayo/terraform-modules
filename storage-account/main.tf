@@ -8,12 +8,12 @@ locals {
 }
 
 resource "azurerm_storage_account" "storage_account" {
-  name                = var.name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  account_tier             = var.account_tier
-  account_kind             = var.account_kind
-  account_replication_type = var.replication_type
+  name                            = var.name
+  resource_group_name             = var.resource_group_name
+  location                        = var.location
+  account_tier                    = var.account_tier
+  account_kind                    = var.account_kind
+  account_replication_type        = var.replication_type
   allow_nested_items_to_be_public = local.public_access
   public_network_access_enabled   = local.public_access
 
@@ -40,32 +40,23 @@ resource "azurerm_storage_account" "storage_account" {
 }
 
 locals {
-  endpoint_name        = "${var.name}-private-endpoint"
-  is_manual_connection = false
-  subresource_names    = ["blob"]
+  endpoint_name         = "${var.name}-private-endpoint"
+  is_manual_connection  = false
+  subresource_names     = ["blob"]
   ip_configuration_name = "internal"
 }
 
-resource "azurerm_private_endpoint" "endpoint" {
-  name                = local.endpoint_name
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  subnet_id           = var.private_endpoint_subnet_id
+module "private-endpoint" {
+  source = "github.com/ItayMayo/terraform-modules//private-endpoint"
 
-  private_service_connection {
-    name                           = local.endpoint_name
-    private_connection_resource_id = azurerm_storage_account.storage_account.id
-    is_manual_connection           = local.is_manual_connection
-    subresource_names              = local.subresource_names
-  }
-
-  ip_configuration {
-    name               = local.ip_configuration_name
-    private_ip_address = var.endpoint_ip_address
-    subresource_name   = local.subresource_names[0]
-  }
-
-  tags = var.tags
+  name                       = local.endpoint_name
+  location                   = var.location
+  resource_group_name        = var.resource_group_name
+  private_endpoint_subnet_id = var.private_endpoint_subnet_id
+  subresource_names          = local.subresource_names
+  target_resource_id         = azurerm_storage_account.storage_account.id
+  endpoint_ip_address        = var.endpoint_ip_address
+  tags                       = var.tags
 
   depends_on = [
     azurerm_storage_account.storage_account
@@ -87,7 +78,7 @@ resource "azurerm_private_dns_a_record" "a_record" {
   records             = [var.endpoint_ip_address]
 
   depends_on = [
-    azurerm_private_endpoint.endpoint
+    module.private-endpoint
   ]
 }
 
