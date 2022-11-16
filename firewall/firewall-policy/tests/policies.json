@@ -1,0 +1,63 @@
+{
+    "network_rule_collection_group": {
+        "name": "work_network_collection_group",
+        "priority": "108",
+        "network_rule_collections": [
+            {
+                "name": "remote-in",
+                "priority": 101,
+                "action": "Allow",
+                "rule": [
+                    {
+                        "name": "AllowSSH",
+                        "protocols": [
+                            "TCP"
+                        ],
+                        "source_addresses": [
+                            "*"
+                        ],
+                        "destination_addresses": [
+                            "192.166.1.0/24"
+                        ],
+                        "destination_ports": [
+                            "22"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "application_rule_collection_group": {
+        "name": "work_application_collection_group",
+        "priority": "109",
+        "application_rule_collections": [
+            {
+                "name": "test",
+                "priority": 400,
+                "action": "Allow",
+                "rule": [
+                    {
+                        "name": "Github",
+                        "protocols": [
+                            {
+                                "type": "Http",
+                                "port": 80
+                            },
+                            {
+                                "type": "Https",
+                                "port": 443
+                            }
+                        ],
+                        "source_addresses": [
+                            "192.166.1.0/24"
+                        ],
+                        "destination_fqdns": [
+                            "github.com"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "nat_rule_collection_group": null
+}
